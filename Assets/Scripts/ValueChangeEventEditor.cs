@@ -17,32 +17,41 @@ public class ValueChangeEventEditor
         vceExplorer = null;
     }
 
-    public void EditorGUI()
+    public void OnEditorGUILayout()
     {
+        OnEditorGUI(EditorGUILayout.GetControlRect());
+    }
+
+    public void OnEditorGUI(Rect rect)
+    {
+        Rect foldOutRect = rect;
+        foldOutRect.width = 20f;
+
+        Rect headerRect = rect;
+        headerRect.x += foldOutRect.width;
+        headerRect.width -= foldOutRect.width;
+        
         if (valueChangeEvent == null)
         {
-            EditorGUILayout.HelpBox("ValueChangeEvent is null", MessageType.Info);
+            EditorGUI.HelpBox(rect, "ValueChangeEvent is null", MessageType.Info);
         }
         else
         {
-            EditorGUILayout.BeginHorizontal();
             if (hasSlaveEditor)
             {
                 GUIStyle style = new GUIStyle(EditorStyles.foldout);
                 style.fixedWidth = 1f;
-                showMasters = EditorGUILayout.Foldout(showMasters, "", style);
+                showMasters = EditorGUI.Foldout(foldOutRect, showMasters, "", style);
             }
 
-            HeaderGUI();
-            valueChangeEvent.Enslave();           
+            EditorHeaderGUI(headerRect);
+            valueChangeEvent.Enslave();       
 
-            EditorGUILayout.EndHorizontal();
-
-            if (hasSlaveEditor) SlaveGUI();
+            if (hasSlaveEditor) SlaveGUILayout();
         }      
     }
 
-    private void HeaderGUI()
+    private void EditorHeaderGUI(Rect rect)
     {
         if (valueChangeEvent == null) return;
 
@@ -51,20 +60,30 @@ public class ValueChangeEventEditor
             label = valueChangeEvent.Component.ToString() + "." + valueChangeEvent.Name;
         else
             label = valueChangeEvent.Name;
-        EditorGUILayout.LabelField(label);
 
-        ValueChangeEventGUI(valueChangeEvent, 150f);        
+        Rect labelRect = rect;
+        labelRect.width *= .6f;
+        Rect vceRect = rect;
+        vceRect.x += labelRect.width;
+        vceRect.width *= .2f;
+        Rect masterCountRect = rect;
+        masterCountRect.x += labelRect.width + vceRect.width;
+        masterCountRect.width *= .2f;
+
+        EditorGUI.LabelField(labelRect, label);
+
+        ValueChangeEventGUI(vceRect, valueChangeEvent);        
 
         int masterCount = valueChangeEvent.MasterCount;
         if (valueChangeEvent.RuntimeMasterCount != masterCount)
-            EditorGUILayout.HelpBox(valueChangeEvent.RuntimeMasterCount + "/" + masterCount + " master runtime count mismatch", MessageType.Error);
+            EditorGUI.HelpBox(masterCountRect, valueChangeEvent.RuntimeMasterCount + "/" + masterCount + " master runtime count mismatch", MessageType.Error);
         else if (masterCount > 0)
-            EditorGUILayout.LabelField(" (" + masterCount + " masters)", GUILayout.Width(80f));
+            EditorGUI.LabelField(masterCountRect, " (" + masterCount + " masters)");
         else
-            EditorGUILayout.LabelField(" ", GUILayout.Width(80f));
+            EditorGUI.LabelField(masterCountRect, " ");
     }
 
-    private void SlaveGUI()
+    private void SlaveGUILayout()
     {
         if (showMasters)
         {
@@ -95,7 +114,7 @@ public class ValueChangeEventEditor
                 {
                     EditorGUILayout.BeginHorizontal();
                     ValueChangeEventEditor slaveEditor = new ValueChangeEventEditor(valueChangeEvent.GetMaster(i)) { detailedLabel = true };
-                    slaveEditor.EditorGUI();
+                    slaveEditor.OnEditorGUILayout();
                     if (GUILayout.Button("X", GUILayout.Width(25f)))
                         valueChangeEvent.RemoveMasterAt(i);
                     EditorGUILayout.EndHorizontal();
@@ -126,53 +145,53 @@ public class ValueChangeEventEditor
             vceExplorer = null;
     }
 
-    private static void ValueChangeEventGUI(ValueChangeEvent valueChangeEvent, float width = -1f)
+    public static void ValueChangeEventGUI(Rect rect, ValueChangeEvent valueChangeEvent)
     {
         if (valueChangeEvent.runtimeEvent == null) EditorGUILayout.HelpBox(valueChangeEvent.Name + " runtime event is null.", MessageType.Error);
 
         IValueChangeEvent vce = valueChangeEvent.runtimeEvent;
 
-        if (vce is TriggerEvent) ValueChangeEventGUI(vce as TriggerEvent, width);
-        else if (vce is ValueChangeEvent<bool>) ValueChangeEventGUI(vce as ValueChangeEvent<bool>, width);
-        else if (vce is ValueChangeEvent<int>) ValueChangeEventGUI(vce as ValueChangeEvent<int>, width);
-        else if (vce is ValueChangeEvent<float>) ValueChangeEventGUI(vce as ValueChangeEvent<float>, width);
-        else if (vce is ValueChangeEvent<Vector2>) ValueChangeEventGUI(vce as ValueChangeEvent<Vector2>, width);
-        else if (vce is ValueChangeEvent<GameObject>) ValueChangeEventGUI(vce as ValueChangeEvent<GameObject>, width);
+        if (vce is TriggerEvent) ValueChangeEventGUI(rect, vce as TriggerEvent);
+        else if (vce is ValueChangeEvent<bool>) ValueChangeEventGUI(rect, vce as ValueChangeEvent<bool>);
+        else if (vce is ValueChangeEvent<int>) ValueChangeEventGUI(rect, vce as ValueChangeEvent<int>);
+        else if (vce is ValueChangeEvent<float>) ValueChangeEventGUI(rect, vce as ValueChangeEvent<float>);
+        else if (vce is ValueChangeEvent<Vector2>) ValueChangeEventGUI(rect, vce as ValueChangeEvent<Vector2>);
+        else if (vce is ValueChangeEvent<GameObject>) ValueChangeEventGUI(rect, vce as ValueChangeEvent<GameObject>);
 
         else EditorGUILayout.HelpBox("Inspector for ValueChangeEvent<" + vce.GetValueType().Name + "> is not implemented", MessageType.Warning);
     }
 
-    private static void ValueChangeEventGUI(TriggerEvent vce, float width = -1f)
+    private static void ValueChangeEventGUI(Rect rect, TriggerEvent vce)
     {
-        bool triggered = EditorGUILayout.Toggle(vce.triggered, GUILayout.Width(width));
+        bool triggered = EditorGUI.Toggle(rect, vce.triggered);
         if (triggered == true && vce.triggered == false)
             vce.Trigger();
     }
 
-    private static void ValueChangeEventGUI(ValueChangeEvent<bool> vce, float width = -1f)
+    private static void ValueChangeEventGUI(Rect rect, ValueChangeEvent<bool> vce)
     {
-        vce.Value = EditorGUILayout.Toggle(vce.Value, GUILayout.Width(width));
+        vce.Value = EditorGUI.Toggle(rect, vce.Value);
     }
 
-    private static void ValueChangeEventGUI(ValueChangeEvent<int> vce, float width = -1f)
+    private static void ValueChangeEventGUI(Rect rect, ValueChangeEvent<int> vce)
     {
-        vce.Value = EditorGUILayout.IntField(vce.Value, GUILayout.Width(width));
+        vce.Value = EditorGUI.IntField(rect, vce.Value);
     }
 
-    private static void ValueChangeEventGUI(ValueChangeEvent<float> vce, float width = -1f)
+    private static void ValueChangeEventGUI(Rect rect, ValueChangeEvent<float> vce)
     {
-        vce.Value = EditorGUILayout.FloatField(vce.Value, GUILayout.Width(width));
+        vce.Value = EditorGUI.FloatField(rect, vce.Value);
     }
 
-    private static void ValueChangeEventGUI(ValueChangeEvent<Vector2> vce, float width = -1f)
+    private static void ValueChangeEventGUI(Rect rect, ValueChangeEvent<Vector2> vce)
     {
-        float xInput = EditorGUILayout.FloatField(vce.Value.x, GUILayout.Width(width / 2f));
-        float yInput = EditorGUILayout.FloatField(vce.Value.y, GUILayout.Width(width / 2f));
+        float xInput = EditorGUI.FloatField(rect, vce.Value.x);
+        float yInput = EditorGUI.FloatField(rect, vce.Value.y);
         vce.Value = new Vector2(xInput, yInput);
     }
 
-    private static void ValueChangeEventGUI(ValueChangeEvent<GameObject> vce, float width = -1f)
+    private static void ValueChangeEventGUI(Rect rect, ValueChangeEvent<GameObject> vce)
     {
-        vce.Value = EditorGUILayout.ObjectField(vce.Value, typeof(GameObject), true, GUILayout.Width(width)) as GameObject;
+        vce.Value = EditorGUI.ObjectField(rect, vce.Value, typeof(GameObject), true) as GameObject;
     }
 }

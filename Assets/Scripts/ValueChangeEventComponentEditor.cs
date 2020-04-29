@@ -40,7 +40,7 @@ public struct ValueChangeEventComponentEditor
 
         EditorGUILayout.LabelField(component.ToString(), EditorStyles.boldLabel);
         foreach(ValueChangeEventEditor vceEditor in vceEditors)
-            vceEditor.EditorGUI();
+            vceEditor.OnEditorGUILayout();
 
         EditorGUILayout.EndVertical();
     }

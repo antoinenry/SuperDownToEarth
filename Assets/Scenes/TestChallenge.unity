@@ -6902,7 +6902,6 @@ GameObject:
   - component: {fileID: 954675472}
   - component: {fileID: 954675469}
   - component: {fileID: 954675471}
-  - component: {fileID: 954675470}
   - component: {fileID: 529398149811584236}
   m_Layer: 0
   m_Name: BlobRenderer
@@ -6962,38 +6961,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &954675470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 954675468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63896c7ea89aa1c40af427107c651f76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animatedHub: {fileID: 1187898423}
-  animationConfigurations:
-  - animatorParameterName: isOnGround
-    eventHubElement: {fileID: 1187898419}
-    eventParameterName: isOnGround
-  - animatorParameterName: isTumbling
-    eventHubElement: {fileID: 1187898419}
-    eventParameterName: isTumbling
-  - animatorParameterName: isFalling
-    eventHubElement: {fileID: 1187898418}
-    eventParameterName: isFalling
-  - animatorParameterName: onJump
-    eventHubElement: {fileID: 1187898416}
-    eventParameterName: onJump
-  - animatorParameterName: groundFlatness
-    eventHubElement: {fileID: 851103340}
-    eventParameterName: groundFlatness
-  - animatorParameterName: isPilotingVehicle
-    eventHubElement: {fileID: 433034813}
-    eventParameterName: isPilotingVehicle
 --- !u!95 &954675471
 Animator:
   serializedVersion: 3
@@ -7007,7 +6974,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 439e06b0a930a664f83e6fa57c67977e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -9321,7 +9288,6 @@ GameObject:
   - component: {fileID: 1187898422}
   - component: {fileID: 1187898421}
   - component: {fileID: 1187898420}
-  - component: {fileID: 1187898423}
   - component: {fileID: 1187898419}
   - component: {fileID: 1187898415}
   - component: {fileID: 1187898418}
@@ -9565,24 +9531,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1187898423
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1187898412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07d71494d7c59e04fac54db0fcac5c2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventHubComponents:
-  - {fileID: 1187898419}
-  - {fileID: 1187898418}
-  - {fileID: 1187898416}
-  - {fileID: 433034813}
-  - {fileID: 851103340}
 --- !u!1 &1194799168
 GameObject:
   m_ObjectHideFlags: 0
@@ -10507,7 +10455,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c97429c8908d1af4cbc33af3ce64c7c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventLinks: []
 --- !u!114 &1295556247
 MonoBehaviour:
   m_ObjectHideFlags: 0
