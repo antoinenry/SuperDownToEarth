@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Feet : BodyPart, IEventsHubElement
+public class Feet : BodyPart, IValueChangeEventsComponent
 {
     [Range(0f,180f)] public float balanceAngle = 180f;
     public AnimationCurve tumbleBounceCurve;
@@ -12,10 +12,13 @@ public class Feet : BodyPart, IEventsHubElement
     public string cantStandOnTag = "Unwalkable";
     public float cornerAngleAdjustmentSpeed = 180f;
 
-    public enum ExposedEvents { isOnGround, isTumbling }
-    public ValueChangeEvent<bool> IsOnGround = new ValueChangeEvent<bool>();
-    public ValueChangeEvent<bool> IsTumbling = new ValueChangeEvent<bool>();
-    
+    [Header("Events")]
+    public ValueChangeEvent _IsOnGround = ValueChangeEvent.NewValueChangeEvent<bool>();
+    public ValueChangeEvent _IsTumbling = ValueChangeEvent.NewValueChangeEvent<bool>();
+
+    public ValueChangeEvent<bool> IsOnGround { get => _IsOnGround.runtimeEvent as ValueChangeEvent<bool>; }
+    public ValueChangeEvent<bool> IsTumbling { get => _IsTumbling.runtimeEvent as ValueChangeEvent<bool>; }
+
     private FlatGroundProbe groundProbe;
     //private Joint2D groundJoint;
     private Rigidbody2D groundRigidbody;
@@ -26,12 +29,23 @@ public class Feet : BodyPart, IEventsHubElement
     public float groundAngle { get; private set; }
     public Vector2 GroundVelocity { get => groundRigidbody == null ? Vector2.zero : groundRigidbody.GetPointVelocity(this.transform.position); }
     public float GroundAngularVelocity { get => groundRigidbody == null ? 0f : groundRigidbody.angularVelocity; }
-      
     
+    public void SetValueChangeEventsID()
+    {
+        _IsOnGround.SetID("isOnGround", this, 0);
+        _IsTumbling.SetID("isTumbling", this, 1);
+    }
+
+    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
+    {
+        vces = new ValueChangeEvent[] { _IsOnGround, _IsTumbling };
+        return vces.Length;
+    }
+
     void Awake()
     {
-        //IsOnGround = new ValueChangeEvent<bool>();
-        //IsTumbling = new ValueChangeEvent<bool>();
+        //_IsOnGround = new ValueChangeEvent<bool>();
+        //_IsTumbling = new ValueChangeEvent<bool>();
 
         AttachedBody = GetComponent<Body>();
         groundProbe = GetComponentInChildren<FlatGroundProbe>();
@@ -46,23 +60,23 @@ public class Feet : BodyPart, IEventsHubElement
         CheckGround();
         groundContacts.Clear();
 
-        if (groundCount > 0 && IsTumbling.Value == false)
+        if (groundCount > 0 && _IsTumbling.GetValue<bool>() == false)
         {
             AttachedRigidbody.velocity = GroundVelocity;
             AttachedRigidbody.angularVelocity = GroundAngularVelocity;
             AttachedRigidbody.rotation = groundAngle;            
 
-            if (IsOnGround.Value == true)
+            if (_IsOnGround.GetValue<bool>() == true)
             {
                 //if (groundProbe != null) AdjustRotationOnCorner();
             }
             else
-                IsOnGround.Value = true;
+                _IsOnGround.SetValue(true);
         }
-        else if (groundProbe == null || groundProbe.GroundFlatness.Value == (int)FlatGroundProbe.Flatness.NoGround)
+        else if (groundProbe == null || groundProbe.GroundFlatness.Value ==(int)FlatGroundProbe.Flatness.NoGround)
         {
             AttachedRigidbody.constraints &= ~RigidbodyConstraints2D.FreezeRotation;
-            IsOnGround.Value = false;
+            _IsOnGround.SetValue(false);
         }
     }
 
@@ -123,7 +137,7 @@ public class Feet : BodyPart, IEventsHubElement
             tumbleDirection += contact.normal;
         }
 
-        IsTumbling.Value = !balanced;
+        _IsTumbling.SetValue(!balanced);
         if (balanced == false) StartCoroutine(TumbleCoroutine(tumbleDirection.normalized));
     }
 
@@ -138,7 +152,7 @@ public class Feet : BodyPart, IEventsHubElement
         //bool clockwiseSpin = Vector2.SignedAngle(rb.velocity, direction) > 0f;
         AttachedRigidbody.velocity = Vector2.zero;
 
-        while (IsTumbling.Value == true && currentTime < tumbleDuration)
+        while (_IsTumbling.GetValue<bool>() ==true && currentTime < tumbleDuration)
         {
             lastHeight = currentHeight;
             currentHeight = tumbleBounceCurve.Evaluate(currentTime);
@@ -151,12 +165,12 @@ public class Feet : BodyPart, IEventsHubElement
         }
 
         AttachedRigidbody.velocity = direction * (currentHeight - lastHeight)/Time.fixedDeltaTime;
-        IsTumbling.Value = false;
+        _IsTumbling.SetValue(false);
     }
 
     private void AdjustRotationOnCorner()
     {
-        if (groundProbe.GroundFlatness.Value == (int)FlatGroundProbe.Flatness.Hole)
+        if (groundProbe.GroundFlatness.Value ==(int)FlatGroundProbe.Flatness.Hole)
         {
             float facing = groundProbe.transform.lossyScale.x > 0 ? 1f : -1f;
 
@@ -167,34 +181,5 @@ public class Feet : BodyPart, IEventsHubElement
         }
         else
             AttachedRigidbody.constraints |= RigidbodyConstraints2D.FreezeRotation;
-    }
-
-    public bool GetValueChangeEvent(int index, out IValueChangeEvent iValueChangeEvent)
-    {
-        switch (index)
-        {
-            case (int)ExposedEvents.isOnGround:
-                iValueChangeEvent = IsOnGround;
-                return true;
-
-            case (int)ExposedEvents.isTumbling:
-                iValueChangeEvent = IsTumbling;
-                return true;
-        }
-
-        iValueChangeEvent = null;
-        return false;
-    }
-
-    public void GetValueChangeEventsNamesAndTypes(out string[] names, out Type[] types)
-    {
-        names = Enum.GetNames(typeof(ExposedEvents));
-        types = new Type[] { typeof(bool), typeof(bool) };
-    }
-
-    public int GetValueChangeEventIndex(string vceName)
-    {
-        List<string> names = new List<string>(Enum.GetNames(typeof(ExposedEvents)));
-        return names.IndexOf(vceName);
     }
 }

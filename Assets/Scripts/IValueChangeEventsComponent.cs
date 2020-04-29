@@ -6,5 +6,5 @@ public interface IValueChangeEventsComponent
 {
     void SetValueChangeEventsID();
     int GetValueChangeEvents(out ValueChangeEvent[] vces);
-    int GetNewRuntimeEvents(out IValueChangeEvent[] newRuntimeEvents);
+    //int GetNewRuntimeEvents(out IValueChangeEvent[] newRuntimeEvents);
 }

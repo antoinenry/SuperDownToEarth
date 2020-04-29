@@ -28,12 +28,14 @@ public class TestVECBehaviour : MonoBehaviour, IValueChangeEventsComponent
         return vces.Length;
     }
 
+    /*
     public int GetNewRuntimeEvents(out IValueChangeEvent[] runtimeEvents)
     {
         runtimeEvents = new IValueChangeEvent[] { new TriggerEvent(), new ValueChangeEvent<bool>(), new ValueChangeEvent<Vector2>(), new ValueChangeEvent<GameObject>() };
         return runtimeEvents.Length;
     }
-
+    */
+    
     public void Awake()
     {
         initPosition = transform.position;
