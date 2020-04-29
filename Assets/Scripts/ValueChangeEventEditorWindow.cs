@@ -54,8 +54,8 @@ public class ValueChangeEventEditorWindow : EditorWindow
             List<ValueChangeEventComponentEditor> fetchList = new List<ValueChangeEventComponentEditor>();
             foreach (GameObject selected in Selection.gameObjects)
             {
-                ValueChangeEventsComponent[] fetchedComponents = selected.GetComponents<ValueChangeEventsComponent>();
-                foreach(ValueChangeEventsComponent iComponent in fetchedComponents)
+                IValueChangeEventsComponent[] fetchedComponents = selected.GetComponents<IValueChangeEventsComponent>();
+                foreach(IValueChangeEventsComponent iComponent in fetchedComponents)
                     fetchList.Add(new ValueChangeEventComponentEditor(iComponent as Component));
             }
             

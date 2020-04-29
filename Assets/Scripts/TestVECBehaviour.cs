@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class TestVECBehaviour : ValueChangeEventsComponent
+public class TestVECBehaviour : MonoBehaviour, IValueChangeEventsComponent
 {
     public ValueChangeEvent triggerEvent = ValueChangeEvent.NewTriggerEvent();
     public ValueChangeEvent boolEvent = ValueChangeEvent.NewValueChangeEvent<bool>();
@@ -14,7 +14,7 @@ public class TestVECBehaviour : ValueChangeEventsComponent
 
     private Vector2 initPosition;
 
-    public override void SetValueChangeEventsID()
+    public void SetValueChangeEventsID()
     {
         triggerEvent.SetID("triggerEvent", this, 0);
         boolEvent.SetID("boolEvent", this, 1);
@@ -22,30 +22,26 @@ public class TestVECBehaviour : ValueChangeEventsComponent
         goEvent.SetID("gameObjectEvent", this, 3);
     }
 
-    public override int GetValueChangeEvents(out ValueChangeEvent[] vces)
+    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
     {
         vces = new ValueChangeEvent[] { triggerEvent, boolEvent, vector2Event, goEvent };
         return vces.Length;
     }
 
-    public override int GetNewRuntimeEvents(out IValueChangeEvent[] runtimeEvents)
+    public int GetNewRuntimeEvents(out IValueChangeEvent[] runtimeEvents)
     {
         runtimeEvents = new IValueChangeEvent[] { new TriggerEvent(), new ValueChangeEvent<bool>(), new ValueChangeEvent<Vector2>(), new ValueChangeEvent<GameObject>() };
         return runtimeEvents.Length;
     }
 
-    public override void Awake()
+    public void Awake()
     {
-        base.Awake();
-
         initPosition = transform.position;
         vector2Event.SetValue(initPosition);
     }
 
-    public override void Start()
+    public void Start()
     {
-        base.Start();
-
         goEvent.AddListener<GameObject>(go => Debug.Log("GameObjectEvent: " + go));
     }
 

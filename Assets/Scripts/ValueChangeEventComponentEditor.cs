@@ -8,14 +8,14 @@ public struct ValueChangeEventComponentEditor
 
     public ValueChangeEventComponentEditor(Component comp)
     {
-        if (comp is ValueChangeEventsComponent)
+        if (comp is IValueChangeEventsComponent)
         {
             component = comp;
             vceEditors = null;
 
             if (component != null)
             {
-                (component as ValueChangeEventsComponent).GetValueChangeEvents(out ValueChangeEvent[] vces);
+                (component as IValueChangeEventsComponent).GetValueChangeEvents(out ValueChangeEvent[] vces);
                 if (vces != null)
                 {
                     int vceCount = vces.Length;

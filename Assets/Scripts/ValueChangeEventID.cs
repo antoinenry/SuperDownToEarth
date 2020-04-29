@@ -15,9 +15,9 @@ public struct ValueChangeEventID
 
     public static ValueChangeEvent GetValueChangeEvent(Component component, int indexInComponent)
     {
-        if (component != null && component is ValueChangeEventsComponent)
+        if (component != null && component is IValueChangeEventsComponent)
         {
-            (component as ValueChangeEventsComponent).GetValueChangeEvents(out ValueChangeEvent[] vces);
+            (component as IValueChangeEventsComponent).GetValueChangeEvents(out ValueChangeEvent[] vces);
             if (indexInComponent >= 0 && indexInComponent < vces.Length) return vces[indexInComponent];
         }
 

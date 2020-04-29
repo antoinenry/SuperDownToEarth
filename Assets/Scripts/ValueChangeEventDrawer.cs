@@ -14,7 +14,7 @@ public class ValueChangeEventDrawer : PropertyDrawer
 
         SerializedProperty idProperty = property.FindPropertyRelative("ID");
         
-        ValueChangeEventsComponent ID_component = idProperty.FindPropertyRelative("component").objectReferenceValue as ValueChangeEventsComponent;
+        Component ID_component = idProperty.FindPropertyRelative("component").objectReferenceValue as Component;
         int ID_indexInComponent = idProperty.FindPropertyRelative("indexInComponent").intValue;
 
         ValueChangeEvent valueChangeEvent = ValueChangeEventID.GetValueChangeEvent(ID_component, ID_indexInComponent);
