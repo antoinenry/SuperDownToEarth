@@ -38,18 +38,4 @@ public class TestVECBehaviour : MonoBehaviour, IValueChangeEventsComponent
     {
         goEvent.AddListener<GameObject>(go => Debug.Log("GameObjectEvent: " + go));
     }
-
-    private void Update()
-    {
-        if (boolEvent.GetValue<bool>() == true)
-            vector2Event.SetValue(vector2Event.GetValue<Vector2>() + Vector2.up * Time.deltaTime);
-
-        if((triggerEvent.runtimeEvent as TriggerEvent).triggered)
-        {
-            vector2Event.SetValue(initPosition);
-            (triggerEvent.runtimeEvent as TriggerEvent).triggered = false;
-        }
-
-        transform.position = vector2Event.GetValue<Vector2>();
-    }
 }

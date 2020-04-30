@@ -6,8 +6,6 @@ using UnityEngine.Events;
 
 public class TriggerEvent : UnityEvent, IValueChangeEvent
 {
-    public bool triggered;
-
     private TriggerEvent[] masters;
 
     //public string Name { get; private set; }
@@ -16,25 +14,13 @@ public class TriggerEvent : UnityEvent, IValueChangeEvent
     public TriggerEvent(string name = "NewTriggerEvent", bool initTrigger = false)
     {
         //this.Name = name;
-        TriggerAction = new UnityAction(Trigger);
-        triggered = initTrigger;
+        TriggerAction = new UnityAction(ForceInvoke);
         masters = null;
     }
 
-    public void Trigger()
+    public void ForceInvoke()
     {
-        Invoke();
-        triggered = true;        
-    }
-
-    public bool HasChanged()
-    {
-        return triggered;
-    }
-
-    public void HasChanged(bool set)
-    {
-        triggered = set;
+        Invoke();    
     }
 
     public Type GetValueType()

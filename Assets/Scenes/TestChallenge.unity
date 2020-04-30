@@ -622,6 +622,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 9
   IsWalking:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -676,6 +677,7 @@ MonoBehaviour:
   startVelocityDamping: 3
   showGizmo: 1
   OnJump:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -713,12 +715,14 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 1500
   IsOnGround:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
       indexInComponent: 0
     mastersID: []
   IsTumbling:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -1587,6 +1591,7 @@ MonoBehaviour:
   exitForce: 50
   exitAnimationDelay: 0.2
   IsFull:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -1656,6 +1661,7 @@ MonoBehaviour:
   startVelocityDamping: 4
   showGizmo: 0
   OnJump:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -1702,12 +1708,14 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 180
   IsOnGround:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
       indexInComponent: 0
     mastersID: []
   IsTumbling:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -1769,6 +1777,7 @@ MonoBehaviour:
   gravityForce: 28
   angleOffset: 100
   IsFalling:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -2042,6 +2051,7 @@ MonoBehaviour:
   backUp: {fileID: 0}
   backDown: {fileID: 668580601}
   GroundFlatness:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -2082,6 +2092,7 @@ MonoBehaviour:
   body: {fileID: 1279257987}
   transferPartsToVehicle: []
   IsPilotingVehicle:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -2690,9 +2701,10 @@ MonoBehaviour:
   transferPartsToVehicle:
   - {fileID: 1187898418}
   IsPilotingVehicle:
+    invoked: 0
     ID:
-      name: 
-      component: {fileID: 0}
+      name: IsPilotingVehicle
+      component: {fileID: 433034813}
       indexInComponent: 0
     mastersID: []
 --- !u!114 &433034814
@@ -2725,6 +2737,27 @@ MonoBehaviour:
   directionAxisName: Horizontal
   jumpButtonName: Jump
   actionButtonName: Fire1
+  AxisInput:
+    invoked: 0
+    ID:
+      name: Axis1Input
+      component: {fileID: 433034815}
+      indexInComponent: 0
+    mastersID: []
+  Action1Input:
+    invoked: 0
+    ID:
+      name: Action1Input
+      component: {fileID: 433034815}
+      indexInComponent: 1
+    mastersID: []
+  Action2Input:
+    invoked: 0
+    ID:
+      name: Action2Input
+      component: {fileID: 433034815}
+      indexInComponent: 2
+    mastersID: []
 --- !u!114 &433034816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2774,6 +2807,7 @@ MonoBehaviour:
   body: {fileID: 1305308460}
   transferPartsToVehicle: []
   IsPilotingVehicle:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -2892,6 +2926,7 @@ MonoBehaviour:
   backUp: {fileID: 0}
   backDown: {fileID: 891816435}
   GroundFlatness:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -3126,6 +3161,7 @@ MonoBehaviour:
   exitForce: 50
   exitAnimationDelay: 0.2
   IsFull:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -3186,6 +3222,7 @@ MonoBehaviour:
   startVelocityDamping: 4
   showGizmo: 0
   OnJump:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -3313,12 +3350,14 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 180
   IsOnGround:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
       indexInComponent: 0
     mastersID: []
   IsTumbling:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -5320,6 +5359,7 @@ MonoBehaviour:
   stepByStep: 1
   mirror: 1
   Step:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -5546,9 +5586,10 @@ MonoBehaviour:
   backUp: {fileID: 53667279}
   backDown: {fileID: 967458414}
   GroundFlatness:
+    invoked: 0
     ID:
-      name: 
-      component: {fileID: 0}
+      name: GroundFlatness
+      component: {fileID: 851103340}
       indexInComponent: 0
     mastersID: []
 --- !u!1 &854031067
@@ -6794,6 +6835,7 @@ MonoBehaviour:
   exitForce: 50
   exitAnimationDelay: 0.2
   IsFull:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -6817,18 +6859,21 @@ MonoBehaviour:
   - 10
   switchDelay: 0
   CurrentGear:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
       indexInComponent: 0
     mastersID: []
   OnGearUp:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
       indexInComponent: 0
     mastersID: []
   OnGearDown:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -6848,6 +6893,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 0
   IsWalking:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -6868,6 +6914,7 @@ MonoBehaviour:
   gravityForce: 24
   angleOffset: 0
   IsFalling:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -6914,12 +6961,14 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 180
   IsOnGround:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
       indexInComponent: 0
     mastersID: []
   IsTumbling:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -6993,6 +7042,7 @@ GameObject:
   - component: {fileID: 954675469}
   - component: {fileID: 954675471}
   - component: {fileID: 529398149811584236}
+  - component: {fileID: 954675470}
   m_Layer: 0
   m_Name: BlobRenderer
   m_TagString: Untagged
@@ -7051,6 +7101,90 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &954675470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954675468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b46d442577b0d784ba3a81ded2157fc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TriggerParameters:
+  - invoked: 0
+    ID:
+      name: onJump
+      component: {fileID: 954675470}
+      indexInComponent: 0
+    mastersID:
+    - name: onJump
+      component: {fileID: 1187898416}
+      indexInComponent: 0
+  BooleanParameters:
+  - invoked: 0
+    ID:
+      name: isLeaning
+      component: {fileID: 954675470}
+      indexInComponent: 1
+    mastersID: []
+  - invoked: 0
+    ID:
+      name: isOnGround
+      component: {fileID: 954675470}
+      indexInComponent: 2
+    mastersID:
+    - name: IsOnGround
+      component: {fileID: 1187898419}
+      indexInComponent: 0
+  - invoked: 0
+    ID:
+      name: isInFluid
+      component: {fileID: 954675470}
+      indexInComponent: 3
+    mastersID: []
+  - invoked: 0
+    ID:
+      name: isFalling
+      component: {fileID: 954675470}
+      indexInComponent: 4
+    mastersID:
+    - name: isFalling
+      component: {fileID: 1187898418}
+      indexInComponent: 0
+  - invoked: 0
+    ID:
+      name: isPilotingVehicle
+      component: {fileID: 954675470}
+      indexInComponent: 5
+    mastersID:
+    - name: IsPilotingVehicle
+      component: {fileID: 433034813}
+      indexInComponent: 0
+  IntegerParameters:
+  - invoked: 0
+    ID:
+      name: groundFlatness
+      component: {fileID: 954675470}
+      indexInComponent: 6
+    mastersID:
+    - name: GroundFlatness
+      component: {fileID: 851103340}
+      indexInComponent: 0
+  FloatParameters: []
+  triggerParameterNames:
+  - onJump
+  booleanParameterNames:
+  - isLeaning
+  - isOnGround
+  - isInFluid
+  - isFalling
+  - isPilotingVehicle
+  integerParameterNames:
+  - groundFlatness
+  floatParameterNames: []
 --- !u!95 &954675471
 Animator:
   serializedVersion: 3
@@ -8037,6 +8171,7 @@ MonoBehaviour:
   stepByStep: 0
   mirror: 0
   Step:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -8261,6 +8396,7 @@ MonoBehaviour:
   body: {fileID: 54007996}
   transferPartsToVehicle: []
   IsPilotingVehicle:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -8829,6 +8965,7 @@ MonoBehaviour:
   body: {fileID: 1169577023}
   transferPartsToVehicle: []
   IsPilotingVehicle:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -9074,6 +9211,7 @@ MonoBehaviour:
   stepByStep: 0
   mirror: 0
   Step:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -9157,6 +9295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 9
   IsWalking:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -9211,6 +9350,7 @@ MonoBehaviour:
   startVelocityDamping: 3
   showGizmo: 1
   OnJump:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -9261,12 +9401,14 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 1500
   IsOnGround:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
       indexInComponent: 0
     mastersID: []
   IsTumbling:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -9456,9 +9598,10 @@ MonoBehaviour:
   startVelocityDamping: 3
   showGizmo: 1
   OnJump:
+    invoked: 0
     ID:
-      name: 
-      component: {fileID: 0}
+      name: onJump
+      component: {fileID: 1187898416}
       indexInComponent: 0
     mastersID: []
 --- !u!114 &1187898417
@@ -9491,9 +9634,10 @@ MonoBehaviour:
   gravityForce: 6
   angleOffset: 0
   IsFalling:
+    invoked: 0
     ID:
-      name: 
-      component: {fileID: 0}
+      name: isFalling
+      component: {fileID: 1187898418}
       indexInComponent: 0
     mastersID: []
 --- !u!114 &1187898419
@@ -9537,16 +9681,18 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 1500
   IsOnGround:
+    invoked: 0
     ID:
-      name: 
-      component: {fileID: 0}
+      name: IsOnGround
+      component: {fileID: 1187898419}
       indexInComponent: 0
     mastersID: []
   IsTumbling:
+    invoked: 0
     ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
+      name: IsTumbling
+      component: {fileID: 1187898419}
+      indexInComponent: 1
     mastersID: []
 --- !u!58 &1187898420
 CircleCollider2D:
@@ -10263,6 +10409,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 9
   IsWalking:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -10317,6 +10464,7 @@ MonoBehaviour:
   startVelocityDamping: 3
   showGizmo: 1
   OnJump:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -10354,12 +10502,14 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 1500
   IsOnGround:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
       indexInComponent: 0
     mastersID: []
   IsTumbling:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -10650,6 +10800,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 9
   IsWalking:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -10704,6 +10855,7 @@ MonoBehaviour:
   startVelocityDamping: 3
   showGizmo: 1
   OnJump:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -10741,12 +10893,14 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 1500
   IsOnGround:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
       indexInComponent: 0
     mastersID: []
   IsTumbling:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -11126,6 +11280,7 @@ MonoBehaviour:
   stepByStep: 0
   mirror: 0
   Step:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -11835,12 +11990,14 @@ MonoBehaviour:
   reactionDelay: 1
   rotationSpeed: 200
   OnLeverMove:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
       indexInComponent: 0
     mastersID: []
   LeverActionDirection:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -17494,6 +17651,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 0
   IsWalking:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -17602,12 +17760,14 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 180
   IsOnGround:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
       indexInComponent: 0
     mastersID: []
   IsTumbling:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -17662,6 +17822,7 @@ MonoBehaviour:
   startVelocityDamping: 4
   showGizmo: 0
   OnJump:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -17701,6 +17862,7 @@ MonoBehaviour:
   gravityForce: 0
   angleOffset: 0
   IsFalling:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -17731,6 +17893,7 @@ MonoBehaviour:
   exitForce: 50
   exitAnimationDelay: 0.2
   IsFull:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
@@ -17753,18 +17916,21 @@ MonoBehaviour:
   - 9
   switchDelay: 0
   CurrentGear:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
       indexInComponent: 0
     mastersID: []
   OnGearUp:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}
       indexInComponent: 0
     mastersID: []
   OnGearDown:
+    invoked: 0
     ID:
       name: 
       component: {fileID: 0}

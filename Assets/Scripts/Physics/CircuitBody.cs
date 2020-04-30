@@ -54,7 +54,7 @@ public class CircuitBody : MonoBehaviour, IValueChangeEventsComponent
             transform.position = circuit.GetPoint(currentStep);
         }
 
-        Step.Triggered = false;
+        Step.invoked = false;
     }
 
     private void OnEnable()

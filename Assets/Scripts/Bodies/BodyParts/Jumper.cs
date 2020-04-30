@@ -55,12 +55,12 @@ public class Jumper : BodyPart, IValueChangeEventsComponent
     private void OnDisable()
     {
         StopAllCoroutines();
-        OnJump.Triggered = false;
+        OnJump.invoked = false;
     }
 
     public void Jump()
     {
-        if (OnJump.Triggered == false && (airJump || Feet.IsOnGround.GetValue<bool>() == true) && Feet.IsTumbling.GetValue<bool>() == false)
+        if (OnJump.invoked == false && (airJump || Feet.IsOnGround.GetValue<bool>() == true) && Feet.IsTumbling.GetValue<bool>() == false)
         {
             OnJump.Invoke();
             StartCoroutine(JumpCoroutine());
@@ -110,6 +110,6 @@ public class Jumper : BodyPart, IValueChangeEventsComponent
             }
         }
         
-        OnJump.Triggered = false;
+        OnJump.invoked = false;
     }
 }

@@ -9,7 +9,7 @@ public class ValueChangeEventExplorer
     public Predicate<ValueChangeEvent> filter;
     public GameObject selectedGameObject;
 
-    public ValueChangeEvent SelectedVce { get => vceOptions == null ? null : vceOptions[selectedComponentIndex]; }
+    public ValueChangeEvent SelectedVce { get => vceOptions == null ? null : vceOptions[selectedVceIndex]; }
     public Component SelectedComponent { get => componentOptions == null ? null : componentOptions[selectedComponentIndex]; }
     
     private List<Component> componentOptions;

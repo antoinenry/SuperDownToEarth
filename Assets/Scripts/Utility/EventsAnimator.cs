@@ -4,48 +4,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[ExecuteAlways]
 [RequireComponent(typeof(Animator))]
 public class EventsAnimator : MonoBehaviour, IValueChangeEventsComponent
-{
-    [Flags] public enum ParameterType
-    {
-        None = 0,
-        Trigger = 1,
-        Boolean = 2,
-        Integer = 4,
-        Float = 8,
-        Any = 15
-    }
+{    
+    [SerializeField] private ValueChangeEvent[] TriggerParameters = new ValueChangeEvent[0];
+    [SerializeField] private ValueChangeEvent[] BooleanParameters = new ValueChangeEvent[0];
+    [SerializeField] private ValueChangeEvent[] IntegerParameters = new ValueChangeEvent[0];
+    [SerializeField] private ValueChangeEvent[] FloatParameters = new ValueChangeEvent[0];
 
-    #region Private Events, parameter names and animator actions
-    private ValueChangeEvent[] TriggerParameters = new ValueChangeEvent[0];
-    private ValueChangeEvent[] BooleanParameters = new ValueChangeEvent[0];
-    private ValueChangeEvent[] IntegerParameters = new ValueChangeEvent[0];
-    private ValueChangeEvent[] FloatParameters = new ValueChangeEvent[0];
-
-    private string[] triggerParameterNames = new string[0];
-    private string[] booleanParameterNames = new string[0];
-    private string[] integerParameterNames = new string[0];
-    private string[] floatParameterNames = new string[0];
+    [SerializeField] private string[] triggerParameterNames = new string[0];
+    [SerializeField] private string[] booleanParameterNames = new string[0];
+    [SerializeField] private string[] integerParameterNames = new string[0];
+    [SerializeField] private string[] floatParameterNames = new string[0];
 
     private UnityAction[] SetTriggerActions = new UnityAction[0];
     private UnityAction<bool>[] SetBoolActions = new UnityAction<bool>[0];
     private UnityAction<int>[] SetIntActions = new UnityAction<int>[0];
-    private UnityAction<float>[] SetFloatAction = new UnityAction<float>[0];
-    #endregion
-
-    #region Public counters
+    private UnityAction<float>[] SetFloatActions = new UnityAction<float>[0];
+    
     public int TriggerCount { get => triggerParameterNames == null ? 0 : triggerParameterNames.Length; }
     public int BooleanCount { get => booleanParameterNames == null ? 0 : booleanParameterNames.Length; }
     public int IntegerCount { get => integerParameterNames == null ? 0 : integerParameterNames.Length; }
     public int FloatCount { get => floatParameterNames == null ? 0 : floatParameterNames.Length; }
     public int TotalEventsCount { get => TriggerCount + BooleanCount + IntegerCount + FloatCount; }
-    #endregion
 
-
-    #region IValueChangeEventComponent methods
     public int GetValueChangeEvents(out ValueChangeEvent[] vces)
-    {       
+    {
         vces = new ValueChangeEvent[TotalEventsCount];
         TriggerParameters.CopyTo(vces, 0);
         BooleanParameters.CopyTo(vces, TriggerCount);
@@ -57,19 +42,73 @@ public class EventsAnimator : MonoBehaviour, IValueChangeEventsComponent
 
     public void SetValueChangeEventsID()
     {
-        FetchAnimatorParameterNames(out ParameterType change);
+        FetchAnimatorParameterNames();
+        UpdateEvents();
 
-        if (change != ParameterType.None)
-        {
-            UpdateEvents(change, out ParameterType updated);
-            if (updated != ParameterType.None)
-                SetValueChangeEventsID(updated);
-        }
+        SetValueChangeEventsID(ref TriggerParameters, triggerParameterNames, 0);
+        SetValueChangeEventsID(ref BooleanParameters, booleanParameterNames, TriggerCount);
+        SetValueChangeEventsID(ref IntegerParameters, integerParameterNames, TriggerCount + BooleanCount);
+        SetValueChangeEventsID(ref FloatParameters, floatParameterNames, TriggerCount + BooleanCount + IntegerCount);
     }
-    #endregion
 
-    #region Set events IDs to match animator's parameter names
-    private void FetchAnimatorParameterNames(out ParameterType change)
+    private void Awake()
+    {
+        SetValueChangeEventsID();
+    }
+
+    private void Start()
+    {
+        UpdateAll();
+    }
+
+    private void OnEnable()
+    {
+        UpdateAll();
+        AddListeners(ref TriggerParameters, SetTriggerActions);
+        AddListeners(ref BooleanParameters, SetBoolActions);
+        AddListeners(ref IntegerParameters, SetIntActions);
+        AddListeners(ref FloatParameters, SetFloatActions);
+    }
+    /*
+    private void LateUpdate()
+    {
+        foreach (ValueChangeEvent vce in TriggerParameters)
+            vce.Triggered = false;
+    }
+    */
+    private void OnDisable()
+    {
+        RemoveListeners(ref TriggerParameters, SetTriggerActions);
+        RemoveListeners(ref BooleanParameters, SetBoolActions);
+        RemoveListeners(ref IntegerParameters, SetIntActions);
+        RemoveListeners(ref FloatParameters, SetFloatActions);
+    }
+
+    private void AddListeners(ref ValueChangeEvent[] vces, UnityAction[] actions)
+    {
+        for (int i = 0, imax = vces.Length; i < imax; i++)
+            vces[i].AddListener(actions[i]);
+    }
+
+    private void AddListeners<T>(ref ValueChangeEvent[] vces, UnityAction<T>[] actions)
+    {
+        for (int i = 0, imax = vces.Length; i < imax; i++)
+            vces[i].AddListener(actions[i]);
+    }
+
+    private void RemoveListeners(ref ValueChangeEvent[] vces, UnityAction[] actions)
+    {
+        for (int i = 0, imax = vces.Length; i < imax; i++)
+            vces[i].RemoveListener(actions[i]);
+    }
+
+    private void RemoveListeners<T>(ref ValueChangeEvent[] vces, UnityAction<T>[] actions)
+    {
+        for (int i = 0, imax = vces.Length; i < imax; i++)
+            vces[i].RemoveListener(actions[i]);
+    }
+
+    private void FetchAnimatorParameterNames()
     {
         Animator animator = GetComponent<Animator>();
         List<string> triggerNames = new List<string>();
@@ -77,216 +116,116 @@ public class EventsAnimator : MonoBehaviour, IValueChangeEventsComponent
         List<string> integerNames = new List<string>();
         List<string> floatNames = new List<string>();
 
-        if (animator != null)
-        {
-            AnimatorControllerParameter[] animatorParameters = animator.parameters;
-            if (animatorParameters != null)
-            {
-                foreach (AnimatorControllerParameter p in animatorParameters)
+        AnimatorControllerParameter[] animatorParameters = animator.parameters;
+        if (animatorParameters != null)
+            foreach (AnimatorControllerParameter p in animatorParameters)
+                switch (p.type)
                 {
-                    switch (p.type)
-                    {
-                        case AnimatorControllerParameterType.Trigger:
-                            triggerNames.Add(p.name); break;
-                        case AnimatorControllerParameterType.Bool:
-                            booleanNames.Add(p.name); break;
-                        case AnimatorControllerParameterType.Int:
-                            integerNames.Add(p.name); break;
-                        case AnimatorControllerParameterType.Float:
-                            floatNames.Add(p.name); break;
-                    }
+                    case AnimatorControllerParameterType.Trigger:
+                        triggerNames.Add(p.name); break;
+                    case AnimatorControllerParameterType.Bool:
+                        booleanNames.Add(p.name); break;
+                    case AnimatorControllerParameterType.Int:
+                        integerNames.Add(p.name); break;
+                    case AnimatorControllerParameterType.Float:
+                        floatNames.Add(p.name); break;
                 }
-            }
-        }
 
-        change = ParameterType.None;
-        if (triggerParameterNames != triggerNames.ToArray())
+        triggerParameterNames = triggerNames.ToArray();
+        booleanParameterNames = booleanNames.ToArray();
+        integerParameterNames = integerNames.ToArray();
+        floatParameterNames = floatNames.ToArray();
+    }    
+
+    private void SetValueChangeEventsID(ref ValueChangeEvent[] vceArray, string[] namesArray, int indexInComponentOffset)
+    {
+        if (vceArray != null && namesArray != null)
+            for (int i = 0, imax = namesArray.Length; i < imax; i++)
+                vceArray[i].SetID(namesArray[i], this, i + indexInComponentOffset);
+    }
+
+    private void UpdateEvents()
+    {
+        UpdateValueChangeEvents<trigger>(ref TriggerParameters, triggerParameterNames);
+        UpdateValueChangeEvents<bool>(ref BooleanParameters, booleanParameterNames);
+        UpdateValueChangeEvents<int>(ref IntegerParameters, integerParameterNames);
+        UpdateValueChangeEvents<float>(ref FloatParameters, floatParameterNames);
+    }
+
+    private void UpdateValueChangeEvents<T>(ref ValueChangeEvent[] vceArray, string[] parameterNames)
+    {
+        int parameterCount = parameterNames.Length;
+
+        List<ValueChangeEvent> current = new List<ValueChangeEvent>(vceArray);
+        ValueChangeEvent[] updated = new ValueChangeEvent[parameterCount];
+
+        for (int i = 0; i < parameterCount; i++)
         {
-            triggerParameterNames = triggerNames.ToArray();
-            change += (int)ParameterType.Trigger;
+            ValueChangeEvent match = current.Find(vce => vce.Name == parameterNames[i]);
+
+            if (match == null)
+                updated[i] = ValueChangeEvent.NewValueChangeEvent<T>();
+            else if (updated[i] != match)
+                updated[i] = match;
         }
-        if (booleanParameterNames != booleanNames.ToArray())
-        {
-            booleanParameterNames = booleanNames.ToArray();
-            change += (int)ParameterType.Boolean;
-        }
-        if (integerParameterNames != integerNames.ToArray())
-        {
-            integerParameterNames = integerNames.ToArray();
-            change += (int)ParameterType.Integer;
-        }
-        if (floatParameterNames != floatNames.ToArray())
-        {
-            floatParameterNames = floatNames.ToArray();
-            change += (int)ParameterType.Float;
-        }
+
+        vceArray = updated;
     }
 
-    private void SetValueChangeEventsID(ParameterType eventTypes)
+    private void UpdateActions()
     {
-        if ((eventTypes & ParameterType.Trigger) == ParameterType.Trigger) SetTriggerEventsID();
-        if ((eventTypes & ParameterType.Boolean) == ParameterType.Boolean) SetBoolEventsID();
-        if ((eventTypes & ParameterType.Integer) == ParameterType.Integer) SetIntEventsID();
-        if ((eventTypes & ParameterType.Float) == ParameterType.Float) SetFloatEventsID();
-    }
+        Debug.Log("UpdateActions");
+        Animator animator = GetComponent<Animator>();
 
-    private void SetTriggerEventsID()
-    {
-        if (TriggerParameters != null && triggerParameterNames != null)
-            for (int i = 0; i < TriggerCount; i++)
-                TriggerParameters[i].SetID(triggerParameterNames[i], this, i);
-    }
-
-    private void SetBoolEventsID()
-    {
-        if (BooleanParameters != null && booleanParameterNames != null)
-            for (int i = 0; i < BooleanCount; i++)
-                BooleanParameters[i].SetID(booleanParameterNames[i], this, i + TriggerCount);
-    }
-
-    private void SetIntEventsID()
-    {
-        if (IntegerParameters != null && integerParameterNames != null)
-            for (int i = 0; i < IntegerCount; i++)
-                IntegerParameters[i].SetID(integerParameterNames[i], this, i + TriggerCount + BooleanCount);
-    }
-
-    private void SetFloatEventsID()
-    {
-        if (FloatParameters != null && floatParameterNames != null)
-            for (int i = 0; i < FloatCount; i++)
-                FloatParameters[i].SetID(floatParameterNames[i], this, i + TriggerCount + BooleanCount + IntegerCount);
-    }
-    #endregion
-
-    #region Update ValueChangeEvents arrays to match animator's parameters
-    private void UpdateEvents(ParameterType updateTypes, out ParameterType change)
-    {
-        change = ParameterType.None;
-        bool triggerChange = false, boolChange = false, intChange = false, floatChange = false;
-
-        if ((updateTypes & ParameterType.Trigger) == ParameterType.Trigger) UpdateTriggerEvents(out triggerChange);
-        if ((updateTypes & ParameterType.Boolean) == ParameterType.Boolean) UpdateBooleanEvents(out boolChange);
-        if ((updateTypes & ParameterType.Integer) == ParameterType.Integer) UpdateIntegerEvents(out intChange);
-        if ((updateTypes & ParameterType.Float) == ParameterType.Float) UpdateFloatEvents(out floatChange);
-
-        if (triggerChange) change += (int)ParameterType.Trigger;
-        if (boolChange) change += (int)ParameterType.Boolean;
-        if (intChange) change += (int)ParameterType.Integer;
-        if (floatChange) change += (int)ParameterType.Float;
-    }
-
-    private void UpdateTriggerEvents(out bool change)
-    {
-        change = TriggerParameters.Length != TriggerCount;
-
-        List<ValueChangeEvent> current = new List<ValueChangeEvent>(TriggerParameters);
-        ValueChangeEvent[] updated = new ValueChangeEvent[TriggerCount];
-        
+        SetTriggerActions = new UnityAction[TriggerCount];
         for (int i = 0; i < TriggerCount; i++)
         {
-            bool nochange = false;
-            ValueChangeEvent match = current.Find(vce => vce.Name == triggerParameterNames[i]);            
-
-            if (match == null)
-                updated[i] = ValueChangeEvent.NewTriggerEvent();
-            else if (updated[i] != match)
-                updated[i] = match;
-            else
-                nochange = true;
-
-            if (nochange == false) change = true;
+            int index = i;
+            SetTriggerActions[i] = new UnityAction(() =>
+            {
+                animator.SetTrigger(triggerParameterNames[index]);
+                TriggerParameters[index].invoked = false;
+            });
         }
 
-        if (change) TriggerParameters = updated;
-    }
-
-    private void UpdateBooleanEvents(out bool change)
-    {
-        change = BooleanParameters.Length != BooleanCount;
-
-        List<ValueChangeEvent> current = new List<ValueChangeEvent>(BooleanParameters);
-        ValueChangeEvent[] updated = new ValueChangeEvent[BooleanCount];
-
+        SetBoolActions = new UnityAction<bool>[BooleanCount];
         for (int i = 0; i < BooleanCount; i++)
         {
-            bool nochange = false;
-            ValueChangeEvent match = current.Find(vce => vce.Name == booleanParameterNames[i]);
-
-            if (match == null)
-                updated[i] = ValueChangeEvent.NewValueChangeEvent<bool>();
-            else if (updated[i] != match)
-                updated[i] = match;
-            else
-                nochange = true;
-
-            if (nochange == false) change = true;
+            int index = i;
+            SetBoolActions[i] = new UnityAction<bool>(value =>
+            {
+                animator.SetBool(booleanParameterNames[index], value);
+                BooleanParameters[index].invoked = false;
+            });
         }
 
-        if (change) BooleanParameters = updated;
-    }
-
-    private void UpdateIntegerEvents(out bool change)
-    {
-        change = IntegerParameters.Length != IntegerCount;
-
-        List<ValueChangeEvent> current = new List<ValueChangeEvent>(IntegerParameters);
-        ValueChangeEvent[] updated = new ValueChangeEvent[IntegerCount];
-
+        SetIntActions = new UnityAction<int>[IntegerCount];
         for (int i = 0; i < IntegerCount; i++)
         {
-            bool nochange = false;
-            ValueChangeEvent match = current.Find(vce => vce.Name == integerParameterNames[i]);
-
-            if (match == null)
-                updated[i] = ValueChangeEvent.NewValueChangeEvent<int>();
-            else if (updated[i] != match)
-                updated[i] = match;
-            else
-                nochange = true;
-
-            if (nochange == false) change = true;
+            int index = i;
+            SetIntActions[i] = new UnityAction<int>(value =>
+            {
+                animator.SetInteger(integerParameterNames[index], value);
+                IntegerParameters[index].invoked = false;
+            });
         }
 
-        if (change) IntegerParameters = updated;
-    }
-
-    private void UpdateFloatEvents(out bool change)
-    {
-        change = FloatParameters.Length != FloatCount;
-
-        List<ValueChangeEvent> current = new List<ValueChangeEvent>(FloatParameters);
-        ValueChangeEvent[] updated = new ValueChangeEvent[FloatCount];
-
+        SetFloatActions = new UnityAction<float>[FloatCount];
         for (int i = 0; i < FloatCount; i++)
         {
-            bool nochange = false;
-            ValueChangeEvent match = current.Find(vce => vce.Name == floatParameterNames[i]);
-
-            if (match == null)
-                updated[i] = ValueChangeEvent.NewValueChangeEvent<float>();
-            else if (updated[i] != match)
-                updated[i] = match;
-            else
-                nochange = true;
-
-            if (nochange == false) change = true;
+            int index = i;
+            SetFloatActions[i] = new UnityAction<float>(value =>
+            {
+                animator.SetFloat(floatParameterNames[index], value);
+                FloatParameters[index].invoked = false;
+            });
         }
-
-        if (change) FloatParameters = updated;
     }
-    #endregion
-    
 
-    #region In-game Behaviour
-    private void OnEnable()
+    private void UpdateAll()
     {
-        
+        FetchAnimatorParameterNames();
+        UpdateEvents();
+        UpdateActions();
     }
-
-    private void OnDisable()
-    {
-        
-    }
-    #endregion
 }

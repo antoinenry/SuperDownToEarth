@@ -5,6 +5,7 @@ using UnityEngine.Events;
 [Serializable]
 public class ValueChangeEvent
 {
+    public bool invoked;
     public IValueChangeEvent runtimeEvent;
 
     [SerializeField] private ValueChangeEventID ID;
@@ -16,19 +17,6 @@ public class ValueChangeEvent
     public int MasterCount { get => mastersID == null ? 0 : mastersID.Length; }
     public int RuntimeMasterCount { get => runtimeEvent == null ? 0 : runtimeEvent.GetMasterCount(); }
     public Type ValueType { get => runtimeEvent == null ? (Type)Type.Missing : runtimeEvent.GetValueType(); }
-    public bool Triggered
-    {
-        get
-        {
-            if (runtimeEvent == null) return false;
-            else return runtimeEvent.HasChanged();
-        }
-        set
-        {
-            if (runtimeEvent == null) return;
-            else runtimeEvent.HasChanged(value);
-        }
-    }
     
     public static ValueChangeEvent NewTriggerEvent()
     {
@@ -39,6 +27,8 @@ public class ValueChangeEvent
 
     public static ValueChangeEvent NewValueChangeEvent<T>()
     {
+        if (typeof(T) == typeof(trigger)) return NewTriggerEvent();
+
         ValueChangeEvent vce = new ValueChangeEvent();
         vce.runtimeEvent = new ValueChangeEvent<T>();
         return vce;
@@ -54,7 +44,7 @@ public class ValueChangeEvent
     public void Invoke()
     {
         if(runtimeEvent != null)
-            runtimeEvent.Trigger();
+            runtimeEvent.ForceInvoke();
     }
 
     public T GetValue<T>()

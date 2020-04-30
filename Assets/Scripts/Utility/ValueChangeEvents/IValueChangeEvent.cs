@@ -1,14 +1,11 @@
 ﻿using System;
-using UnityEditor;
 
 public interface IValueChangeEvent
 {
     Type GetValueType();
     //string GetName();    
 
-    void Trigger();
-    bool HasChanged();
-    void HasChanged(bool setFalse);
+    void ForceInvoke();
 
     int GetMasterCount ();
     void EnslaveTo(ValueChangeEvent other);

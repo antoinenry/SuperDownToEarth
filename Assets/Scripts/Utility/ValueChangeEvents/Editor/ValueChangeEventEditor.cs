@@ -6,9 +6,10 @@ public class ValueChangeEventEditor
     public bool hasSlaveEditor;
     public bool showMasters;
     public bool detailedLabel;
+    public GameObject defaultGameObject;
 
-    private ValueChangeEvent valueChangeEvent;
-    private ValueChangeEventExplorer vceExplorer;
+    public ValueChangeEvent valueChangeEvent;
+    public ValueChangeEventExplorer vceExplorer;
 
     public ValueChangeEventEditor(ValueChangeEvent vce)
     {
@@ -94,11 +95,9 @@ public class ValueChangeEventEditor
             EditorGUILayout.LabelField("is slave to: ");
             if (vceExplorer == null && GUILayout.Button("+", GUILayout.Width(25f)))
             {
-                vceExplorer = new ValueChangeEventExplorer(vce => vce.ValueType == valueChangeEvent.ValueType && vce != valueChangeEvent);
-
-                ValueChangeEvent lastMaster = valueChangeEvent.GetMaster(masterCount - 1);
-                if (lastMaster != null && lastMaster.Component != null)
-                    vceExplorer.selectedGameObject = lastMaster.Component.gameObject;
+                vceExplorer = new ValueChangeEventExplorer(vce => vce.ValueType == valueChangeEvent.ValueType && vce != valueChangeEvent);   
+                if (defaultGameObject != null)
+                    vceExplorer.selectedGameObject = defaultGameObject;
             }
             else if (vceExplorer != null && GUILayout.Button("Cancel"))
                 vceExplorer = null;
@@ -131,6 +130,7 @@ public class ValueChangeEventEditor
                 if (GUILayout.Button("Confirm"))
                 {
                     valueChangeEvent.AddMaster(vceExplorer.SelectedVce);
+                    defaultGameObject = vceExplorer.selectedGameObject;
                     vceExplorer = null;
                 }
 
@@ -173,9 +173,9 @@ public class ValueChangeEventEditor
 
     private static void ValueChangeEventGUI(Rect rect, TriggerEvent vce)
     {
-        bool triggered = EditorGUI.Toggle(rect, vce.triggered);
-        if (triggered == true && vce.triggered == false)
-            vce.Trigger();
+        Rect buttonRect = rect;
+        rect.width = 20f;
+        if (GUI.Button(rect, " ")) vce.ForceInvoke();
     }
 
     private static void ValueChangeEventGUI(Rect rect, ValueChangeEvent<bool> vce)

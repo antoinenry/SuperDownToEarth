@@ -6,8 +6,6 @@ using UnityEngine.Events;
 
 public class ValueChangeEvent<T> : UnityEvent<T>, IValueChangeEvent
 {
-    public bool hasChanged;
-
     private T _value;
     private ValueChangeEvent<T>[] masters;
 
@@ -24,7 +22,6 @@ public class ValueChangeEvent<T> : UnityEvent<T>, IValueChangeEvent
                 if (value != null)
                 {
                     _value = value;
-                    hasChanged = true;
                     Invoke(_value);
                 }
 
@@ -34,7 +31,6 @@ public class ValueChangeEvent<T> : UnityEvent<T>, IValueChangeEvent
             if (_value.Equals(value) == false)
             {
                 _value = value;
-                hasChanged = true;
                 Invoke(_value);
             }
         }
@@ -48,19 +44,9 @@ public class ValueChangeEvent<T> : UnityEvent<T>, IValueChangeEvent
         masters = null;
     }
 
-    public void Trigger()
+    public void ForceInvoke()
     {
         Invoke(_value);
-    }
-
-    public bool HasChanged()
-    {
-        return hasChanged;
-    }
-
-    public void HasChanged(bool set)
-    {
-        hasChanged = set;
     }
 
     public Type GetValueType()

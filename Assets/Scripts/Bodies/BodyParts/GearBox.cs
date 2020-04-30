@@ -40,7 +40,7 @@ public class GearBox : BodyPart, IValueChangeEventsComponent
         if(timeSinceLastSwitch >= switchDelay)
         {
             CurrentGear.SetValue(CurrentGear.GetValue<int>() + 1);
-            if (CurrentGear.Triggered)
+            if (CurrentGear.invoked)
             {
                 OnGearUp.Invoke();
                 timeSinceLastSwitch = 0f;
@@ -54,7 +54,7 @@ public class GearBox : BodyPart, IValueChangeEventsComponent
         if (timeSinceLastSwitch >= switchDelay)
         {
             CurrentGear.SetValue(CurrentGear.GetValue<int>() - 1);
-            if (CurrentGear.Triggered)
+            if (CurrentGear.invoked)
             {
                 OnGearUp.Invoke();
                 timeSinceLastSwitch = 0f;

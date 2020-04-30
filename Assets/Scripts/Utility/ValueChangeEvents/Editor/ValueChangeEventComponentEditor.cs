@@ -5,14 +5,16 @@ public struct ValueChangeEventComponentEditor
 {
     public Component component;
     public ValueChangeEventEditor[] vceEditors;
+    public GameObject lastSelectedGameObject;
 
-    public ValueChangeEventComponentEditor(Component comp)
+    public ValueChangeEventComponentEditor(Component comp, GameObject lastSelected)
     {
         if (comp is IValueChangeEventsComponent)
         {
             (comp as IValueChangeEventsComponent).SetValueChangeEventsID();
             component = comp;
             vceEditors = null;
+            lastSelectedGameObject = lastSelected;
 
             if (component != null)
             {
@@ -22,7 +24,7 @@ public struct ValueChangeEventComponentEditor
                     int vceCount = vces.Length;
                     vceEditors = new ValueChangeEventEditor[vceCount];
                     for (int i = 0; i < vceCount; i++)
-                        vceEditors[i] = new ValueChangeEventEditor(vces[i]) { hasSlaveEditor = true };
+                        vceEditors[i] = new ValueChangeEventEditor(vces[i]) { hasSlaveEditor = true, defaultGameObject = lastSelectedGameObject };
                 }
             }
         }
@@ -30,6 +32,7 @@ public struct ValueChangeEventComponentEditor
         {
             component = null;
             vceEditors = null;
+            lastSelectedGameObject = null;
         }
     }
 
@@ -44,7 +47,11 @@ public struct ValueChangeEventComponentEditor
         if (vceEditors != null && vceEditors.Length > 0)
         {
             foreach (ValueChangeEventEditor vceEditor in vceEditors)
+            {
                 vceEditor.OnEditorGUILayout();
+                if (vceEditor.vceExplorer != null && vceEditor.vceExplorer.selectedGameObject != null)
+                    lastSelectedGameObject = vceEditor.vceExplorer.selectedGameObject;
+            }                
         }
         else
         {
