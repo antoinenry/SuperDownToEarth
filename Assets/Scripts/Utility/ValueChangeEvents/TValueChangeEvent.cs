@@ -53,6 +53,16 @@ public class ValueChangeEvent<T> : UnityEvent<T>, IValueChangeEvent
         Invoke(_value);
     }
 
+    public bool HasChanged()
+    {
+        return hasChanged;
+    }
+
+    public void HasChanged(bool set)
+    {
+        hasChanged = set;
+    }
+
     public Type GetValueType()
     {
         return typeof(T);

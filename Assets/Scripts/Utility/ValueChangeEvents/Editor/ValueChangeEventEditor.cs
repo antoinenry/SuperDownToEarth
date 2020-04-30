@@ -145,11 +145,21 @@ public class ValueChangeEventEditor
             vceExplorer = null;
     }
 
-    public static void ValueChangeEventGUI(Rect rect, ValueChangeEvent valueChangeEvent)
+    public static void ValueChangeEventGUI(Rect rect, ValueChangeEvent vceTarget)
     {
-        if (valueChangeEvent.runtimeEvent == null) EditorGUILayout.HelpBox(valueChangeEvent.Name + " runtime event is null.", MessageType.Error);
+        if (vceTarget == null)
+        {
+            EditorGUI.HelpBox(rect, "ValueChangeEvent is null.", MessageType.Error);
+            return;
+        }
 
-        IValueChangeEvent vce = valueChangeEvent.runtimeEvent;
+        IValueChangeEvent vce = vceTarget.runtimeEvent;
+        if (vce == null)
+        {
+            EditorGUI.HelpBox(rect, vceTarget.Name + " runtime event is null.", MessageType.Error);
+            return;
+        }
+
 
         if (vce is TriggerEvent) ValueChangeEventGUI(rect, vce as TriggerEvent);
         else if (vce is ValueChangeEvent<bool>) ValueChangeEventGUI(rect, vce as ValueChangeEvent<bool>);

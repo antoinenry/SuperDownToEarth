@@ -17,8 +17,18 @@ public class ValueChangeEventDrawer : PropertyDrawer
         Component ID_component = idProperty.FindPropertyRelative("component").objectReferenceValue as Component;
         int ID_indexInComponent = idProperty.FindPropertyRelative("indexInComponent").intValue;
 
-        ValueChangeEvent valueChangeEvent = ValueChangeEventID.GetValueChangeEvent(ID_component, ID_indexInComponent);
-        ValueChangeEventEditor.ValueChangeEventGUI(position, valueChangeEvent);
+        if (ID_component == null)
+        {
+            EditorGUI.HelpBox(position, "ID not set", MessageType.Error);
+
+            foreach(GameObject selected in Selection.gameObjects)
+                ValueChangeEventID.SetAll(selected);
+        }
+        else
+        {
+            ValueChangeEvent valueChangeEvent = ValueChangeEventID.GetValueChangeEvent(ID_component, ID_indexInComponent);
+            ValueChangeEventEditor.ValueChangeEventGUI(position, valueChangeEvent);
+        }        
 
         EditorGUI.indentLevel = indent;
         EditorGUI.EndProperty();

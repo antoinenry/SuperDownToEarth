@@ -4,19 +4,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Jumper : BodyPart, IEventsHubElement
+public class Jumper : BodyPart, IValueChangeEventsComponent
 {
     public AnimationCurve jumpCurve;
     public bool airJump;
     public float startVelocityDamping;
     public bool showGizmo;
-
-    public string jumpTriggerName = "jump";
-
-    public enum ExposedEvents { onJump }
-    public TriggerEvent OnJump = new TriggerEvent();
+        
+    public ValueChangeEvent OnJump = ValueChangeEvent.NewTriggerEvent();
     
     public Feet Feet { get; private set; }
+
+    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
+    {
+        vces = new ValueChangeEvent[] { OnJump };
+        return vces.Length;
+    }
+
+    public void SetValueChangeEventsID()
+    {
+        OnJump.SetID("onJump", this, 0);
+    }
 
     private void OnDrawGizmos()
     {
@@ -47,14 +55,14 @@ public class Jumper : BodyPart, IEventsHubElement
     private void OnDisable()
     {
         StopAllCoroutines();
-        OnJump.triggered = false;
+        OnJump.Triggered = false;
     }
 
     public void Jump()
     {
-        if (OnJump.triggered == false && (airJump || Feet.IsOnGround.Value == true) && Feet.IsTumbling.Value == false)
+        if (OnJump.Triggered == false && (airJump || Feet.IsOnGround.GetValue<bool>() == true) && Feet.IsTumbling.GetValue<bool>() == false)
         {
-            OnJump.Trigger();
+            OnJump.Invoke();
             StartCoroutine(JumpCoroutine());
         }
     }
@@ -90,43 +98,18 @@ public class Jumper : BodyPart, IEventsHubElement
 
             yield return new WaitForFixedUpdate();
 
-            if (Feet.IsTumbling.Value == true) break;
+            if (Feet.IsTumbling.GetValue<bool>() == true) break;
 
             if (onGround)
             {
-                if (Feet.IsOnGround.Value == false) onGround = false;
+                if (Feet.IsOnGround.GetValue<bool>() == false) onGround = false;
             }
             else
             {
-                if (Feet.IsOnGround.Value == true) break;
+                if (Feet.IsOnGround.GetValue<bool>() == true) break;
             }
         }
         
-        OnJump.triggered = false;
-    }
-
-    public bool GetValueChangeEvent(int index, out IValueChangeEvent iValueChangeEvent)
-    {
-        switch (index)
-        {
-            case (int)ExposedEvents.onJump:
-                iValueChangeEvent = OnJump;
-                return true;
-        }
-
-        iValueChangeEvent = null;
-        return false;
-    }
-
-    public void GetValueChangeEventsNamesAndTypes(out string[] names, out Type[] types)
-    {
-        names = Enum.GetNames(typeof(ExposedEvents));
-        types = new Type[] { null };
-    }
-
-    public int GetValueChangeEventIndex(string vceName)
-    {
-        List<string> names = new List<string>(Enum.GetNames(typeof(ExposedEvents)));
-        return names.IndexOf(vceName);
+        OnJump.Triggered = false;
     }
 }

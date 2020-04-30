@@ -19,15 +19,15 @@ public class Stomper : BodyPart
     {
         if (gravity != null)
         {
-            gravity.IsFalling.AddListener(OnFall);
-            OnFall(gravity.IsFalling.Value);
+            gravity.IsFalling.AddListener<bool>(OnFall);
+            OnFall(gravity.IsFalling.GetValue<bool>());
         }
     }
 
     private void OnDisable()
     {
         if (gravity != null)
-            gravity.IsFalling.RemoveListener(OnFall);
+            gravity.IsFalling.RemoveListener<bool>(OnFall);
     }
 
     private void OnFall(bool isFalling)
@@ -41,7 +41,7 @@ public class Stomper : BodyPart
 
     private IEnumerator FallCoroutine()
     {
-        while (gravity.IsFalling.Value == true)
+        while (gravity.IsFalling.GetValue<bool>() == true)
         {
             if (gravity.FallSpeed >= velocityThreshold)
                 stompCollider.enabled = true;

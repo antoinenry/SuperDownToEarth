@@ -27,14 +27,6 @@ public class TestVECBehaviour : MonoBehaviour, IValueChangeEventsComponent
         vces = new ValueChangeEvent[] { triggerEvent, boolEvent, vector2Event, goEvent };
         return vces.Length;
     }
-
-    /*
-    public int GetNewRuntimeEvents(out IValueChangeEvent[] runtimeEvents)
-    {
-        runtimeEvents = new IValueChangeEvent[] { new TriggerEvent(), new ValueChangeEvent<bool>(), new ValueChangeEvent<Vector2>(), new ValueChangeEvent<GameObject>() };
-        return runtimeEvents.Length;
-    }
-    */
     
     public void Awake()
     {

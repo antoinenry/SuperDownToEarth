@@ -12,7 +12,7 @@ public class ValueChangeEventExplorer
     public ValueChangeEvent SelectedVce { get => vceOptions == null ? null : vceOptions[selectedComponentIndex]; }
     public Component SelectedComponent { get => componentOptions == null ? null : componentOptions[selectedComponentIndex]; }
     
-    private Component[] componentOptions;
+    private List<Component> componentOptions;
     private List<string> componentOptionNames;
     private int selectedComponentIndex;
 
@@ -22,6 +22,7 @@ public class ValueChangeEventExplorer
 
     public ValueChangeEventExplorer(Predicate<ValueChangeEvent> filter = null)
     {
+        Debug.Log("New ValueChangeExplorer");
         this.filter = filter;
     }
 
@@ -49,17 +50,12 @@ public class ValueChangeEventExplorer
         }
         else
         {
-            componentOptions = selectedGameObject.GetComponents<IValueChangeEventsComponent>() as Component[];
+            componentOptions = new List<Component>(selectedGameObject.GetComponents<Component>()).FindAll(c => c is IValueChangeEventsComponent);
 
-            if (componentOptions.Length == 0)
-            {
-                componentOptions = null;
+            if (componentOptions.Count == 0)
                 componentOptionNames = new List<string> { "(no event in gameobject" };
-            }
             else
-            {
                 componentOptionNames = new List<Component>(componentOptions).ConvertAll(c => c.ToString());
-            }
         }
 
         selectedComponentIndex = EditorGUILayout.Popup(selectedComponentIndex, componentOptionNames.ToArray());

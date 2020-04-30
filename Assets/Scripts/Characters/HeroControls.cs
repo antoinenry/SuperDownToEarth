@@ -2,28 +2,37 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeroControls : MonoBehaviour
+public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
 {
     [Header("Buttons")]
     public bool useButtonControls;
     public string directionAxisName = "Horizontal";
     public string jumpButtonName = "Jump";
     public string actionButtonName = "Fire1";
-
-    private ValueChangeEvent<int> AxisInput;
-    private ValueChangeEvent<bool> Action1Input;
-    private ValueChangeEvent<bool> Action2Input;
-
+    
     private TouchScreen touchInput;
     private Pilot pilot;
     private Pilotable.PilotingType currentPilotingType;
 
+    public ValueChangeEvent AxisInput = ValueChangeEvent.NewValueChangeEvent<int>();
+    public ValueChangeEvent Action1Input = ValueChangeEvent.NewTriggerEvent();
+    public ValueChangeEvent Action2Input = ValueChangeEvent.NewTriggerEvent();
+    
+    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
+    {
+        vces = new ValueChangeEvent[] { AxisInput, Action1Input, Action2Input };
+        return vces.Length;
+    }
+
+    public void SetValueChangeEventsID()
+    {
+        AxisInput.SetID("Axis1Input", this, 0);
+        Action1Input.SetID("Action1Input", this, 1);
+        Action2Input.SetID("Action2Input", this, 2);
+    }
+
     private void Awake()
     {
-        AxisInput = new ValueChangeEvent<int>();
-        Action1Input = new ValueChangeEvent<bool>();
-        Action2Input = new ValueChangeEvent<bool>();
-
         touchInput = GetComponent<TouchScreen>();
         pilot = GetComponent<Pilot>();
     }
@@ -32,8 +41,8 @@ public class HeroControls : MonoBehaviour
     {
         if (pilot != null)
         {
-            pilot.IsPilotingVehicle.AddListener(OnPilotingChange);
-            OnPilotingChange(pilot.IsPilotingVehicle.Value);
+            pilot.IsPilotingVehicle.AddListener<bool>(OnPilotingChange);
+            OnPilotingChange(pilot.IsPilotingVehicle.GetValue<bool>());
         }
 
         StopAllCoroutines();
@@ -58,7 +67,7 @@ public class HeroControls : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (pilot != null) pilot.IsPilotingVehicle.RemoveListener(OnPilotingChange);
+        if (pilot != null) pilot.IsPilotingVehicle.RemoveListener<bool>(OnPilotingChange);
     }
 
     private void OnPilotingChange(bool isPiloting)
@@ -74,22 +83,26 @@ public class HeroControls : MonoBehaviour
     private void GetButtonControl()
     {
         float axis = Input.GetAxisRaw(directionAxisName);
-        if (axis == 0f) AxisInput.Value = 0;
-        else if (axis > 0) AxisInput.Value = 1;
-        else AxisInput.Value = -1;
+        if (axis == 0f) AxisInput.SetValue(0);
+        else if (axis > 0) AxisInput.SetValue(1);
+        else AxisInput.SetValue(-1);
+        
+        if (Input.GetButtonDown(jumpButtonName))
+            Action1Input.Invoke();
 
-        Action1Input.Value = Input.GetButtonDown(jumpButtonName);
-        Action2Input.Value = Input.GetButtonDown(actionButtonName);
+        if ((Input.GetButtonDown(actionButtonName)))
+            Action2Input.Invoke();
     }
 
     private void GetTouchControl()
     {
         if (touchInput.Holds.Length == 1)
-            AxisInput.Value = touchInput.Holds[0].x < Screen.width/2f ? -1 : 1;
+            AxisInput.SetValue(touchInput.Holds[0].x < Screen.width/2f ? -1 : 1);
         else
-            AxisInput.Value = 0;
+            AxisInput.SetValue(0);
 
-        Action1Input.Value = touchInput.Taps.Length > 0;
+        if ((touchInput.Taps.Length > 0))
+            Action1Input.Invoke();
     }
 
     private void SwitchControls()
@@ -118,14 +131,13 @@ public class HeroControls : MonoBehaviour
             if (useButtonControls) GetButtonControl();
             else GetTouchControl();
 
-            if (Action1Input.Value) blob.jumper.Jump();
+            if (Action1Input.Triggered) blob.jumper.Jump();
 
-            blob.spinner.Spin(AxisInput.Value);
+            blob.spinner.Spin(AxisInput.GetValue<int>());
 
-            Action1Input.hasChanged = false;
-            Action2Input.hasChanged = false;
-            AxisInput.hasChanged = false;
-
+            Action1Input.Triggered = false;
+            Action2Input.Triggered = false;
+            AxisInput.Triggered = false;
             yield return null;
         }
 
@@ -141,12 +153,15 @@ public class HeroControls : MonoBehaviour
             if (useButtonControls) GetButtonControl();
             else GetTouchControl();
 
-            bot.walker.Walk(AxisInput.Value);
-            if (Action1Input.Value) bot.jumper.Jump();
-            bot.spinner.Spin(AxisInput.Value);
+            bot.walker.Walk(AxisInput.GetValue<int>());
+            if (Action1Input.Triggered) bot.jumper.Jump();
+            bot.spinner.Spin(AxisInput.GetValue<int>());
 
-            if (Action2Input.Value) pilot.ExitCurrentVehicle();
+            if (Action2Input.Triggered) pilot.ExitCurrentVehicle();
 
+            Action1Input.Triggered = false;
+            Action2Input.Triggered = false;
+            AxisInput.Triggered = false;
             yield return null;
         }
 
@@ -164,13 +179,14 @@ public class HeroControls : MonoBehaviour
             if (useButtonControls) GetButtonControl();
             else GetTouchControl();
 
-            if (AxisInput.hasChanged)
+            if (AxisInput.Triggered)
             {
-                if (AxisInput.Value != 0)
+                int axis = AxisInput.GetValue<int>();
+                if (axis != 0)
                 {
                     if (directionBuffer != 0)
                     {
-                        if (AxisInput.Value * directionBuffer > 0)
+                        if (axis * directionBuffer > 0)
                             gearBuffer = bug.gearBox.ClampedGear(gearBuffer + 1);
                         else
                         {
@@ -179,19 +195,20 @@ public class HeroControls : MonoBehaviour
                         }
                     }
                     else
-                        directionBuffer = AxisInput.Value;
+                        directionBuffer = axis;
                 }
-
-                AxisInput.hasChanged = false;
             }
 
-            if (bug.walker.CurrentDirection == Walker.Direction.IDLE || bug.groundProbe.GroundFlatness.Value == (int)FlatGroundProbe.Flatness.Flat)
+            if (bug.walker.CurrentDirection == Walker.Direction.IDLE || bug.groundProbe.GroundFlatness.GetValue<int>() == (int)FlatGroundProbe.Flatness.Flat)
             {
                 bug.walker.Walk(directionBuffer);
-                if (bug.gearBox.CurrentGear.Value < gearBuffer) bug.gearBox.GearUp();
-                if (Action2Input.Value) pilot.ExitCurrentVehicle();
+                if (bug.gearBox.CurrentGear.GetValue<int>() < gearBuffer) bug.gearBox.GearUp();
+                if (Action2Input.Triggered) pilot.ExitCurrentVehicle();
             }
 
+            Action1Input.Triggered = false;
+            Action2Input.Triggered = false;
+            AxisInput.Triggered = false;
             yield return null;
         }
 
@@ -207,15 +224,14 @@ public class HeroControls : MonoBehaviour
             if (useButtonControls) GetButtonControl();
             else GetTouchControl();
 
-            if (Action1Input.Value) jet.jumper.Jump();
-            jet.spinner.Spin(AxisInput.Value);
+            if (Action1Input.Triggered) jet.jumper.Jump();
+            jet.spinner.Spin(AxisInput.GetValue<int>());
 
-            if (Action2Input.Value) pilot.ExitCurrentVehicle();
-
-            Action1Input.hasChanged = false;
-            Action2Input.hasChanged = false;
-            AxisInput.hasChanged = false;
-
+            if (Action2Input.Triggered) pilot.ExitCurrentVehicle();
+            
+            Action1Input.Triggered = false;
+            Action2Input.Triggered = false;
+            AxisInput.Triggered = false;
             yield return null;
         }
 
@@ -231,15 +247,14 @@ public class HeroControls : MonoBehaviour
             if (useButtonControls) GetButtonControl();
             else GetTouchControl();
 
-            if (Action1Input.Value) buzz.jumper.Jump();
-            buzz.spinner.Spin(AxisInput.Value);
+            if (Action1Input.Triggered) buzz.jumper.Jump();
+            buzz.spinner.Spin(AxisInput.GetValue<int>());
 
-            if (Action2Input.Value) pilot.ExitCurrentVehicle();
+            if (Action2Input.Triggered) pilot.ExitCurrentVehicle();
 
-            Action1Input.hasChanged = false;
-            Action2Input.hasChanged = false;
-            AxisInput.hasChanged = false;
-
+            Action1Input.Triggered = false;
+            Action2Input.Triggered = false;
+            AxisInput.Triggered = false;
             yield return null;
         }
 

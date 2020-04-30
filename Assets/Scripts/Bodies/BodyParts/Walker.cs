@@ -3,12 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Walker : BodyPart, IEventsHubElement
+public class Walker : BodyPart, IValueChangeEventsComponent
 {
-    public float walkSpeed;
-
-    public enum ExposedEvents { isWalking }
-    public ValueChangeEvent<bool> IsWalking = new ValueChangeEvent<bool>();
+    public float walkSpeed;   
     
     public Feet Feet { get; private set; }
 
@@ -20,33 +17,44 @@ public class Walker : BodyPart, IEventsHubElement
     private GearBox gearBox;
     private bool switchingGears;
 
+    public ValueChangeEvent IsWalking = ValueChangeEvent.NewValueChangeEvent<bool>();
+
+    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
+    {
+        vces = new ValueChangeEvent[] { IsWalking };
+        return vces.Length;
+    }
+
+    public void SetValueChangeEventsID()
+    {
+        IsWalking.SetID("IsWalking", this, 0);
+    }
+
     private void Awake()
     {
         AttachedBody = GetComponent<Body>();
         Feet = GetComponent<Feet>();
         gearBox = GetComponent<GearBox>();
-
-        //IsWalking = new ValueChangeEvent<bool>();
     }
 
     private void OnEnable()
     {
         if (gearBox != null)
         {
-            gearBox.CurrentGear.AddListener(OnSwitchGear);
-            OnSwitchGear(gearBox.CurrentGear.Value);
+            gearBox.CurrentGear.AddListener<int>(OnSwitchGear);
+            OnSwitchGear(gearBox.CurrentGear.GetValue<int>());
         }
     }
 
     private void OnDisable()
     {
         StopAllCoroutines();
-        if (gearBox != null) gearBox.CurrentGear.RemoveListener(OnSwitchGear);
+        if (gearBox != null) gearBox.CurrentGear.RemoveListener<int>(OnSwitchGear);
     }
 
     private void FixedUpdate()
     {
-        if (Feet.IsOnGround.Value == true)
+        if (Feet.IsOnGround.GetValue<bool>() == true)
             AttachedRigidbody.velocity = Feet.GroundVelocity + currentWalkVelocity;
     }
 
@@ -75,15 +83,15 @@ public class Walker : BodyPart, IEventsHubElement
 
     public void Walk(Direction walkDirection)
     {
-        if (Feet.IsOnGround.Value == false || walkDirection == Direction.IDLE)
+        if (Feet.IsOnGround.GetValue<bool>() == false || walkDirection == Direction.IDLE)
         {
-            IsWalking.Value = false;
+            IsWalking.SetValue(false);
             currentWalkVelocity = Vector2.zero;
             CurrentDirection = Direction.IDLE;
-            if (gearBox != null) gearBox.CurrentGear.Value = 0;
+            if (gearBox != null) gearBox.CurrentGear.SetValue(0);
         }
         else
-            IsWalking.Value = true;        
+            IsWalking.SetValue(true);        
 
         if (CurrentDirection != walkDirection)
         {
@@ -95,13 +103,13 @@ public class Walker : BodyPart, IEventsHubElement
 
     private IEnumerator WalkCoroutine()
     {
-        if (IsWalking.Value == true)
+        if (IsWalking.GetValue<bool>() == true)
         {
             if (CurrentDirection == Direction.RIGHT)
             {
                 AttachedRigidbody.transform.localScale = Vector3.one;
 
-                while (CurrentDirection == Direction.RIGHT && Feet.IsTumbling.Value == false && AttachedRigidbody.simulated == true)
+                while (CurrentDirection == Direction.RIGHT && Feet.IsTumbling.GetValue<bool>() == false && AttachedRigidbody.simulated == true)
                 {
                     currentWalkVelocity = Quaternion.Euler(0f, 0f, AttachedRigidbody.rotation) * Vector2.right * walkSpeed;
                     yield return new WaitForFixedUpdate();
@@ -111,7 +119,7 @@ public class Walker : BodyPart, IEventsHubElement
             {
                 AttachedRigidbody.transform.localScale = new Vector3(-1f, 1f, 1f);
 
-                while (CurrentDirection == Direction.LEFT && Feet.IsTumbling.Value == false && AttachedRigidbody.simulated == true)
+                while (CurrentDirection == Direction.LEFT && Feet.IsTumbling.GetValue<bool>() == false && AttachedRigidbody.simulated == true)
                 {
                     currentWalkVelocity = Quaternion.Euler(0f, 0f, AttachedRigidbody.rotation) * Vector2.left * walkSpeed;
                     yield return new WaitForFixedUpdate();
@@ -123,42 +131,17 @@ public class Walker : BodyPart, IEventsHubElement
             }
         }
 
-        if (Feet.IsOnGround.Value == false)
+        if (Feet.IsOnGround.GetValue<bool>() == false)
         {
             CurrentDirection = Direction.IDLE;
             currentWalkVelocity = Vector2.zero;
-            IsWalking.Value = false;
-            if (gearBox != null) gearBox.CurrentGear.Value = 0;
+            IsWalking.SetValue(false);
+            if (gearBox != null) gearBox.CurrentGear.SetValue(0);
         }
     }
 
     private void OnSwitchGear(int gear)
     {
         walkSpeed = gearBox.GetCurrentSpeed();
-    }
-
-    public bool GetValueChangeEvent(int index, out IValueChangeEvent iValueChangeEvent)
-    {
-        switch (index)
-        {
-            case (int)ExposedEvents.isWalking:
-                iValueChangeEvent = IsWalking;
-                return true;
-        }
-
-        iValueChangeEvent = null;
-        return false;
-    }
-
-    public void GetValueChangeEventsNamesAndTypes(out string[] names, out Type[] types)
-    {
-        names = Enum.GetNames(typeof(ExposedEvents));
-        types = new Type[] { typeof(bool) };
-    }
-
-    public int GetValueChangeEventIndex(string vceName)
-    {
-        List<string> names = new List<string>(Enum.GetNames(typeof(ExposedEvents)));
-        return names.IndexOf(vceName);
-    }
+    }    
 }

@@ -13,11 +13,8 @@ public class Feet : BodyPart, IValueChangeEventsComponent
     public float cornerAngleAdjustmentSpeed = 180f;
 
     [Header("Events")]
-    public ValueChangeEvent _IsOnGround = ValueChangeEvent.NewValueChangeEvent<bool>();
-    public ValueChangeEvent _IsTumbling = ValueChangeEvent.NewValueChangeEvent<bool>();
-
-    public ValueChangeEvent<bool> IsOnGround { get => _IsOnGround.runtimeEvent as ValueChangeEvent<bool>; }
-    public ValueChangeEvent<bool> IsTumbling { get => _IsTumbling.runtimeEvent as ValueChangeEvent<bool>; }
+    public ValueChangeEvent IsOnGround = ValueChangeEvent.NewValueChangeEvent<bool>();
+    public ValueChangeEvent IsTumbling = ValueChangeEvent.NewValueChangeEvent<bool>();
 
     private FlatGroundProbe groundProbe;
     //private Joint2D groundJoint;
@@ -32,13 +29,13 @@ public class Feet : BodyPart, IValueChangeEventsComponent
     
     public void SetValueChangeEventsID()
     {
-        _IsOnGround.SetID("isOnGround", this, 0);
-        _IsTumbling.SetID("isTumbling", this, 1);
+        IsOnGround.SetID("IsOnGround", this, 0);
+        IsTumbling.SetID("IsTumbling", this, 1);
     }
 
     public int GetValueChangeEvents(out ValueChangeEvent[] vces)
     {
-        vces = new ValueChangeEvent[] { _IsOnGround, _IsTumbling };
+        vces = new ValueChangeEvent[] { IsOnGround, IsTumbling };
         return vces.Length;
     }
 
@@ -60,23 +57,23 @@ public class Feet : BodyPart, IValueChangeEventsComponent
         CheckGround();
         groundContacts.Clear();
 
-        if (groundCount > 0 && _IsTumbling.GetValue<bool>() == false)
+        if (groundCount > 0 && IsTumbling.GetValue<bool>() == false)
         {
             AttachedRigidbody.velocity = GroundVelocity;
             AttachedRigidbody.angularVelocity = GroundAngularVelocity;
             AttachedRigidbody.rotation = groundAngle;            
 
-            if (_IsOnGround.GetValue<bool>() == true)
+            if (IsOnGround.GetValue<bool>() == true)
             {
                 //if (groundProbe != null) AdjustRotationOnCorner();
             }
             else
-                _IsOnGround.SetValue(true);
+                IsOnGround.SetValue(true);
         }
-        else if (groundProbe == null || groundProbe.GroundFlatness.Value ==(int)FlatGroundProbe.Flatness.NoGround)
+        else if (groundProbe == null || groundProbe.GroundFlatness.GetValue<int>() == (int)FlatGroundProbe.Flatness.NoGround)
         {
             AttachedRigidbody.constraints &= ~RigidbodyConstraints2D.FreezeRotation;
-            _IsOnGround.SetValue(false);
+            IsOnGround.SetValue(false);
         }
     }
 
@@ -137,7 +134,7 @@ public class Feet : BodyPart, IValueChangeEventsComponent
             tumbleDirection += contact.normal;
         }
 
-        _IsTumbling.SetValue(!balanced);
+        IsTumbling.SetValue(!balanced);
         if (balanced == false) StartCoroutine(TumbleCoroutine(tumbleDirection.normalized));
     }
 
@@ -152,7 +149,7 @@ public class Feet : BodyPart, IValueChangeEventsComponent
         //bool clockwiseSpin = Vector2.SignedAngle(rb.velocity, direction) > 0f;
         AttachedRigidbody.velocity = Vector2.zero;
 
-        while (_IsTumbling.GetValue<bool>() ==true && currentTime < tumbleDuration)
+        while (IsTumbling.GetValue<bool>() ==true && currentTime < tumbleDuration)
         {
             lastHeight = currentHeight;
             currentHeight = tumbleBounceCurve.Evaluate(currentTime);
@@ -165,12 +162,12 @@ public class Feet : BodyPart, IValueChangeEventsComponent
         }
 
         AttachedRigidbody.velocity = direction * (currentHeight - lastHeight)/Time.fixedDeltaTime;
-        _IsTumbling.SetValue(false);
+        IsTumbling.SetValue(false);
     }
 
     private void AdjustRotationOnCorner()
     {
-        if (groundProbe.GroundFlatness.Value ==(int)FlatGroundProbe.Flatness.Hole)
+        if (groundProbe.GroundFlatness.GetValue<int>() ==(int)FlatGroundProbe.Flatness.Hole)
         {
             float facing = groundProbe.transform.lossyScale.x > 0 ? 1f : -1f;
 

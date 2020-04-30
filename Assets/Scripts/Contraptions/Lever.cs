@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteAlways]
-public class Lever : MonoBehaviour, IEventsHubElement
+public class Lever : MonoBehaviour, IValueChangeEventsComponent
 {
     public int leverPosition;
     [Min(2f)] public int numPositions = 2;
@@ -15,32 +15,19 @@ public class Lever : MonoBehaviour, IEventsHubElement
     private Rigidbody2D rb2D;
     private float leverActionTimer;
 
-    public enum ExposedEvents { LeverActionDirection, OnLeverMove }
-    public ValueChangeEvent<int> LeverActionDirection = new ValueChangeEvent<int>();
-    public TriggerEvent OnLeverMove = new TriggerEvent();
-
-    public bool GetValueChangeEvent(int index, out IValueChangeEvent iValueChangeEvent)
+    public ValueChangeEvent OnLeverMove = ValueChangeEvent.NewTriggerEvent();
+    public ValueChangeEvent LeverActionDirection = ValueChangeEvent.NewValueChangeEvent<int>();
+    
+    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
     {
-        switch(index)
-        {
-            case (int)ExposedEvents.LeverActionDirection: iValueChangeEvent = LeverActionDirection; return true;
-            case (int)ExposedEvents.OnLeverMove: iValueChangeEvent = OnLeverMove; return true;
-        }
-
-        iValueChangeEvent = null;
-        return false;
+        vces = new ValueChangeEvent[] { OnLeverMove, LeverActionDirection };
+        return vces.Length;
     }
 
-    public int GetValueChangeEventIndex(string vceName)
+    public void SetValueChangeEventsID()
     {
-        List<string> names = new List<string>(Enum.GetNames(typeof(ExposedEvents)));
-        return names.IndexOf(vceName);
-    }
-
-    public void GetValueChangeEventsNamesAndTypes(out string[] names, out Type[] types)
-    {
-        names = Enum.GetNames(typeof(ExposedEvents));
-        types = new Type[] { typeof(int), typeof(int) };
+        OnLeverMove.SetID("OnLeverMove", this, 0);
+        LeverActionDirection.SetID("LeverActionDirection", this, 1);
     }
 
     private void Awake()
@@ -50,31 +37,38 @@ public class Lever : MonoBehaviour, IEventsHubElement
 
     private void FixedUpdate()
     {
-        if ((LeverActionDirection.Value > 0 && leverPosition < numPositions - 1) || (LeverActionDirection.Value < 0 && leverPosition > 0))
+        int leverAction = LeverActionDirection.GetValue<int>();
+
+        if ((leverAction > 0 && leverPosition < numPositions - 1) || (leverAction < 0 && leverPosition > 0))
         {
             leverActionTimer += Time.fixedDeltaTime;
             if (leverActionTimer > reactionDelay)
             {
-                StartCoroutine(RotateLeverCoroutine(LeverActionDirection.Value));
+                StartCoroutine(RotateLeverCoroutine(leverAction));
                 leverActionTimer = 0f;
             }
         }
+
+        LeverActionDirection.Triggered = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        LeverActionDirection.Value = Vector2.Dot(transform.right, collision.GetContact(0).normal) < 0f ? 1 : -1;
+        if (Vector2.Dot(transform.right, collision.GetContact(0).normal) < 0f)
+            LeverActionDirection.SetValue(1);
+        else
+            LeverActionDirection.SetValue(-1);
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        LeverActionDirection.Value = 0;
+        LeverActionDirection.SetValue(0);
         leverActionTimer = 0f;
     }
 
     private IEnumerator RotateLeverCoroutine(int direction)
     {
-        OnLeverMove.Trigger();
+        OnLeverMove.Invoke();
         leverPosition += direction;
         float wantedRotation = ((float)leverPosition / (numPositions - 1) - .5f) * angleRange + transform.parent.rotation.eulerAngles.z;
 
@@ -97,6 +91,7 @@ public class Lever : MonoBehaviour, IEventsHubElement
 
         rb2D.MoveRotation(wantedRotation);
         rb2D.angularVelocity = 0f;
-        OnLeverMove.triggered = false;
+
+        OnLeverMove.Triggered = false;
     }
 }

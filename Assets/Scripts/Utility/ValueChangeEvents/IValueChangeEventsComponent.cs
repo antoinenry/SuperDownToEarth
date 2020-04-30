@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IValueChangeEventsComponent
 {
-    void SetValueChangeEventsID();
     int GetValueChangeEvents(out ValueChangeEvent[] vces);
+    void SetValueChangeEventsID();
     //int GetNewRuntimeEvents(out IValueChangeEvent[] newRuntimeEvents);
 }

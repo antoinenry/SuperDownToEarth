@@ -27,6 +27,16 @@ public class TriggerEvent : UnityEvent, IValueChangeEvent
         triggered = true;        
     }
 
+    public bool HasChanged()
+    {
+        return triggered;
+    }
+
+    public void HasChanged(bool set)
+    {
+        triggered = set;
+    }
+
     public Type GetValueType()
     {
         return null;

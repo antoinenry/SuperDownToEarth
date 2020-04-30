@@ -3,57 +3,62 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GearBox : BodyPart, IEventsHubElement
+public class GearBox : BodyPart, IValueChangeEventsComponent
 {
     public float[] speed;
     [Min(0f)] public float switchDelay;
 
-    public enum ExposedEvents { onGearUp, currentGear }
-    public TriggerEvent OnGearUp = new TriggerEvent();
-    public ValueChangeEvent<int> CurrentGear = new ValueChangeEvent<int>();
+    public ValueChangeEvent CurrentGear = ValueChangeEvent.NewValueChangeEvent<int>();
+    public ValueChangeEvent OnGearUp = ValueChangeEvent.NewTriggerEvent();
+    public ValueChangeEvent OnGearDown = ValueChangeEvent.NewTriggerEvent();
 
-    private float lastSwitchTime;
-
-    private void Awake()
+    private float timeSinceLastSwitch;
+    
+    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
     {
-        //CurrentGear = new ValueChangeEvent<int>();
+        vces = new ValueChangeEvent[] { CurrentGear, OnGearUp, OnGearDown };
+        return vces.Length;
     }
 
-    private void Start()
+    public void SetValueChangeEventsID()
     {
-        lastSwitchTime = Time.fixedTime;
+        CurrentGear.SetID("CurrentGear", this, 0);
+        OnGearUp.SetID("OnGearUp", this, 1);
+        OnGearDown.SetID("OnGearDown", this, 2);
+
     }
 
     public float GetCurrentSpeed()
     {  
-        int speedIndex = ClampedGear(CurrentGear.Value);
+        int speedIndex = ClampedGear(CurrentGear.GetValue<int>());
         return speed[speedIndex];
     }
 
     public void GearUp()
     {
-        float currentTime = Time.fixedTime;
-
-        if(currentTime >= lastSwitchTime + switchDelay)
+        timeSinceLastSwitch += Time.fixedTime;
+        if(timeSinceLastSwitch >= switchDelay)
         {
-            int upGear = ClampedGear(CurrentGear.Value + 1);
-            if (upGear != CurrentGear.Value)
+            CurrentGear.SetValue(CurrentGear.GetValue<int>() + 1);
+            if (CurrentGear.Triggered)
             {
-                CurrentGear.Value = upGear;
-                OnGearUp.Trigger();
-                lastSwitchTime = currentTime;
+                OnGearUp.Invoke();
+                timeSinceLastSwitch = 0f;
             }
         }
     }
 
     public void GearDown()
     {
-        float currentTime = Time.fixedTime;
-
-        if (currentTime >= lastSwitchTime + switchDelay)
+        timeSinceLastSwitch += Time.fixedTime;
+        if (timeSinceLastSwitch >= switchDelay)
         {
-            CurrentGear.Value = ClampedGear(CurrentGear.Value - 1);
-            lastSwitchTime = currentTime;
+            CurrentGear.SetValue(CurrentGear.GetValue<int>() - 1);
+            if (CurrentGear.Triggered)
+            {
+                OnGearUp.Invoke();
+                timeSinceLastSwitch = 0f;
+            }
         }
     }
 
@@ -63,34 +68,5 @@ public class GearBox : BodyPart, IEventsHubElement
             return Mathf.Clamp(value, 0, speed.Length - 1);
         else
             return Mathf.Clamp(value, 1 - speed.Length, speed.Length - 1);
-    }
-
-    public bool GetValueChangeEvent(int index, out IValueChangeEvent iValueChangeEvent)
-    {
-        switch (index)
-        {
-            case (int)ExposedEvents.onGearUp:
-                iValueChangeEvent = OnGearUp;
-                return true;
-
-            case (int)ExposedEvents.currentGear:
-                iValueChangeEvent = CurrentGear;
-                return true;
-        }
-
-        iValueChangeEvent = null;
-        return false;
-    }
-
-    public void GetValueChangeEventsNamesAndTypes(out string[] names, out Type[] types)
-    {
-        names = Enum.GetNames(typeof(ExposedEvents));
-        types = new Type[] { null, typeof(int) };
-    }
-
-    public int GetValueChangeEventIndex(string vceName)
-    {
-        List<string> names = new List<string>(Enum.GetNames(typeof(ExposedEvents)));
-        return names.IndexOf(vceName);
     }
 }

@@ -5,7 +5,6 @@ using UnityEngine.Events;
 [Serializable]
 public class ValueChangeEvent
 {
-    public bool hasChanged;
     public IValueChangeEvent runtimeEvent;
 
     [SerializeField] private ValueChangeEventID ID;
@@ -17,6 +16,19 @@ public class ValueChangeEvent
     public int MasterCount { get => mastersID == null ? 0 : mastersID.Length; }
     public int RuntimeMasterCount { get => runtimeEvent == null ? 0 : runtimeEvent.GetMasterCount(); }
     public Type ValueType { get => runtimeEvent == null ? (Type)Type.Missing : runtimeEvent.GetValueType(); }
+    public bool Triggered
+    {
+        get
+        {
+            if (runtimeEvent == null) return false;
+            else return runtimeEvent.HasChanged();
+        }
+        set
+        {
+            if (runtimeEvent == null) return;
+            else runtimeEvent.HasChanged(value);
+        }
+    }
     
     public static ValueChangeEvent NewTriggerEvent()
     {
@@ -42,34 +54,48 @@ public class ValueChangeEvent
     public void Invoke()
     {
         if(runtimeEvent != null)
-        {
             runtimeEvent.Trigger();
-            if (runtimeEvent is TriggerEvent) hasChanged = true;
-        }
     }
 
     public T GetValue<T>()
     {
-        if (runtimeEvent == null) return default(T);
-        else return (runtimeEvent as ValueChangeEvent<T>).Value;
+        if (runtimeEvent != null && runtimeEvent is ValueChangeEvent<T>) return (runtimeEvent as ValueChangeEvent<T>).Value;
+        if (runtimeEvent is ValueChangeEvent<T> == false) Debug.LogError("ValueChangeEvent type mismatch.");
+        return default(T);        
     }
 
     public void SetValue<T>(T value)
     {
         if (runtimeEvent != null && runtimeEvent is ValueChangeEvent<T>) (runtimeEvent as ValueChangeEvent<T>).Value = value;
-        hasChanged = true;
+        if (runtimeEvent is ValueChangeEvent<T> == false) Debug.LogError("ValueChangeEvent type mismatch.");
     }
 
     public void AddListener(UnityAction listener)
     {
         if (runtimeEvent == null) runtimeEvent = new TriggerEvent();
         if (runtimeEvent is TriggerEvent) (runtimeEvent as TriggerEvent).AddListener(listener);
+        else Debug.LogError("ValueChangeEvent type mismatch.");
     }
 
     public void AddListener<T>(UnityAction<T> listener)
     {
         if (runtimeEvent == null) runtimeEvent = new ValueChangeEvent<T>();
         if (runtimeEvent is ValueChangeEvent<T>) (runtimeEvent as ValueChangeEvent<T>).AddListener(listener);
+        else Debug.LogError("ValueChangeEvent type mismatch.");
+    }
+
+    public void RemoveListener(UnityAction listener)
+    {
+        if (runtimeEvent == null) return;
+        if (runtimeEvent is TriggerEvent) (runtimeEvent as TriggerEvent).RemoveListener(listener);
+        else Debug.LogError("ValueChangeEvent type mismatch.");
+    }
+
+    public void RemoveListener<T>(UnityAction<T> listener)
+    {
+        if (runtimeEvent == null) return;
+        if (runtimeEvent is ValueChangeEvent<T>) (runtimeEvent as ValueChangeEvent<T>).RemoveListener(listener);
+        else Debug.LogError("ValueChangeEvent type mismatch.");
     }
 
     public void Enslave()

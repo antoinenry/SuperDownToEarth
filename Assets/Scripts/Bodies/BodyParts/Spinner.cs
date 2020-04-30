@@ -45,7 +45,7 @@ public class Spinner : BodyPart
 
     public void Spin(Direction spinDirection)
     {
-        if (Feet.IsOnGround.Value == false && CurrentDirection != spinDirection)
+        if (Feet.IsOnGround.GetValue<bool>() == false && CurrentDirection != spinDirection)
         {
             CurrentDirection = spinDirection;
             StartCoroutine(SpinCoroutine());
@@ -57,7 +57,7 @@ public class Spinner : BodyPart
         switch (CurrentDirection)
         {
             case Direction.IDLE:
-                while (CurrentDirection == Direction.IDLE && Feet.IsOnGround.Value == false && Feet.IsTumbling.Value == false)
+                while (CurrentDirection == Direction.IDLE && Feet.IsOnGround.GetValue<bool>() == false && Feet.IsTumbling.GetValue<bool>() == false)
                 {
                     SetSpinVelocity(0f);
                     yield return new WaitForFixedUpdate();
@@ -65,7 +65,7 @@ public class Spinner : BodyPart
                 break;
 
             case Direction.CLOCKWISE:
-                while (CurrentDirection == Direction.CLOCKWISE && Feet.IsOnGround.Value == false && Feet.IsTumbling.Value == false)
+                while (CurrentDirection == Direction.CLOCKWISE && Feet.IsOnGround.GetValue<bool>() == false && Feet.IsTumbling.GetValue<bool>() == false)
                 {
                     SetSpinVelocity(-spinVelocity);
                     yield return new WaitForFixedUpdate();
@@ -73,7 +73,7 @@ public class Spinner : BodyPart
                 break;
 
             case Direction.COUNTERCLOCKWISE:
-                while (CurrentDirection == Direction.COUNTERCLOCKWISE && Feet.IsOnGround.Value == false && Feet.IsTumbling.Value == false)
+                while (CurrentDirection == Direction.COUNTERCLOCKWISE && Feet.IsOnGround.GetValue<bool>() == false && Feet.IsTumbling.GetValue<bool>() == false)
                 {
                     SetSpinVelocity(spinVelocity);
                     yield return new WaitForFixedUpdate();

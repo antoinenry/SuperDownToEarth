@@ -23,4 +23,14 @@ public struct ValueChangeEventID
 
         return null;
     }
+
+    public static void SetAll(GameObject gameObject)
+    {
+        if (gameObject == null) return;
+
+        IValueChangeEventsComponent[] components = gameObject.GetComponents<IValueChangeEventsComponent>();
+        if (components != null)
+            foreach (IValueChangeEventsComponent component in components)
+                component.SetValueChangeEventsID();
+    }
 }

@@ -7,6 +7,8 @@ public interface IValueChangeEvent
     //string GetName();    
 
     void Trigger();
+    bool HasChanged();
+    void HasChanged(bool setFalse);
 
     int GetMasterCount ();
     void EnslaveTo(ValueChangeEvent other);

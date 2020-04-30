@@ -4,23 +4,32 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteAlways]
-public class CircuitBody : MonoBehaviour, IEventsHubElement
+public class CircuitBody : MonoBehaviour, IValueChangeEventsComponent
 {
     public bool enableMovement = true;
     public Circuit circuit;
     public float speed;
     public bool invertDirection;
-    public int currentStep;
     public bool stepByStep;
     public bool mirror;
-
-    public enum ExposedEvents { step }
-    public ValueChangeEvent<int> Step = new ValueChangeEvent<int>();
-
+    
     private Rigidbody2D rb;
     private int nextStep;
     private Vector2 nextPoint;
     private bool isMoving;
+
+    public ValueChangeEvent Step = ValueChangeEvent.NewValueChangeEvent<int>();
+
+    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
+    {
+        vces = new ValueChangeEvent[] { Step };
+        return vces.Length;
+    }
+
+    public void SetValueChangeEventsID()
+    {
+        Step.SetID("Step", this, 0);
+    }
 
     public void OnDrawGizmosSelected()
     {
@@ -32,41 +41,36 @@ public class CircuitBody : MonoBehaviour, IEventsHubElement
         rb = GetComponent<Rigidbody2D>();
     }
 
-    private void Start()
-    {
-        if (circuit != null)
-        {
-            rb.position = circuit.GetPoint(currentStep);
-            SetNextStep();
-        }
-    }
-
     private void Update()
     {
         if(Application.isPlaying == false && circuit != null)
         {
+            int currentStep = Step.GetValue<int>();
+
             if (currentStep < 0) currentStep = circuit.Length - 1;
             else if (currentStep >= circuit.Length) currentStep = 0;
+
+            Step.SetValue<int>(currentStep);
             transform.position = circuit.GetPoint(currentStep);
         }
-        else
-        {
-            if (Step.hasChanged)
-            {
-                if (Step.Value != currentStep)
-                {
-                    currentStep = Step.Value;
-                    enableMovement = true;                    
-                }
 
-                Step.hasChanged = false;
-            }
-            else
-                Step.Value = currentStep;
+        Step.Triggered = false;
+    }
 
-            if (enableMovement == true && isMoving == false)
-                StartCoroutine(MoveCoroutine());
-        }
+    private void OnEnable()
+    {
+        Step.AddListener<int>(OnStepChange);
+    }
+
+    private void OnDisable()
+    {
+        Step.RemoveListener<int>(OnStepChange);
+    }
+
+    private void OnStepChange(int step)
+    {
+        if (enableMovement == true && isMoving == false)
+            StartCoroutine(MoveCoroutine());
     }
 
     private IEnumerator MoveCoroutine()
@@ -123,13 +127,14 @@ public class CircuitBody : MonoBehaviour, IEventsHubElement
 
     private void MoveOneStep()
     {
-        currentStep = nextStep;
+        Step.SetValue<int>(nextStep);
         SetNextStep();
     }
 
     private void SetNextStep()
     {
         int stepDirection = invertDirection ? -1 : 1;
+        int currentStep = Step.GetValue<int>();
 
         if (speed >= 0)
             nextStep = currentStep + stepDirection;
@@ -158,30 +163,5 @@ public class CircuitBody : MonoBehaviour, IEventsHubElement
         }
 
         nextPoint = circuit.GetPoint(nextStep);
-    }
-
-    public bool GetValueChangeEvent(int index, out IValueChangeEvent iValueChangeEvent)
-    {
-        switch (index)
-        {
-            case (int)ExposedEvents.step:
-                iValueChangeEvent = Step;
-                return true;
-        }
-
-        iValueChangeEvent = null;
-        return false;
-    }
-
-    public void GetValueChangeEventsNamesAndTypes(out string[] names, out Type[] types)
-    {
-        names = Enum.GetNames(typeof(ExposedEvents));
-        types = new Type[] { typeof(int) };
-    }
-
-    public int GetValueChangeEventIndex(string vceName)
-    {
-        List<string> names = new List<string>(Enum.GetNames(typeof(ExposedEvents)));
-        return names.IndexOf(vceName);
     }
 }

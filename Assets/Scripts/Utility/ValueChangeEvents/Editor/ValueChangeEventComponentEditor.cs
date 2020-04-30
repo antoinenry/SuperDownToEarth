@@ -10,6 +10,7 @@ public struct ValueChangeEventComponentEditor
     {
         if (comp is IValueChangeEventsComponent)
         {
+            (comp as IValueChangeEventsComponent).SetValueChangeEventsID();
             component = comp;
             vceEditors = null;
 

@@ -5,27 +5,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Pilot : MonoBehaviour, IEventsHubElement
+public class Pilot : MonoBehaviour, IValueChangeEventsComponent
 {
     public Body body;
     [HideInInspector] public BodyPart[] transferPartsToVehicle;
-    
-    public enum ExposedEvents { isPilotingVehicle }
-    public ValueChangeEvent<bool> IsPilotingVehicle = new ValueChangeEvent<bool>();
+        
     public Vehicle CurrentVehicle { get; private set; }
-    public Body PilotedBody { get => IsPilotingVehicle.Value ? CurrentVehicle : body; }
+    public Body PilotedBody { get => IsPilotingVehicle.GetValue<bool>() ? CurrentVehicle : body; }
+    
+    public ValueChangeEvent IsPilotingVehicle = ValueChangeEvent.NewValueChangeEvent<bool>();
 
-    private UnityAction<bool> DeadBodyAction;
-
-    private void Awake()
+    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
     {
-        DeadBodyAction = new UnityAction<bool>(dead => ExitCurrentVehicle());
+        vces = new ValueChangeEvent[] { IsPilotingVehicle };
+        return vces.Length;
+    }
+
+    public void SetValueChangeEventsID()
+    {
+        IsPilotingVehicle.SetID("IsPilotingVehicle", this, 0);
     }
 
     private void Start()
     {
         if (body != null)
-            body.IsDead.AddListener(DeadBodyAction);
+            body.IsDead.AddListener(OnDeath);
 
         if (transform.parent != null)
         {
@@ -36,7 +40,7 @@ public class Pilot : MonoBehaviour, IEventsHubElement
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (IsPilotingVehicle.Value == false)
+        if (IsPilotingVehicle.GetValue<bool>() == false)
         {
             Vehicle vehicle = collision.gameObject.GetComponent<Vehicle>();
             if (vehicle != null) EnterVehicle(vehicle);
@@ -64,14 +68,14 @@ public class Pilot : MonoBehaviour, IEventsHubElement
         }
 
         vehicle.SetBodyInside(body);
-        vehicle.IsFull.AddListener(OnVehicleIsFullChange);
+        vehicle.IsFull.AddListener<bool>(OnVehicleIsFullChange);
         vehicle.IsDead.AddListener(OnVehicleDestruction);
 
         foreach (BodyPart part in transferPartsToVehicle)
             part.AttachedBody = vehicle;
 
         CurrentVehicle = vehicle;
-        IsPilotingVehicle.Value = true;
+        IsPilotingVehicle.SetValue(true);
     }
 
     public void ExitCurrentVehicle()
@@ -86,7 +90,7 @@ public class Pilot : MonoBehaviour, IEventsHubElement
 
     private IEnumerator ExitVehicleCoroutine(bool immediate)
     {
-        if (IsPilotingVehicle.Value == true && CurrentVehicle != null)
+        if (IsPilotingVehicle.GetValue<bool>() == true && CurrentVehicle != null)
         {
             //exitingVehicle.Stop();
 
@@ -110,7 +114,7 @@ public class Pilot : MonoBehaviour, IEventsHubElement
                     body.AttachedRigidBody.AddForce(CurrentVehicle.exitForce * CurrentVehicle.exit.up);
             }
 
-            CurrentVehicle.IsFull.RemoveListener(OnVehicleIsFullChange);
+            CurrentVehicle.IsFull.RemoveListener<bool>(OnVehicleIsFullChange);
             CurrentVehicle.IsDead.RemoveListener(OnVehicleDestruction);
             CurrentVehicle.SetBodyInside(null);
 
@@ -118,7 +122,7 @@ public class Pilot : MonoBehaviour, IEventsHubElement
                 part.AttachedBody = body;
 
             CurrentVehicle = null;
-            IsPilotingVehicle.Value = false;
+            IsPilotingVehicle.SetValue(false);
         }
     }
 
@@ -137,9 +141,14 @@ public class Pilot : MonoBehaviour, IEventsHubElement
         }
     }
 
+    private void OnDeath(bool isDead)
+    {
+        if (isDead) ExitCurrentVehicle();
+    }
+
     private void Die()
     {
-        if (IsPilotingVehicle.Value == true && CurrentVehicle != null)
+        if (IsPilotingVehicle.GetValue<bool>() == true && CurrentVehicle != null)
         {
             //current.Stop();
             if (body != null)
@@ -147,32 +156,7 @@ public class Pilot : MonoBehaviour, IEventsHubElement
 
             CurrentVehicle.SetBodyInside(null);
             CurrentVehicle = null;
-            IsPilotingVehicle.Value = false;
+            IsPilotingVehicle.SetValue(false);
         }
-    }
-
-    public bool GetValueChangeEvent(int index, out IValueChangeEvent iValueChangeEvent)
-    {
-        switch (index)
-        {
-            case (int)ExposedEvents.isPilotingVehicle:
-                iValueChangeEvent = IsPilotingVehicle;
-                return true;
-        }
-
-        iValueChangeEvent = null;
-        return false;
-    }
-
-    public void GetValueChangeEventsNamesAndTypes(out string[] names, out Type[] types)
-    {
-        names = Enum.GetNames(typeof(ExposedEvents));
-        types = new Type[] { typeof(bool) };
-    }
-
-    public int GetValueChangeEventIndex(string vceName)
-    {
-        List<string> names = new List<string>(Enum.GetNames(typeof(ExposedEvents)));
-        return names.IndexOf(vceName);
     }
 }

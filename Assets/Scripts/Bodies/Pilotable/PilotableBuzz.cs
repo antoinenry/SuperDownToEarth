@@ -49,7 +49,7 @@ public class PilotableBuzz : Pilotable
         if (groundProbe != null)
         {
             groundProbe.GroundFlatness.AddListener(probeGround);
-            OnProbeGround(groundProbe.GroundFlatness.Value);
+            OnProbeGround(groundProbe.GroundFlatness.GetValue<int>());
         }
     }
 

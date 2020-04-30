@@ -4,17 +4,27 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-public class Vehicle : PhysicalBody, IEventsHubElement
+public class Vehicle : PhysicalBody, IValueChangeEventsComponent
 {
     [Header("Vehicle")]
     public Transform seat;
     public Transform exit;
     public float exitForce;
     public float exitAnimationDelay;
-
-    public enum ExposedEvents { isFull }
-    public ValueChangeEvent<bool> IsFull = new ValueChangeEvent<bool>();
+    
+    public ValueChangeEvent IsFull = ValueChangeEvent.NewValueChangeEvent<bool>();
     public Body BodyInside { get; private set; }
+    
+    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
+    {
+        vces = new ValueChangeEvent[] { IsFull };
+        return vces.Length;
+    }
+
+    public void SetValueChangeEventsID()
+    {
+        IsFull.SetID("IsFull", this, 0);
+    }
 
     protected override void Init()
     {
@@ -33,40 +43,15 @@ public class Vehicle : PhysicalBody, IEventsHubElement
 
         if (body == null)
         {
-            IsFull.Value = false;
+            IsFull.SetValue(false);
             isFree = true;
             pilotableConfig.Enabled = Pilotable.PartEnabled.AllDisabled;
         }
         else
         {
-            IsFull.Value = true;
+            IsFull.SetValue(true);
             isFree = false;
             pilotableConfig.Enabled = Pilotable.PartEnabled.AllEnabled;
         }
-    }
-
-    public bool GetValueChangeEvent(int index, out IValueChangeEvent iValueChangeEvent)
-    {
-        switch (index)
-        {
-            case (int)ExposedEvents.isFull:
-                iValueChangeEvent = IsFull;
-                return true;
-        }
-
-        iValueChangeEvent = null;
-        return false;
-    }
-
-    public void GetValueChangeEventsNamesAndTypes(out string[] names, out Type[] types)
-    {
-        names = Enum.GetNames(typeof(ExposedEvents));
-        types = new Type[] { typeof(bool) };
-    }
-
-    public int GetValueChangeEventIndex(string vceName)
-    {
-        List<string> names = new List<string>(Enum.GetNames(typeof(ExposedEvents)));
-        return names.IndexOf(vceName);
     }
 }
