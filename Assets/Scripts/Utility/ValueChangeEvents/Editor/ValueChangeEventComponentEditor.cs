@@ -40,8 +40,16 @@ public struct ValueChangeEventComponentEditor
         EditorGUILayout.BeginVertical();
 
         EditorGUILayout.LabelField(component.ToString(), EditorStyles.boldLabel);
-        foreach(ValueChangeEventEditor vceEditor in vceEditors)
-            vceEditor.OnEditorGUILayout();
+
+        if (vceEditors != null && vceEditors.Length > 0)
+        {
+            foreach (ValueChangeEventEditor vceEditor in vceEditors)
+                vceEditor.OnEditorGUILayout();
+        }
+        else
+        {
+            EditorGUILayout.HelpBox("No events found.", MessageType.Info);
+        }
 
         EditorGUILayout.EndVertical();
     }
