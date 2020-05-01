@@ -30,6 +30,11 @@ public class Walker : BodyPart, IValueChangeEventsComponent
         IsWalking.SetID("IsWalking", this, 0);
     }
 
+    public void EnslaveValueChangeEvents(bool enslave)
+    {
+        IsWalking.Enslave<bool>(enslave);
+    }
+
     private void Awake()
     {
         AttachedBody = GetComponent<Body>();

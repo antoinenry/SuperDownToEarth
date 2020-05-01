@@ -12,7 +12,8 @@ public class TestVECBehaviour : MonoBehaviour, IValueChangeEventsComponent
     public ValueChangeEvent vector2Event = ValueChangeEvent.NewValueChangeEvent<Vector2>();
     public ValueChangeEvent goEvent = ValueChangeEvent.NewValueChangeEvent<GameObject>();
 
-    private Vector2 initPosition;
+    public Vector2 initPosition;
+    public Vector2 move = Vector2.up;
 
     public void SetValueChangeEventsID()
     {
@@ -27,6 +28,14 @@ public class TestVECBehaviour : MonoBehaviour, IValueChangeEventsComponent
         vces = new ValueChangeEvent[] { triggerEvent, boolEvent, vector2Event, goEvent };
         return vces.Length;
     }
+
+    public void EnslaveValueChangeEvents(bool enslave)
+    {
+        triggerEvent.Enslave(enslave);
+        boolEvent.Enslave<bool>(enslave);
+        vector2Event.Enslave<Vector2>(enslave);
+        goEvent.Enslave<GameObject>(enslave);
+    }
     
     public void Awake()
     {
@@ -34,8 +43,46 @@ public class TestVECBehaviour : MonoBehaviour, IValueChangeEventsComponent
         vector2Event.SetValue(initPosition);
     }
 
-    public void Start()
+    public void OnEnable()
     {
-        goEvent.AddListener<GameObject>(go => Debug.Log("GameObjectEvent: " + go));
+        EnslaveValueChangeEvents(true);
+
+        triggerEvent.AddListener(OnTrigger);
+        boolEvent.AddListener<bool>(OnBool);
+        vector2Event.AddListener<Vector2>(OnV2);
+    }
+
+    public void OnDisable()
+    {
+        EnslaveValueChangeEvents(false);
+
+        triggerEvent.RemoveListener(OnTrigger);
+        boolEvent.RemoveListener<bool>(OnBool);
+        vector2Event.RemoveListener<Vector2>(OnV2);
+    }
+
+    private void OnV2(Vector2 v2)
+    {
+        transform.position = v2;
+    }
+
+    private void OnBool(bool b)
+    {
+        if (b) StartCoroutine(MoveV2());
+        else StopCoroutine(MoveV2());
+    }
+
+    private void OnTrigger()
+    {
+        vector2Event.SetValue(initPosition);
+    }
+
+    IEnumerator MoveV2()
+    {
+        while (boolEvent.GetValue<bool>() == true)
+        {
+            vector2Event.SetValue(vector2Event.GetValue<Vector2>() + move * Time.fixedDeltaTime);
+            yield return new WaitForFixedUpdate();
+        }
     }
 }

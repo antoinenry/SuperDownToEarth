@@ -39,6 +39,12 @@ public class Feet : BodyPart, IValueChangeEventsComponent
         return vces.Length;
     }
 
+    public void EnslaveValueChangeEvents(bool enslave)
+    {
+        IsOnGround.Enslave<bool>(enslave);
+        IsTumbling.Enslave<bool>(enslave);
+    }
+
     void Awake()
     {
         //_IsOnGround = new ValueChangeEvent<bool>();

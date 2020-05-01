@@ -34,20 +34,13 @@ public class TriggerEvent : UnityEvent, IValueChangeEvent
         return masters == null ? 0 : masters.Length;
     }
 
-    public void EnslaveTo(ValueChangeEvent other)
+    public void EnslaveTo(ref IValueChangeEvent other)
     {
-        if (other == null)
-        {
-            Debug.Log("Trying to enslave trigger to null");
-            return;
-        }
+        if (other == null) other = new TriggerEvent();
+        TriggerEvent newMaster = other as TriggerEvent;
 
-        if (other.runtimeEvent == null)
-            other.runtimeEvent = new TriggerEvent();
-
-        if (other.runtimeEvent is TriggerEvent)
+        if (other is TriggerEvent)
         {
-            TriggerEvent newMaster = other.runtimeEvent as TriggerEvent;
             int currentMasterCount = GetMasterCount();
 
             if (currentMasterCount == 0)
@@ -64,25 +57,25 @@ public class TriggerEvent : UnityEvent, IValueChangeEvent
             newMaster.AddListener(TriggerAction);
         }
         else
-            Debug.LogError("Trying to enslave trigger to type " + other.ValueType.Name);
+            Debug.LogError("Trying to enslave trigger to type " + other.GetValueType().Name);
     }
 
-    public void FreeFrom(ValueChangeEvent other)
+    public void FreeFrom(IValueChangeEvent other)
     {
-        if (other == null || other.runtimeEvent == null)
+        if (other == null)
         {
             Debug.LogError("Trying to free trigger from null.");
             return;
         }
 
-        if (other.runtimeEvent is TriggerEvent)
+        if (other is TriggerEvent)
         {
-            TriggerEvent oldMaster = other.runtimeEvent as TriggerEvent;
+            TriggerEvent oldMaster = other as TriggerEvent;
             oldMaster.RemoveListener(TriggerAction);
             RemoveFromMastersArray(oldMaster);
         }
         else
-            Debug.LogError("Trying to free trigger from type " + other.ValueType.Name);
+            Debug.LogError("Trying to free trigger from type " + other.GetValueType().Name);
     }
 
     private void RemoveFromMastersArray(TriggerEvent remove)

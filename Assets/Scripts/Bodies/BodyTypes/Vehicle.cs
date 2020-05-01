@@ -26,6 +26,11 @@ public class Vehicle : PhysicalBody, IValueChangeEventsComponent
         IsFull.SetID("IsFull", this, 0);
     }
 
+    public void EnslaveValueChangeEvents(bool enslave)
+    {
+        IsFull.Enslave<bool>(enslave);
+    }
+
     protected override void Init()
     {
         base.Init();

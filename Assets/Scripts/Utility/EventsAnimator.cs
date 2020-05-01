@@ -51,33 +51,35 @@ public class EventsAnimator : MonoBehaviour, IValueChangeEventsComponent
         SetValueChangeEventsID(ref FloatParameters, floatParameterNames, TriggerCount + BooleanCount + IntegerCount);
     }
 
+    public void EnslaveValueChangeEvents(bool enslave)
+    {
+        foreach (ValueChangeEvent vce in TriggerParameters) vce.Enslave(enslave);
+        foreach (ValueChangeEvent vce in BooleanParameters) vce.Enslave<bool>(enslave);
+        foreach (ValueChangeEvent vce in IntegerParameters) vce.Enslave<int>(enslave);
+        foreach (ValueChangeEvent vce in FloatParameters)   vce.Enslave<float>(enslave);
+    }
+
     private void Awake()
     {
         SetValueChangeEventsID();
     }
 
-    private void Start()
-    {
-        UpdateAll();
-    }
-
     private void OnEnable()
     {
-        UpdateAll();
+        UpdateEvents();
+        UpdateActions();
+        EnslaveValueChangeEvents(true);
+
         AddListeners(ref TriggerParameters, SetTriggerActions);
         AddListeners(ref BooleanParameters, SetBoolActions);
         AddListeners(ref IntegerParameters, SetIntActions);
         AddListeners(ref FloatParameters, SetFloatActions);
     }
-    /*
-    private void LateUpdate()
-    {
-        foreach (ValueChangeEvent vce in TriggerParameters)
-            vce.Triggered = false;
-    }
-    */
+
     private void OnDisable()
     {
+        EnslaveValueChangeEvents(false);
+
         RemoveListeners(ref TriggerParameters, SetTriggerActions);
         RemoveListeners(ref BooleanParameters, SetBoolActions);
         RemoveListeners(ref IntegerParameters, SetIntActions);
@@ -165,8 +167,15 @@ public class EventsAnimator : MonoBehaviour, IValueChangeEventsComponent
 
             if (match == null)
                 updated[i] = ValueChangeEvent.NewValueChangeEvent<T>();
-            else if (updated[i] != match)
-                updated[i] = match;
+            else
+            {
+                if (match.runtimeEvent == null)
+                {
+                    if (typeof(T) == typeof(trigger)) match.runtimeEvent = new TriggerEvent();
+                    else match.runtimeEvent = new ValueChangeEvent<T>();
+                }
+                if (updated[i] != match) updated[i] = match;
+            }
         }
 
         vceArray = updated;
@@ -220,12 +229,5 @@ public class EventsAnimator : MonoBehaviour, IValueChangeEventsComponent
                 FloatParameters[index].invoked = false;
             });
         }
-    }
-
-    private void UpdateAll()
-    {
-        FetchAnimatorParameterNames();
-        UpdateEvents();
-        UpdateActions();
     }
 }

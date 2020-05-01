@@ -28,6 +28,13 @@ public class GearBox : BodyPart, IValueChangeEventsComponent
 
     }
 
+    public void EnslaveValueChangeEvents(bool enslave)
+    {
+        CurrentGear.Enslave<int>(enslave);
+        OnGearUp.Enslave(enslave);
+        OnGearDown.Enslave(enslave);
+    }
+
     public float GetCurrentSpeed()
     {  
         int speedIndex = ClampedGear(CurrentGear.GetValue<int>());

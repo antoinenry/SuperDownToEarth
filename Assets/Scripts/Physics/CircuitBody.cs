@@ -31,6 +31,11 @@ public class CircuitBody : MonoBehaviour, IValueChangeEventsComponent
         Step.SetID("Step", this, 0);
     }
 
+    public void EnslaveValueChangeEvents(bool enslave)
+    {
+        Step.Enslave<int>(enslave);
+    }
+
     public void OnDrawGizmosSelected()
     {
         if (circuit != null) circuit.OnDrawGizmosSelected();

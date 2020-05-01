@@ -26,6 +26,11 @@ public class Jumper : BodyPart, IValueChangeEventsComponent
         OnJump.SetID("onJump", this, 0);
     }
 
+    public void EnslaveValueChangeEvents(bool enslave)
+    {
+        OnJump.Enslave(enslave);
+    }
+
     private void OnDrawGizmos()
     {
         if(showGizmo)

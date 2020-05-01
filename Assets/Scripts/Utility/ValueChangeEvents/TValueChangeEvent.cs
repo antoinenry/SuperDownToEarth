@@ -60,20 +60,13 @@ public class ValueChangeEvent<T> : UnityEvent<T>, IValueChangeEvent
         return masters == null ? 0 : masters.Length;
     }
 
-    public void EnslaveTo(ValueChangeEvent other)
-    {
-        if (other == null)
-        {
-            Debug.LogError("Trying to enslave event to null.");
-            return;
-        }
+    public void EnslaveTo(ref IValueChangeEvent other)
+    {        
+        if (other == null) other = new ValueChangeEvent<T>();
+        ValueChangeEvent<T> newMaster = other as ValueChangeEvent<T>;
         
-        if (other.runtimeEvent == null)
-            other.runtimeEvent = new ValueChangeEvent<T>();
-        
-        if (other.runtimeEvent is ValueChangeEvent<T>)
+        if (other is ValueChangeEvent<T>)
         {
-            ValueChangeEvent<T> newMaster = other.runtimeEvent as ValueChangeEvent<T>;
             int currentMasterCount = GetMasterCount();
 
             if (currentMasterCount == 0)
@@ -90,26 +83,25 @@ public class ValueChangeEvent<T> : UnityEvent<T>, IValueChangeEvent
             newMaster.AddListener(SetValueAction);
         }
         else
-            Debug.LogError("Trying to enslave type " + GetValueType().Name + " to type " + other.ValueType.Name);
-
+            Debug.LogError("Trying to enslave type " + GetValueType().Name + " to type " + other.GetValueType().Name);
     }
 
-    public void FreeFrom(ValueChangeEvent other)
+    public void FreeFrom(IValueChangeEvent other)
     {
-        if (other == null || other.runtimeEvent == null)
+        if (other == null)
         {
-            Debug.LogError("Trying to free event from null.");
+            Debug.Log("Trying to free event from null.");
             return;
         }
 
-        if (other.runtimeEvent is ValueChangeEvent<T>)
+        if (other is ValueChangeEvent<T>)
         {
-            ValueChangeEvent<T> oldMaster = other.runtimeEvent as ValueChangeEvent<T>;
+            ValueChangeEvent<T> oldMaster = other as ValueChangeEvent<T>;
             oldMaster.RemoveListener(SetValueAction);
             RemoveFromMastersArray(oldMaster);
         }
         else
-            Debug.LogError("Trying to free type " + GetValueType().Name + " from type " + other.ValueType.Name);
+            Debug.LogError("Trying to free type " + GetValueType().Name + " from type " + other.GetValueType().Name);
     }
 
     private void RemoveFromMastersArray(ValueChangeEvent<T> remove)

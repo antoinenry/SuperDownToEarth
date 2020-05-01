@@ -8,6 +8,6 @@ public interface IValueChangeEvent
     void ForceInvoke();
 
     int GetMasterCount ();
-    void EnslaveTo(ValueChangeEvent other);
-    void FreeFrom(ValueChangeEvent other);
+    void EnslaveTo(ref IValueChangeEvent other);
+    void FreeFrom(IValueChangeEvent other);
 }

@@ -31,6 +31,13 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
         Action2Input.SetID("Action2Input", this, 2);
     }
 
+    public void EnslaveValueChangeEvents(bool enslave)
+    {
+        AxisInput.Enslave<int>(enslave);
+        Action1Input.Enslave(enslave);
+        Action2Input.Enslave(enslave);
+    }
+
     private void Awake()
     {
         touchInput = GetComponent<TouchScreen>();

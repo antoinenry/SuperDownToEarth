@@ -46,7 +46,7 @@ public class ValueChangeEventEditor
             }
 
             EditorHeaderGUI(headerRect);
-            valueChangeEvent.Enslave();       
+            valueChangeEvent.Enslave(true);       
 
             if (hasSlaveEditor) SlaveGUILayout();
         }      
@@ -195,9 +195,7 @@ public class ValueChangeEventEditor
 
     private static void ValueChangeEventGUI(Rect rect, ValueChangeEvent<Vector2> vce)
     {
-        float xInput = EditorGUI.FloatField(rect, vce.Value.x);
-        float yInput = EditorGUI.FloatField(rect, vce.Value.y);
-        vce.Value = new Vector2(xInput, yInput);
+        vce.Value = EditorGUI.Vector2Field(rect, "", vce.Value);
     }
 
     private static void ValueChangeEventGUI(Rect rect, ValueChangeEvent<GameObject> vce)

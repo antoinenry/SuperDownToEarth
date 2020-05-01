@@ -26,6 +26,11 @@ public class Pilot : MonoBehaviour, IValueChangeEventsComponent
         IsPilotingVehicle.SetID("IsPilotingVehicle", this, 0);
     }
 
+    public void EnslaveValueChangeEvents(bool enslave)
+    {
+        IsPilotingVehicle.Enslave<bool>(enslave);
+    }
+
     private void Start()
     {
         if (body != null)

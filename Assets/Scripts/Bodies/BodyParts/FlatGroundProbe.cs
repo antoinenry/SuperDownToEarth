@@ -32,6 +32,11 @@ public class FlatGroundProbe : BodyPart, IValueChangeEventsComponent
         GroundFlatness.SetID("GroundFlatness", this, 0);
     }
 
+    public void EnslaveValueChangeEvents(bool enslave)
+    {
+        GroundFlatness.Enslave<int>(enslave);
+    }
+
     private void Start()
     {
         OnTriggerEvent();

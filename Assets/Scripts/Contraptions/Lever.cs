@@ -30,6 +30,12 @@ public class Lever : MonoBehaviour, IValueChangeEventsComponent
         LeverActionDirection.SetID("LeverActionDirection", this, 1);
     }
 
+    public void EnslaveValueChangeEvents(bool enslave)
+    {
+        OnLeverMove.Enslave(enslave);
+        LeverActionDirection.Enslave<int>(enslave);
+    }
+
     private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();

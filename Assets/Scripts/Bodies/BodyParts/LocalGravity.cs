@@ -25,6 +25,11 @@ public class LocalGravity : BodyPart, IValueChangeEventsComponent
         IsFalling.SetID("isFalling", this, 0);
     }
 
+    public void EnslaveValueChangeEvents(bool enslave)
+    {
+        IsFalling.Enslave<bool>(enslave);
+    }
+
     private void Awake()
     {
         AttachedBody = GetComponent<Body>();
