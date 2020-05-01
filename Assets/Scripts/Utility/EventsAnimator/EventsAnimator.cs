@@ -193,7 +193,7 @@ public class EventsAnimator : MonoBehaviour, IValueChangeEventsComponent
             SetTriggerActions[i] = new UnityAction(() =>
             {
                 animator.SetTrigger(triggerParameterNames[index]);
-                TriggerParameters[index].invoked = false;
+                TriggerParameters[index].Invoked = false;
             });
         }
 
@@ -204,7 +204,7 @@ public class EventsAnimator : MonoBehaviour, IValueChangeEventsComponent
             SetBoolActions[i] = new UnityAction<bool>(value =>
             {
                 animator.SetBool(booleanParameterNames[index], value);
-                BooleanParameters[index].invoked = false;
+                BooleanParameters[index].Invoked = false;
             });
         }
 
@@ -215,7 +215,7 @@ public class EventsAnimator : MonoBehaviour, IValueChangeEventsComponent
             SetIntActions[i] = new UnityAction<int>(value =>
             {
                 animator.SetInteger(integerParameterNames[index], value);
-                IntegerParameters[index].invoked = false;
+                IntegerParameters[index].Invoked = false;
             });
         }
 
@@ -226,7 +226,7 @@ public class EventsAnimator : MonoBehaviour, IValueChangeEventsComponent
             SetFloatActions[i] = new UnityAction<float>(value =>
             {
                 animator.SetFloat(floatParameterNames[index], value);
-                FloatParameters[index].invoked = false;
+                FloatParameters[index].Invoked = false;
             });
         }
     }

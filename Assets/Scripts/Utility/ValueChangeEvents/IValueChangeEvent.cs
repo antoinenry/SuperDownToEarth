@@ -6,6 +6,8 @@ public interface IValueChangeEvent
     //string GetName();    
 
     void ForceInvoke();
+    bool GetInvoked();
+    void SetInvoked(bool value);
 
     int GetMasterCount ();
     void EnslaveTo(ref IValueChangeEvent other);

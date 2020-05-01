@@ -5,7 +5,6 @@ using UnityEngine.Events;
 [Serializable]
 public class ValueChangeEvent
 {
-    public bool invoked;
     public IValueChangeEvent runtimeEvent;
 
     [SerializeField] private ValueChangeEventID ID;
@@ -13,6 +12,19 @@ public class ValueChangeEvent
     
     public string Name { get => ID.name; }
     public Component Component { get => ID.component; }
+
+    public bool Invoked
+    {
+        get
+        {
+            if (runtimeEvent == null) return false;
+            else return runtimeEvent.GetInvoked();
+        }
+        set
+        {
+            if (runtimeEvent != null) runtimeEvent.SetInvoked(value);
+        }
+    }
 
     public int MasterCount { get => mastersID == null ? 0 : mastersID.Length; }
     public int RuntimeMasterCount { get => runtimeEvent == null ? 0 : runtimeEvent.GetMasterCount(); }
@@ -43,7 +55,7 @@ public class ValueChangeEvent
 
     public void Invoke()
     {
-        if(runtimeEvent != null)
+        if (runtimeEvent != null)
             runtimeEvent.ForceInvoke();
     }
 

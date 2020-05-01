@@ -138,13 +138,13 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
             if (useButtonControls) GetButtonControl();
             else GetTouchControl();
 
-            if (Action1Input.invoked) blob.jumper.Jump();
+            if (Action1Input.Invoked) blob.jumper.Jump();
 
             blob.spinner.Spin(AxisInput.GetValue<int>());
 
-            Action1Input.invoked = false;
-            Action2Input.invoked = false;
-            AxisInput.invoked = false;
+            Action1Input.Invoked = false;
+            Action2Input.Invoked = false;
+            AxisInput.Invoked = false;
             yield return null;
         }
 
@@ -161,14 +161,14 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
             else GetTouchControl();
 
             bot.walker.Walk(AxisInput.GetValue<int>());
-            if (Action1Input.invoked) bot.jumper.Jump();
+            if (Action1Input.Invoked) bot.jumper.Jump();
             bot.spinner.Spin(AxisInput.GetValue<int>());
 
-            if (Action2Input.invoked) pilot.ExitCurrentVehicle();
+            if (Action2Input.Invoked) pilot.ExitCurrentVehicle();
 
-            Action1Input.invoked = false;
-            Action2Input.invoked = false;
-            AxisInput.invoked = false;
+            Action1Input.Invoked = false;
+            Action2Input.Invoked = false;
+            AxisInput.Invoked = false;
             yield return null;
         }
 
@@ -186,7 +186,7 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
             if (useButtonControls) GetButtonControl();
             else GetTouchControl();
 
-            if (AxisInput.invoked)
+            if (AxisInput.Invoked)
             {
                 int axis = AxisInput.GetValue<int>();
                 if (axis != 0)
@@ -210,12 +210,12 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
             {
                 bug.walker.Walk(directionBuffer);
                 if (bug.gearBox.CurrentGear.GetValue<int>() < gearBuffer) bug.gearBox.GearUp();
-                if (Action2Input.invoked) pilot.ExitCurrentVehicle();
+                if (Action2Input.Invoked) pilot.ExitCurrentVehicle();
             }
 
-            Action1Input.invoked = false;
-            Action2Input.invoked = false;
-            AxisInput.invoked = false;
+            Action1Input.Invoked = false;
+            Action2Input.Invoked = false;
+            AxisInput.Invoked = false;
             yield return null;
         }
 
@@ -231,14 +231,14 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
             if (useButtonControls) GetButtonControl();
             else GetTouchControl();
 
-            if (Action1Input.invoked) jet.jumper.Jump();
+            if (Action1Input.Invoked) jet.jumper.Jump();
             jet.spinner.Spin(AxisInput.GetValue<int>());
 
-            if (Action2Input.invoked) pilot.ExitCurrentVehicle();
+            if (Action2Input.Invoked) pilot.ExitCurrentVehicle();
             
-            Action1Input.invoked = false;
-            Action2Input.invoked = false;
-            AxisInput.invoked = false;
+            Action1Input.Invoked = false;
+            Action2Input.Invoked = false;
+            AxisInput.Invoked = false;
             yield return null;
         }
 
@@ -254,14 +254,14 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
             if (useButtonControls) GetButtonControl();
             else GetTouchControl();
 
-            if (Action1Input.invoked) buzz.jumper.Jump();
+            if (Action1Input.Invoked) buzz.jumper.Jump();
             buzz.spinner.Spin(AxisInput.GetValue<int>());
 
-            if (Action2Input.invoked) pilot.ExitCurrentVehicle();
+            if (Action2Input.Invoked) pilot.ExitCurrentVehicle();
 
-            Action1Input.invoked = false;
-            Action2Input.invoked = false;
-            AxisInput.invoked = false;
+            Action1Input.Invoked = false;
+            Action2Input.Invoked = false;
+            AxisInput.Invoked = false;
             yield return null;
         }
 

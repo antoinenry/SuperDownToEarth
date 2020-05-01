@@ -8,6 +8,7 @@ public class ValueChangeEvent<T> : UnityEvent<T>, IValueChangeEvent
 {
     private T _value;
     private ValueChangeEvent<T>[] masters;
+    private bool invoked;
 
     //public string Name { get; private set; }
     public UnityAction<T> SetValueAction { get; private set; }
@@ -22,7 +23,7 @@ public class ValueChangeEvent<T> : UnityEvent<T>, IValueChangeEvent
                 if (value != null)
                 {
                     _value = value;
-                    Invoke(_value);
+                    ForceInvoke();
                 }
 
                 return;
@@ -31,17 +32,26 @@ public class ValueChangeEvent<T> : UnityEvent<T>, IValueChangeEvent
             if (_value.Equals(value) == false)
             {
                 _value = value;
-                Invoke(_value);
+                ForceInvoke();
             }
         }
     }
 
     public ValueChangeEvent(T initValue = default(T), string name = "NewValueChangeEvent")
     {
-        //this.Name = name;
         SetValueAction = new UnityAction<T>(x => Value = x);
         _value = initValue;
         masters = null;
+    }
+
+    public bool GetInvoked()
+    {
+        return invoked;
+    }
+
+    public void SetInvoked(bool value)
+    {
+        invoked = value;
     }
 
     public void ForceInvoke()

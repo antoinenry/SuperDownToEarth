@@ -55,7 +55,7 @@ public class Lever : MonoBehaviour, IValueChangeEventsComponent
             }
         }
 
-        LeverActionDirection.invoked = false;
+        LeverActionDirection.Invoked = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -98,6 +98,6 @@ public class Lever : MonoBehaviour, IValueChangeEventsComponent
         rb2D.MoveRotation(wantedRotation);
         rb2D.angularVelocity = 0f;
 
-        OnLeverMove.invoked = false;
+        OnLeverMove.Invoked = false;
     }
 }

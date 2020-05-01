@@ -14,5 +14,7 @@ public class EventsAnimatorInspector : Editor
             GUIContent labelContent = new GUIContent(vce.Name);
             ValueChangeEventDrawer.Draw(position, vce, labelContent);
         }
+
+        EditorUtility.SetDirty(target);
     }
 }
