@@ -24,7 +24,7 @@ public struct ValueChangeEventComponentEditor
                     int vceCount = vces.Length;
                     vceEditors = new ValueChangeEventEditor[vceCount];
                     for (int i = 0; i < vceCount; i++)
-                        vceEditors[i] = new ValueChangeEventEditor(vces[i]) { hasSlaveEditor = true, defaultGameObject = lastSelectedGameObject };
+                        vceEditors[i] = new ValueChangeEventEditor(vces[i]) { hasSlaveEditor = true };
                 }
             }
         }

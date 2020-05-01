@@ -27,7 +27,14 @@ public class ValueChangeEventDrawer : PropertyDrawer
         else
         {
             ValueChangeEvent valueChangeEvent = ValueChangeEventID.GetValueChangeEvent(ID_component, ID_indexInComponent);
-            ValueChangeEventEditor.ValueChangeEventGUI(position, valueChangeEvent);
+
+            Rect rect = position;
+            rect.width = position.width * .9f;
+            ValueChangeEventEditor.ValueChangeEventGUI(rect, valueChangeEvent);
+
+            rect.x = position.x + rect.width;
+            rect.width = position.width * .1f;
+            if (GUI.Button(rect, "...")) ValueChangeEventEditorWindow.ShowWindow();
         }        
 
         EditorGUI.indentLevel = indent;

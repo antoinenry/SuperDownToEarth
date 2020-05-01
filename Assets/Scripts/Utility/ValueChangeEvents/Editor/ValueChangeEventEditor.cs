@@ -4,9 +4,8 @@ using UnityEditor;
 public class ValueChangeEventEditor
 {
     public bool hasSlaveEditor;
-    public bool showMasters;
     public bool detailedLabel;
-    public GameObject defaultGameObject;
+    public bool showMasters;
 
     public ValueChangeEvent valueChangeEvent;
     public ValueChangeEventExplorer vceExplorer;
@@ -95,9 +94,7 @@ public class ValueChangeEventEditor
             EditorGUILayout.LabelField("is slave to: ");
             if (vceExplorer == null && GUILayout.Button("+", GUILayout.Width(25f)))
             {
-                vceExplorer = new ValueChangeEventExplorer(vce => vce.ValueType == valueChangeEvent.ValueType && vce != valueChangeEvent);   
-                if (defaultGameObject != null)
-                    vceExplorer.selectedGameObject = defaultGameObject;
+                vceExplorer = new ValueChangeEventExplorer(vce => vce.ValueType == valueChangeEvent.ValueType && vce != valueChangeEvent);
             }
             else if (vceExplorer != null && GUILayout.Button("Cancel"))
                 vceExplorer = null;
@@ -130,7 +127,6 @@ public class ValueChangeEventEditor
                 if (GUILayout.Button("Confirm"))
                 {
                     valueChangeEvent.AddMaster(vceExplorer.SelectedVce);
-                    defaultGameObject = vceExplorer.selectedGameObject;
                     vceExplorer = null;
                 }
 
