@@ -6,6 +6,13 @@ public class EventsAnimatorInspector : Editor
 {
     public override void OnInspectorGUI()
     {
-        
+        (target as IValueChangeEventsComponent).GetValueChangeEvents(out ValueChangeEvent[] vces);
+
+        foreach(ValueChangeEvent vce in vces)
+        {
+            Rect position = EditorGUILayout.GetControlRect();
+            GUIContent labelContent = new GUIContent(vce.Name);
+            ValueChangeEventDrawer.Draw(position, vce, labelContent);
+        }
     }
 }

@@ -36,7 +36,9 @@ public class ValueChangeEventEditorWindow : EditorWindow
             FetchComponents();
 
         if (inspectedComponents.Length == 0)
-            EditorGUILayout.HelpBox("No ValueChangeEvents in selection", MessageType.None);
+        {
+            EditorGUILayout.HelpBox("No ValueChangeEvents in selection. ", MessageType.None);
+        }
         else
         {
             foreach (ValueChangeEventComponentEditor componentEditor in inspectedComponents)
