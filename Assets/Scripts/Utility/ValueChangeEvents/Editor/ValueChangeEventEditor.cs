@@ -12,6 +12,7 @@ public class ValueChangeEventEditor
 
     public ValueChangeEventEditor(ValueChangeEvent vce)
     {
+        Debug.Log("New vce editor");
         valueChangeEvent = vce;
         showMasters = false;
         vceExplorer = null;

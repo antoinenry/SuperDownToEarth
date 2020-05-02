@@ -17,7 +17,8 @@ public class ValueChangeEventEditorWindow : EditorWindow
 
     private void OnHierarchyChange()
     {
-        FetchComponents();
+        if (inspectedComponents == null)
+            FetchComponents();
     }
 
     private void OnInspectorUpdate()
