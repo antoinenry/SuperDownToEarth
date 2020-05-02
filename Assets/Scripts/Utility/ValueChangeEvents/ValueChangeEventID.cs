@@ -33,4 +33,9 @@ public struct ValueChangeEventID
             foreach (IValueChangeEventsComponent component in components)
                 component.SetValueChangeEventsID();
     }
+
+    public override string ToString()
+    {
+        return "ID (" + component + "/" + name + "(" + indexInComponent + ")";
+    }
 }

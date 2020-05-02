@@ -46,13 +46,15 @@ public class TriggerEvent : UnityEvent, IValueChangeEvent
         return masters == null ? 0 : masters.Length;
     }
 
-    public void EnslaveTo(ref IValueChangeEvent other)
+    public void EnslaveTo(ref IValueChangeEvent other, out bool typeMismatch)
     {
         if (other == null) other = new TriggerEvent();
         TriggerEvent newMaster = other as TriggerEvent;
 
         if (other is TriggerEvent)
         {
+            typeMismatch = false;
+
             int currentMasterCount = GetMasterCount();
 
             if (currentMasterCount == 0)
@@ -69,14 +71,18 @@ public class TriggerEvent : UnityEvent, IValueChangeEvent
             newMaster.AddListener(TriggerAction);
         }
         else
-            Debug.LogError("Trying to enslave trigger to type " + other.GetValueType().Name);
+        {
+            Debug.LogWarning("Trying to enslave trigger to type " + other.GetValueType().Name);
+            typeMismatch = true;
+        }
     }
 
-    public void FreeFrom(IValueChangeEvent other)
+    public void FreeFrom(IValueChangeEvent other, out bool typeMismatch)
     {
         if (other == null)
         {
             Debug.LogError("Trying to free trigger from null.");
+            typeMismatch = false;
             return;
         }
 
@@ -85,9 +91,13 @@ public class TriggerEvent : UnityEvent, IValueChangeEvent
             TriggerEvent oldMaster = other as TriggerEvent;
             oldMaster.RemoveListener(TriggerAction);
             RemoveFromMastersArray(oldMaster);
+            typeMismatch = false;
         }
         else
+        {
             Debug.LogError("Trying to free trigger from type " + other.GetValueType().Name);
+            typeMismatch = true;
+        }
     }
 
     private void RemoveFromMastersArray(TriggerEvent remove)

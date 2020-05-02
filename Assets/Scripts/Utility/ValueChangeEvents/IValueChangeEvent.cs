@@ -10,6 +10,6 @@ public interface IValueChangeEvent
     void SetInvoked(bool value);
 
     int GetMasterCount ();
-    void EnslaveTo(ref IValueChangeEvent other);
-    void FreeFrom(IValueChangeEvent other);
+    void EnslaveTo(ref IValueChangeEvent other, out bool typeMismatch);
+    void FreeFrom(IValueChangeEvent other, out bool typeMismatch);
 }

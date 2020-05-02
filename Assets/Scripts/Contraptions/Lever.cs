@@ -6,7 +6,6 @@ using UnityEngine;
 [ExecuteAlways]
 public class Lever : MonoBehaviour, IValueChangeEventsComponent
 {
-    public int leverPosition;
     [Min(2f)] public int numPositions = 2;
     [Min(0f)] public float angleRange = 45f;
     [Min(0f)] public float reactionDelay;
@@ -15,24 +14,24 @@ public class Lever : MonoBehaviour, IValueChangeEventsComponent
     private Rigidbody2D rb2D;
     private float leverActionTimer;
 
-    public ValueChangeEvent OnLeverMove = ValueChangeEvent.NewTriggerEvent();
+    public ValueChangeEvent LeverPosition = ValueChangeEvent.NewValueChangeEvent<int>();
     public ValueChangeEvent LeverActionDirection = ValueChangeEvent.NewValueChangeEvent<int>();
     
     public int GetValueChangeEvents(out ValueChangeEvent[] vces)
     {
-        vces = new ValueChangeEvent[] { OnLeverMove, LeverActionDirection };
+        vces = new ValueChangeEvent[] { LeverPosition, LeverActionDirection };
         return vces.Length;
     }
 
     public void SetValueChangeEventsID()
     {
-        OnLeverMove.SetID("OnLeverMove", this, 0);
+        LeverPosition.SetID("LeverPosition", this, 0);
         LeverActionDirection.SetID("LeverActionDirection", this, 1);
     }
 
     public void EnslaveValueChangeEvents(bool enslave)
     {
-        OnLeverMove.Enslave(enslave);
+        LeverPosition.Enslave<int>(enslave);
         LeverActionDirection.Enslave<int>(enslave);
     }
 
@@ -45,7 +44,7 @@ public class Lever : MonoBehaviour, IValueChangeEventsComponent
     {
         int leverAction = LeverActionDirection.GetValue<int>();
 
-        if ((leverAction > 0 && leverPosition < numPositions - 1) || (leverAction < 0 && leverPosition > 0))
+        if ((leverAction > 0 && LeverPosition.GetValue<int>() < numPositions - 1) || (leverAction < 0 && LeverPosition.GetValue<int>() > 0))
         {
             leverActionTimer += Time.fixedDeltaTime;
             if (leverActionTimer > reactionDelay)
@@ -74,9 +73,9 @@ public class Lever : MonoBehaviour, IValueChangeEventsComponent
 
     private IEnumerator RotateLeverCoroutine(int direction)
     {
-        OnLeverMove.Invoke();
-        leverPosition += direction;
-        float wantedRotation = ((float)leverPosition / (numPositions - 1) - .5f) * angleRange + transform.parent.rotation.eulerAngles.z;
+        LeverPosition.SetValue(LeverPosition.GetValue<int>() + direction);
+
+        float wantedRotation = ((float)LeverPosition.GetValue<int>() / (numPositions - 1) - .5f) * angleRange + transform.parent.rotation.eulerAngles.z;
 
         if (direction > 0)
         {
@@ -98,6 +97,6 @@ public class Lever : MonoBehaviour, IValueChangeEventsComponent
         rb2D.MoveRotation(wantedRotation);
         rb2D.angularVelocity = 0f;
 
-        OnLeverMove.Invoked = false;
+        LeverPosition.Invoked = false;
     }
 }

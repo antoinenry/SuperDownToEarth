@@ -113,20 +113,25 @@ public class ValueChangeEvent
             return;
         }
 
-        if (MasterCount > 0)
+        for (int i = 0; i < MasterCount; i++)
         {
-            foreach (ValueChangeEventID masterID in mastersID)
+            ValueChangeEvent master = mastersID[i].ValueChangeEvent;
+            bool removeMasterId = (master == null);
+
+            if (removeMasterId == false)
             {
-                ValueChangeEvent master = masterID.ValueChangeEvent;
-                if (master != null)
-                {
-                    if (enslave)
-                    {
-                        runtimeEvent.EnslaveTo(ref master.runtimeEvent);
-                    }
-                    else
-                        runtimeEvent.FreeFrom(master.runtimeEvent);
-                }
+                if (enslave)
+                    runtimeEvent.EnslaveTo(ref master.runtimeEvent, out removeMasterId);
+                else
+                    runtimeEvent.FreeFrom(master.runtimeEvent, out removeMasterId);
+            }
+            else
+                Debug.LogWarning("Master is null.");
+
+            if (removeMasterId == true)
+            {
+                RemoveMasterAt(i);
+                    Debug.LogWarning("Removed master " + mastersID[i].ToString());
             }
         }
     }
@@ -153,8 +158,8 @@ public class ValueChangeEvent
         if(newMaster != null && newMaster != this && FindMasterIndex(newMaster) == -1)
         {
             if(runtimeEvent != null)
-                runtimeEvent.EnslaveTo(ref newMaster.runtimeEvent);
-
+                runtimeEvent.EnslaveTo(ref newMaster.runtimeEvent, out bool typeMismatch);
+            
             Array.Resize(ref mastersID, MasterCount + 1);
             mastersID[MasterCount-1] = newMaster.ID;
         }
@@ -172,7 +177,7 @@ public class ValueChangeEvent
         if (masterIndex >= 0 && masterIndex < MasterCount)
         {
             if (runtimeEvent != null)
-                runtimeEvent.FreeFrom(mastersID[masterIndex].ValueChangeEvent.runtimeEvent);
+                runtimeEvent.FreeFrom(mastersID[masterIndex].ValueChangeEvent.runtimeEvent, out bool typeMismatch);
 
             for (int i = masterIndex; i < MasterCount - 1; i++)
                 mastersID[i] = mastersID[i + 1];

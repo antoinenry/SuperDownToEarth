@@ -81,7 +81,7 @@ public class ValueChangeEventExplorer
             if (vceOptions.Length == 0)
             {
                 vceOptions = null;
-                vceOptionNames = new List<string> { "(no ValueChangeEvent found)" };
+                vceOptionNames = new List<string> { "(no type match)" };
             }
             else
             {
