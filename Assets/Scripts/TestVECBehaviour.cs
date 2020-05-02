@@ -7,20 +7,21 @@ using UnityEngine.Events;
 
 public class TestVECBehaviour : MonoBehaviour, IValueChangeEventsComponent
 {
-    public ValueChangeEvent triggerEvent = ValueChangeEvent.NewTriggerEvent();
-    public ValueChangeEvent boolEvent = ValueChangeEvent.NewValueChangeEvent<bool>();
-    public ValueChangeEvent vector2Event = ValueChangeEvent.NewValueChangeEvent<Vector2>();
-    public ValueChangeEvent goEvent = ValueChangeEvent.NewValueChangeEvent<GameObject>();
+    public ValueChangeEvent triggerEvent = ValueChangeEvent.New<trigger>();
+    public ValueChangeEvent boolEvent = ValueChangeEvent.New<bool>();
+    public ValueChangeEvent vector2Event = ValueChangeEvent.New<Vector2>();
+    public ValueChangeEvent goEvent = ValueChangeEvent.New<GameObject>();
 
     public Vector2 initPosition;
     public Vector2 move = Vector2.up;
 
-    public void SetValueChangeEventsID()
+    public int SetValueChangeEventsID()
     {
         triggerEvent.SetID("triggerEvent", this, 0);
         boolEvent.SetID("boolEvent", this, 1);
         vector2Event.SetID("vector2Event", this, 2);
         goEvent.SetID("gameObjectEvent", this, 3);
+        return 4;
     }
 
     public int GetValueChangeEvents(out ValueChangeEvent[] vces)
@@ -32,9 +33,9 @@ public class TestVECBehaviour : MonoBehaviour, IValueChangeEventsComponent
     public void EnslaveValueChangeEvents(bool enslave)
     {
         triggerEvent.Enslave(enslave);
-        boolEvent.Enslave<bool>(enslave);
-        vector2Event.Enslave<Vector2>(enslave);
-        goEvent.Enslave<GameObject>(enslave);
+        boolEvent.Enslave(enslave);
+        vector2Event.Enslave(enslave);
+        goEvent.Enslave(enslave);
     }
     
     public void Awake()

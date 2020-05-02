@@ -8,20 +8,25 @@ public struct ValueChangeEventID
     public Component component;
     public int indexInComponent;
 
-    public ValueChangeEvent ValueChangeEvent
+    public static bool GetValueChangeEvent(ValueChangeEventID id, out ValueChangeEvent vce)
     {
-        get => GetValueChangeEvent(component, indexInComponent);
+        return GetValueChangeEvent(id.component, id.indexInComponent, out vce);
     }
 
-    public static ValueChangeEvent GetValueChangeEvent(Component component, int indexInComponent)
+    public static bool GetValueChangeEvent(Component component, int indexInComponent, out ValueChangeEvent vce)
     {
         if (component != null && component is IValueChangeEventsComponent)
         {
             (component as IValueChangeEventsComponent).GetValueChangeEvents(out ValueChangeEvent[] vces);
-            if (indexInComponent >= 0 && indexInComponent < vces.Length) return vces[indexInComponent];
+            if (indexInComponent >= 0 && indexInComponent < vces.Length)
+            {
+                vce = vces[indexInComponent];
+                return true;
+            }
         }
 
-        return null;
+        vce = null;
+        return false;
     }
 
     public static void SetAll(GameObject gameObject)

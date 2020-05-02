@@ -13,8 +13,8 @@ public class Feet : BodyPart, IValueChangeEventsComponent
     public float cornerAngleAdjustmentSpeed = 180f;
 
     [Header("Events")]
-    public ValueChangeEvent IsOnGround = ValueChangeEvent.NewValueChangeEvent<bool>();
-    public ValueChangeEvent IsTumbling = ValueChangeEvent.NewValueChangeEvent<bool>();
+    public ValueChangeEvent IsOnGround = ValueChangeEvent.New<bool>();
+    public ValueChangeEvent IsTumbling = ValueChangeEvent.New<bool>();
 
     private FlatGroundProbe groundProbe;
     //private Joint2D groundJoint;
@@ -27,10 +27,11 @@ public class Feet : BodyPart, IValueChangeEventsComponent
     public Vector2 GroundVelocity { get => groundRigidbody == null ? Vector2.zero : groundRigidbody.GetPointVelocity(this.transform.position); }
     public float GroundAngularVelocity { get => groundRigidbody == null ? 0f : groundRigidbody.angularVelocity; }
     
-    public void SetValueChangeEventsID()
+    public int SetValueChangeEventsID()
     {
         IsOnGround.SetID("IsOnGround", this, 0);
         IsTumbling.SetID("IsTumbling", this, 1);
+        return 2;
     }
 
     public int GetValueChangeEvents(out ValueChangeEvent[] vces)
@@ -41,8 +42,8 @@ public class Feet : BodyPart, IValueChangeEventsComponent
 
     public void EnslaveValueChangeEvents(bool enslave)
     {
-        IsOnGround.Enslave<bool>(enslave);
-        IsTumbling.Enslave<bool>(enslave);
+        IsOnGround.Enslave(enslave);
+        IsTumbling.Enslave(enslave);
     }
 
     void Awake()

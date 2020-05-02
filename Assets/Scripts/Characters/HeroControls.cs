@@ -14,26 +14,27 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
     private Pilot pilot;
     private Pilotable.PilotingType currentPilotingType;
 
-    public ValueChangeEvent AxisInput = ValueChangeEvent.NewValueChangeEvent<int>();
-    public ValueChangeEvent Action1Input = ValueChangeEvent.NewTriggerEvent();
-    public ValueChangeEvent Action2Input = ValueChangeEvent.NewTriggerEvent();
-    
+    public ValueChangeEvent AxisInput = ValueChangeEvent.New<int>();
+    public ValueChangeEvent Action1Input = ValueChangeEvent.New<trigger>();
+    public ValueChangeEvent Action2Input = ValueChangeEvent.New<trigger>();
+
     public int GetValueChangeEvents(out ValueChangeEvent[] vces)
     {
         vces = new ValueChangeEvent[] { AxisInput, Action1Input, Action2Input };
         return vces.Length;
     }
 
-    public void SetValueChangeEventsID()
+    public int SetValueChangeEventsID()
     {
         AxisInput.SetID("Axis1Input", this, 0);
         Action1Input.SetID("Action1Input", this, 1);
         Action2Input.SetID("Action2Input", this, 2);
+        return 3;
     }
 
     public void EnslaveValueChangeEvents(bool enslave)
     {
-        AxisInput.Enslave<int>(enslave);
+        AxisInput.Enslave(enslave);
         Action1Input.Enslave(enslave);
         Action2Input.Enslave(enslave);
     }
@@ -138,13 +139,9 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
             if (useButtonControls) GetButtonControl();
             else GetTouchControl();
 
-            if (Action1Input.Invoked) blob.jumper.Jump();
+            //if (Action1Input.Invoked) blob.jumper.Jump();
 
             blob.spinner.Spin(AxisInput.GetValue<int>());
-
-            Action1Input.Invoked = false;
-            Action2Input.Invoked = false;
-            AxisInput.Invoked = false;
             yield return null;
         }
 
@@ -161,14 +158,11 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
             else GetTouchControl();
 
             bot.walker.Walk(AxisInput.GetValue<int>());
-            if (Action1Input.Invoked) bot.jumper.Jump();
+            //if (Action1Input.Invoked) bot.jumper.Jump();
             bot.spinner.Spin(AxisInput.GetValue<int>());
 
-            if (Action2Input.Invoked) pilot.ExitCurrentVehicle();
+            //if (Action2Input.Invoked) pilot.ExitCurrentVehicle();
 
-            Action1Input.Invoked = false;
-            Action2Input.Invoked = false;
-            AxisInput.Invoked = false;
             yield return null;
         }
 
@@ -186,7 +180,7 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
             if (useButtonControls) GetButtonControl();
             else GetTouchControl();
 
-            if (AxisInput.Invoked)
+            if (false) //AxisInput.Invoked)
             {
                 int axis = AxisInput.GetValue<int>();
                 if (axis != 0)
@@ -210,12 +204,9 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
             {
                 bug.walker.Walk(directionBuffer);
                 if (bug.gearBox.CurrentGear.GetValue<int>() < gearBuffer) bug.gearBox.GearUp();
-                if (Action2Input.Invoked) pilot.ExitCurrentVehicle();
+                //if (Action2Input.Invoked) pilot.ExitCurrentVehicle();
             }
 
-            Action1Input.Invoked = false;
-            Action2Input.Invoked = false;
-            AxisInput.Invoked = false;
             yield return null;
         }
 
@@ -231,14 +222,11 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
             if (useButtonControls) GetButtonControl();
             else GetTouchControl();
 
-            if (Action1Input.Invoked) jet.jumper.Jump();
+            //if (Action1Input.Invoked) jet.jumper.Jump();
             jet.spinner.Spin(AxisInput.GetValue<int>());
 
-            if (Action2Input.Invoked) pilot.ExitCurrentVehicle();
+            //if (Action2Input.Invoked) pilot.ExitCurrentVehicle();
             
-            Action1Input.Invoked = false;
-            Action2Input.Invoked = false;
-            AxisInput.Invoked = false;
             yield return null;
         }
 
@@ -254,14 +242,11 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
             if (useButtonControls) GetButtonControl();
             else GetTouchControl();
 
-            if (Action1Input.Invoked) buzz.jumper.Jump();
+            //if (Action1Input.Invoked) buzz.jumper.Jump();
             buzz.spinner.Spin(AxisInput.GetValue<int>());
 
-            if (Action2Input.Invoked) pilot.ExitCurrentVehicle();
-
-            Action1Input.Invoked = false;
-            Action2Input.Invoked = false;
-            AxisInput.Invoked = false;
+            //if (Action2Input.Invoked) pilot.ExitCurrentVehicle();
+            
             yield return null;
         }
 

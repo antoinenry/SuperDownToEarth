@@ -603,6 +603,12 @@ MonoBehaviour:
   useCheckPointTransform: 0
   pilotableConfig:
     type: 6
+  IsDead:
+    ID:
+      name: 
+      component: {fileID: 0}
+      indexInComponent: 0
+    mastersID: []
   rb2d: {fileID: 54008003}
   render: {fileID: 955425433}
   isFree: 0
@@ -1577,6 +1583,12 @@ MonoBehaviour:
   useCheckPointTransform: 0
   pilotableConfig:
     type: 5
+  IsDead:
+    ID:
+      name: 
+      component: {fileID: 0}
+      indexInComponent: 0
+    mastersID: []
   rb2d: {fileID: 169461412}
   render: {fileID: 1944147116}
   isFree: 0
@@ -3134,6 +3146,12 @@ MonoBehaviour:
   useCheckPointTransform: 0
   pilotableConfig:
     type: 4
+  IsDead:
+    ID:
+      name: 
+      component: {fileID: 0}
+      indexInComponent: 0
+    mastersID: []
   rb2d: {fileID: 512554179}
   render: {fileID: 1509083792}
   isFree: 0
@@ -6802,6 +6820,12 @@ MonoBehaviour:
   useCheckPointTransform: 0
   pilotableConfig:
     type: 3
+  IsDead:
+    ID:
+      name: 
+      component: {fileID: 0}
+      indexInComponent: 0
+    mastersID: []
   rb2d: {fileID: 948060738}
   render: {fileID: 1202195631}
   isFree: 0
@@ -7091,7 +7115,7 @@ MonoBehaviour:
     - name: onJump
       component: {fileID: 1187898416}
       indexInComponent: 0
-  BooleanParameters:
+  BootParameters:
   - ID:
       name: isLeaning
       component: {fileID: 954675470}
@@ -7126,7 +7150,7 @@ MonoBehaviour:
     - name: IsPilotingVehicle
       component: {fileID: 433034813}
       indexInComponent: 0
-  IntegerParameters:
+  IntParameters:
   - ID:
       name: groundFlatness
       component: {fileID: 954675470}
@@ -7138,13 +7162,13 @@ MonoBehaviour:
   FloatParameters: []
   triggerParameterNames:
   - onJump
-  booleanParameterNames:
+  boolParameterNames:
   - isLeaning
   - isOnGround
   - isInFluid
   - isFalling
   - isPilotingVehicle
-  integerParameterNames:
+  intParameterNames:
   - groundFlatness
   floatParameterNames: []
 --- !u!95 &954675471
@@ -8657,25 +8681,19 @@ MonoBehaviour:
       name: OnLeverMove
       component: {fileID: 1106560697}
       indexInComponent: 0
-    mastersID:
-    - name: OnLeverMove
-      component: {fileID: 1547857612}
-      indexInComponent: 0
-  BooleanParameters: []
-  IntegerParameters:
+    mastersID: []
+  BootParameters: []
+  IntParameters:
   - ID:
       name: LeverActionDirection
       component: {fileID: 1106560697}
       indexInComponent: 1
-    mastersID:
-    - name: LeverActionDirection
-      component: {fileID: 1547857612}
-      indexInComponent: 1
+    mastersID: []
   FloatParameters: []
   triggerParameterNames:
   - OnLeverMove
-  booleanParameterNames: []
-  integerParameterNames:
+  boolParameterNames: []
+  intParameterNames:
   - LeverActionDirection
   floatParameterNames: []
 --- !u!95 &1106560701
@@ -9273,6 +9291,12 @@ MonoBehaviour:
   useCheckPointTransform: 0
   pilotableConfig:
     type: 6
+  IsDead:
+    ID:
+      name: 
+      component: {fileID: 0}
+      indexInComponent: 0
+    mastersID: []
   rb2d: {fileID: 1169577032}
   render: {fileID: 985299722}
   isFree: 0
@@ -9500,6 +9524,12 @@ MonoBehaviour:
   useCheckPointTransform: 0
   pilotableConfig:
     type: 1
+  IsDead:
+    ID:
+      name: IsDead
+      component: {fileID: 1187898413}
+      indexInComponent: 0
+    mastersID: []
   rb2d: {fileID: 1187898421}
   render: {fileID: 954675469}
   isFree: 0
@@ -10379,6 +10409,12 @@ MonoBehaviour:
   useCheckPointTransform: 0
   pilotableConfig:
     type: 6
+  IsDead:
+    ID:
+      name: 
+      component: {fileID: 0}
+      indexInComponent: 0
+    mastersID: []
   rb2d: {fileID: 1279257994}
   render: {fileID: 2124687243}
   isFree: 0
@@ -10766,6 +10802,12 @@ MonoBehaviour:
   useCheckPointTransform: 0
   pilotableConfig:
     type: 6
+  IsDead:
+    ID:
+      name: 
+      component: {fileID: 0}
+      indexInComponent: 0
+    mastersID: []
   rb2d: {fileID: 1305308467}
   render: {fileID: 2069116034}
   isFree: 0
@@ -11964,14 +12006,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62ef7cf91dceaa4458cf8e3fd2434855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leverPosition: 0
   numPositions: 2
   angleRange: 45
   reactionDelay: 1
   rotationSpeed: 200
-  OnLeverMove:
+  LeverPosition:
     ID:
-      name: OnLeverMove
+      name: LeverPosition
       component: {fileID: 1547857612}
       indexInComponent: 0
     mastersID: []
@@ -17856,6 +17897,12 @@ MonoBehaviour:
   useCheckPointTransform: 0
   pilotableConfig:
     type: 2
+  IsDead:
+    ID:
+      name: 
+      component: {fileID: 0}
+      indexInComponent: 0
+    mastersID: []
   rb2d: {fileID: 8251557782544366449}
   render: {fileID: 8251557783088937104}
   isFree: 0

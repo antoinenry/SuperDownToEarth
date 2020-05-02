@@ -10,7 +10,7 @@ public class LocalGravity : BodyPart, IValueChangeEventsComponent
     public float gravityForce;
     public float angleOffset;
 
-    public ValueChangeEvent IsFalling = ValueChangeEvent.NewValueChangeEvent<bool>();
+    public ValueChangeEvent IsFalling = ValueChangeEvent.New<bool>();
     
     public float FallSpeed { get; private set; }
 
@@ -20,14 +20,15 @@ public class LocalGravity : BodyPart, IValueChangeEventsComponent
         return vces.Length;
     }
 
-    public void SetValueChangeEventsID()
+    public int SetValueChangeEventsID()
     {
         IsFalling.SetID("isFalling", this, 0);
+        return 1;
     }
 
     public void EnslaveValueChangeEvents(bool enslave)
     {
-        IsFalling.Enslave<bool>(enslave);
+        IsFalling.Enslave(enslave);
     }
 
     private void Awake()

@@ -19,7 +19,7 @@ public class FlatGroundProbe : BodyPart, IValueChangeEventsComponent
     public bool BackDownCollision { get => backDown != null && backDown.IsTriggered.Value; }
     public bool BackUpCollision { get => backUp != null && backUp.IsTriggered.Value; }
 
-    public ValueChangeEvent GroundFlatness = ValueChangeEvent.NewValueChangeEvent<int>();
+    public ValueChangeEvent GroundFlatness = ValueChangeEvent.New<int>();
 
     public int GetValueChangeEvents(out ValueChangeEvent[] vces)
     {
@@ -27,14 +27,15 @@ public class FlatGroundProbe : BodyPart, IValueChangeEventsComponent
         return vces.Length;
     }
 
-    public void SetValueChangeEventsID()
+    public int SetValueChangeEventsID()
     {
         GroundFlatness.SetID("GroundFlatness", this, 0);
+        return 1;
     }
 
     public void EnslaveValueChangeEvents(bool enslave)
     {
-        GroundFlatness.Enslave<int>(enslave);
+        GroundFlatness.Enslave(enslave);
     }
 
     private void Start()

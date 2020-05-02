@@ -26,7 +26,7 @@ public class ValueChangeEventDrawer : PropertyDrawer
         else
         {
 
-            ValueChangeEvent valueChangeEvent = ValueChangeEventID.GetValueChangeEvent(ID_component, ID_indexInComponent);
+            ValueChangeEventID.GetValueChangeEvent(ID_component, ID_indexInComponent, out ValueChangeEvent valueChangeEvent);
             Draw(position, valueChangeEvent, label);            
         }        
 

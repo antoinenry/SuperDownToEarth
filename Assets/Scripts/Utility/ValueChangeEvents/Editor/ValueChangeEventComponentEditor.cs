@@ -9,8 +9,6 @@ public struct ValueChangeEventComponentEditor
 
     public ValueChangeEventComponentEditor(Component comp, GameObject lastSelected)
     {
-        Debug.Log("New vceComponent editor");
-
         if (comp is IValueChangeEventsComponent)
         {
             (comp as IValueChangeEventsComponent).SetValueChangeEventsID();

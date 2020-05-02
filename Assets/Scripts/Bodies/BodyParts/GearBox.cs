@@ -8,9 +8,9 @@ public class GearBox : BodyPart, IValueChangeEventsComponent
     public float[] speed;
     [Min(0f)] public float switchDelay;
 
-    public ValueChangeEvent CurrentGear = ValueChangeEvent.NewValueChangeEvent<int>();
-    public ValueChangeEvent OnGearUp = ValueChangeEvent.NewTriggerEvent();
-    public ValueChangeEvent OnGearDown = ValueChangeEvent.NewTriggerEvent();
+    public ValueChangeEvent CurrentGear = ValueChangeEvent.New<int>();
+    public ValueChangeEvent OnGearUp = ValueChangeEvent.New<trigger>();
+    public ValueChangeEvent OnGearDown = ValueChangeEvent.New<trigger>();
 
     private float timeSinceLastSwitch;
     
@@ -20,17 +20,17 @@ public class GearBox : BodyPart, IValueChangeEventsComponent
         return vces.Length;
     }
 
-    public void SetValueChangeEventsID()
+    public int SetValueChangeEventsID()
     {
         CurrentGear.SetID("CurrentGear", this, 0);
         OnGearUp.SetID("OnGearUp", this, 1);
         OnGearDown.SetID("OnGearDown", this, 2);
-
+        return 3;
     }
 
     public void EnslaveValueChangeEvents(bool enslave)
     {
-        CurrentGear.Enslave<int>(enslave);
+        CurrentGear.Enslave(enslave);
         OnGearUp.Enslave(enslave);
         OnGearDown.Enslave(enslave);
     }
@@ -47,7 +47,7 @@ public class GearBox : BodyPart, IValueChangeEventsComponent
         if(timeSinceLastSwitch >= switchDelay)
         {
             CurrentGear.SetValue(CurrentGear.GetValue<int>() + 1);
-            if (CurrentGear.Invoked)
+            if (false)// (CurrentGear.Invoked)
             {
                 OnGearUp.Invoke();
                 timeSinceLastSwitch = 0f;
@@ -61,7 +61,7 @@ public class GearBox : BodyPart, IValueChangeEventsComponent
         if (timeSinceLastSwitch >= switchDelay)
         {
             CurrentGear.SetValue(CurrentGear.GetValue<int>() - 1);
-            if (CurrentGear.Invoked)
+            if (false)// (CurrentGear.Invoked)
             {
                 OnGearUp.Invoke();
                 timeSinceLastSwitch = 0f;

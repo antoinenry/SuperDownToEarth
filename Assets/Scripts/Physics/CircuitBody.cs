@@ -18,7 +18,7 @@ public class CircuitBody : MonoBehaviour, IValueChangeEventsComponent
     private Vector2 nextPoint;
     private bool isMoving;
 
-    public ValueChangeEvent Step = ValueChangeEvent.NewValueChangeEvent<int>();
+    public ValueChangeEvent Step = ValueChangeEvent.New<int>();
 
     public int GetValueChangeEvents(out ValueChangeEvent[] vces)
     {
@@ -26,14 +26,15 @@ public class CircuitBody : MonoBehaviour, IValueChangeEventsComponent
         return vces.Length;
     }
 
-    public void SetValueChangeEventsID()
+    public int SetValueChangeEventsID()
     {
         Step.SetID("Step", this, 0);
+        return 1;
     }
 
     public void EnslaveValueChangeEvents(bool enslave)
     {
-        Step.Enslave<int>(enslave);
+        Step.Enslave(enslave);
     }
 
     public void OnDrawGizmosSelected()
@@ -58,8 +59,6 @@ public class CircuitBody : MonoBehaviour, IValueChangeEventsComponent
             Step.SetValue<int>(currentStep);
             transform.position = circuit.GetPoint(currentStep);
         }
-
-        Step.Invoked = false;
     }
 
     private void OnEnable()

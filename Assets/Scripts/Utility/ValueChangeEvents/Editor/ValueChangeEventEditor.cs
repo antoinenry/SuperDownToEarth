@@ -12,7 +12,6 @@ public class ValueChangeEventEditor
 
     public ValueChangeEventEditor(ValueChangeEvent vce)
     {
-        Debug.Log("New vce editor");
         valueChangeEvent = vce;
         showMasters = false;
         vceExplorer = null;
@@ -158,7 +157,7 @@ public class ValueChangeEventEditor
         }
 
 
-        if (vce is TriggerEvent) ValueChangeEventGUI(rect, vce as TriggerEvent);
+        if (vce is ValueChangeEvent<trigger>) ValueChangeEventGUI(rect, vce as ValueChangeEvent<trigger>);
         else if (vce is ValueChangeEvent<bool>) ValueChangeEventGUI(rect, vce as ValueChangeEvent<bool>);
         else if (vce is ValueChangeEvent<int>) ValueChangeEventGUI(rect, vce as ValueChangeEvent<int>);
         else if (vce is ValueChangeEvent<float>) ValueChangeEventGUI(rect, vce as ValueChangeEvent<float>);
@@ -168,11 +167,11 @@ public class ValueChangeEventEditor
         else EditorGUILayout.HelpBox("Inspector for ValueChangeEvent<" + vce.GetValueType().Name + "> is not implemented", MessageType.Warning);
     }
 
-    private static void ValueChangeEventGUI(Rect rect, TriggerEvent vce)
+    private static void ValueChangeEventGUI(Rect rect, ValueChangeEvent<trigger> vce)
     {
         Rect buttonRect = rect;
         rect.width = 20f;
-        if (GUI.Button(rect, " ")) vce.ForceInvoke();
+        if (GUI.Button(rect, " ")) vce.InvokeEvent();
     }
 
     private static void ValueChangeEventGUI(Rect rect, ValueChangeEvent<bool> vce)

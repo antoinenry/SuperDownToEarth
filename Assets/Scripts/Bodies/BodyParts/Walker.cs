@@ -17,7 +17,7 @@ public class Walker : BodyPart, IValueChangeEventsComponent
     private GearBox gearBox;
     private bool switchingGears;
 
-    public ValueChangeEvent IsWalking = ValueChangeEvent.NewValueChangeEvent<bool>();
+    public ValueChangeEvent IsWalking = ValueChangeEvent.New<bool>();
 
     public int GetValueChangeEvents(out ValueChangeEvent[] vces)
     {
@@ -25,14 +25,15 @@ public class Walker : BodyPart, IValueChangeEventsComponent
         return vces.Length;
     }
 
-    public void SetValueChangeEventsID()
+    public int SetValueChangeEventsID()
     {
         IsWalking.SetID("IsWalking", this, 0);
+        return 1;
     }
 
     public void EnslaveValueChangeEvents(bool enslave)
     {
-        IsWalking.Enslave<bool>(enslave);
+        IsWalking.Enslave(enslave);
     }
 
     private void Awake()

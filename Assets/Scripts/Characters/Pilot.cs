@@ -13,7 +13,7 @@ public class Pilot : MonoBehaviour, IValueChangeEventsComponent
     public Vehicle CurrentVehicle { get; private set; }
     public Body PilotedBody { get => IsPilotingVehicle.GetValue<bool>() ? CurrentVehicle : body; }
     
-    public ValueChangeEvent IsPilotingVehicle = ValueChangeEvent.NewValueChangeEvent<bool>();
+    public ValueChangeEvent IsPilotingVehicle = ValueChangeEvent.New<bool>();
 
     public int GetValueChangeEvents(out ValueChangeEvent[] vces)
     {
@@ -21,20 +21,21 @@ public class Pilot : MonoBehaviour, IValueChangeEventsComponent
         return vces.Length;
     }
 
-    public void SetValueChangeEventsID()
+    public int SetValueChangeEventsID()
     {
         IsPilotingVehicle.SetID("IsPilotingVehicle", this, 0);
+        return 1;
     }
 
     public void EnslaveValueChangeEvents(bool enslave)
     {
-        IsPilotingVehicle.Enslave<bool>(enslave);
+        IsPilotingVehicle.Enslave(enslave);
     }
 
     private void Start()
     {
         if (body != null)
-            body.IsDead.AddListener(OnDeath);
+            body.IsDead.AddListener<bool>(OnDeath);
 
         if (transform.parent != null)
         {
@@ -74,7 +75,7 @@ public class Pilot : MonoBehaviour, IValueChangeEventsComponent
 
         vehicle.SetBodyInside(body);
         vehicle.IsFull.AddListener<bool>(OnVehicleIsFullChange);
-        vehicle.IsDead.AddListener(OnVehicleDestruction);
+        vehicle.IsDead.AddListener<bool>(OnVehicleDestruction);
 
         foreach (BodyPart part in transferPartsToVehicle)
             part.AttachedBody = vehicle;
@@ -120,7 +121,7 @@ public class Pilot : MonoBehaviour, IValueChangeEventsComponent
             }
 
             CurrentVehicle.IsFull.RemoveListener<bool>(OnVehicleIsFullChange);
-            CurrentVehicle.IsDead.RemoveListener(OnVehicleDestruction);
+            CurrentVehicle.IsDead.RemoveListener<bool>(OnVehicleDestruction);
             CurrentVehicle.SetBodyInside(null);
 
             foreach (BodyPart part in transferPartsToVehicle)

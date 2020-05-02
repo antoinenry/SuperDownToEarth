@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Body : SaveComponent
+public class Body : SaveComponent, IValueChangeEventsComponent
 {
     [Header("Body")]
     public Pilotable pilotableConfig;
 
-    public ValueChangeEvent<bool> IsDead;
+    public ValueChangeEvent IsDead = ValueChangeEvent.New<bool>();
 
     public BodyPart[] parts { get; private set; }
 
@@ -23,6 +23,23 @@ public class Body : SaveComponent
         protected set { }
     }
 
+    public virtual int GetValueChangeEvents(out ValueChangeEvent[] vces)
+    {
+        vces = new ValueChangeEvent[] { IsDead };
+        return vces.Length;
+    }
+
+    public virtual int SetValueChangeEventsID()
+    {
+        IsDead.SetID("IsDead", this, 0);
+        return 1;
+    }
+
+    public virtual void EnslaveValueChangeEvents(bool enslave)
+    {
+        IsDead.Enslave(enslave);
+    }
+
     private void Awake()
     {
         Init();
@@ -31,7 +48,6 @@ public class Body : SaveComponent
     protected virtual void Init()
     {
         SaveSystem.InitSaveSystem();
-        IsDead = new ValueChangeEvent<bool>(false);
 
         parts = GetComponentsInChildren<BodyPart>(true);
         pilotableConfig = pilotableConfig.New(parts);
@@ -39,14 +55,14 @@ public class Body : SaveComponent
 
     public virtual void Kill()
     {
-        IsDead.Value = true;
+        IsDead.SetValue(true);
         foreach (BodyPart part in parts)
             part.enabled = false;
     }
 
     public virtual void Respawn()
     {
-        IsDead.Value = false;
+        IsDead.SetValue(false);
         foreach (BodyPart part in parts)
             part.enabled = true;
     }
@@ -54,7 +70,7 @@ public class Body : SaveComponent
     {
         //Debug.Log("CheckPoint save " + name);
 
-        if (IsDead.Value == true)
+        if (IsDead.GetValue<bool>() == true)
         {
             Destroy(this.gameObject);
             return;
@@ -75,10 +91,5 @@ public class Body : SaveComponent
         base.OnCheckPointLoad(checkPoint);
         yield return new WaitForFixedUpdate();
         Respawn();
-    }
-
-    private void OnDestroy()
-    {
-        IsDead.RemoveAllListeners();
     }
 }

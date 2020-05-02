@@ -5,6 +5,6 @@ using UnityEngine;
 public interface IValueChangeEventsComponent
 {
     int GetValueChangeEvents(out ValueChangeEvent[] vces);
-    void SetValueChangeEventsID();
+    int SetValueChangeEventsID();
     void EnslaveValueChangeEvents(bool enslave);
 }

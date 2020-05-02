@@ -13,34 +13,14 @@ public class ValueChangeEvent
     public string Name { get => ID.name; }
     public Component Component { get => ID.component; }
 
-    public bool Invoked
-    {
-        get
-        {
-            if (runtimeEvent == null) return false;
-            else return runtimeEvent.GetInvoked();
-        }
-        set
-        {
-            if (runtimeEvent != null) runtimeEvent.SetInvoked(value);
-        }
-    }
-
     public int MasterCount { get => mastersID == null ? 0 : mastersID.Length; }
     public int RuntimeMasterCount { get => runtimeEvent == null ? 0 : runtimeEvent.GetMasterCount(); }
     public Type ValueType { get => runtimeEvent == null ? (Type)Type.Missing : runtimeEvent.GetValueType(); }
     
-    public static ValueChangeEvent NewTriggerEvent()
-    {
-        ValueChangeEvent vce = new ValueChangeEvent();
-        vce.runtimeEvent = new TriggerEvent();
-        return vce;
-    }
+    private ValueChangeEvent() { }
 
-    public static ValueChangeEvent NewValueChangeEvent<T>()
+    public static ValueChangeEvent New<T>()
     {
-        if (typeof(T) == typeof(trigger)) return NewTriggerEvent();
-
         ValueChangeEvent vce = new ValueChangeEvent();
         vce.runtimeEvent = new ValueChangeEvent<T>();
         return vce;
@@ -56,41 +36,48 @@ public class ValueChangeEvent
     public void Invoke()
     {
         if (runtimeEvent != null)
-            runtimeEvent.ForceInvoke();
+            runtimeEvent.InvokeEvent();
     }
 
     public T GetValue<T>()
     {
-        if (runtimeEvent != null && runtimeEvent is ValueChangeEvent<T>) return (runtimeEvent as ValueChangeEvent<T>).Value;
-        if (runtimeEvent is ValueChangeEvent<T> == false) Debug.LogError("ValueChangeEvent type mismatch.");
+        if (runtimeEvent != null)
+        {
+            if (runtimeEvent is ValueChangeEvent<T>) return (runtimeEvent as ValueChangeEvent<T>).Value;
+            else Debug.LogError("ValueChangeEvent type mismatch.");
+        }
         return default(T);        
     }
 
     public void SetValue<T>(T value)
     {
-        if (runtimeEvent != null && runtimeEvent is ValueChangeEvent<T>) (runtimeEvent as ValueChangeEvent<T>).Value = value;
-        if (runtimeEvent is ValueChangeEvent<T> == false) Debug.LogError("ValueChangeEvent type mismatch.");
+        if (runtimeEvent != null)
+        {
+            if (runtimeEvent is ValueChangeEvent<T>) (runtimeEvent as ValueChangeEvent<T>).Value = value;
+            else Debug.LogError("ValueChangeEvent type mismatch.");
+        }
     }
 
     public void AddListener(UnityAction listener)
     {
-        if (runtimeEvent == null) runtimeEvent = new TriggerEvent();
-        if (runtimeEvent is TriggerEvent) (runtimeEvent as TriggerEvent).AddListener(listener);
-        else Debug.LogError("ValueChangeEvent type mismatch.");
+        if (runtimeEvent != null) runtimeEvent.AddListener(listener);
+        else Debug.LogError("Runtime event is null.");
     }
 
     public void AddListener<T>(UnityAction<T> listener)
     {
-        if (runtimeEvent == null) runtimeEvent = new ValueChangeEvent<T>();
-        if (runtimeEvent is ValueChangeEvent<T>) (runtimeEvent as ValueChangeEvent<T>).AddListener(listener);
-        else Debug.LogError("ValueChangeEvent type mismatch.");
+        if (runtimeEvent != null)
+        {
+            if (runtimeEvent is ValueChangeEvent<T>) (runtimeEvent as ValueChangeEvent<T>).AddListener(listener);
+            else Debug.LogError("ValueChangeEvent type mismatch.");
+        }
+        else Debug.LogError("Runtime event is null.");
     }
 
     public void RemoveListener(UnityAction listener)
     {
-        if (runtimeEvent == null) return;
-        if (runtimeEvent is TriggerEvent) (runtimeEvent as TriggerEvent).RemoveListener(listener);
-        else Debug.LogError("ValueChangeEvent type mismatch.");
+        if (runtimeEvent != null) runtimeEvent.RemoveListener(listener);
+        else Debug.LogError("Runtime event is null.");
     }
 
     public void RemoveListener<T>(UnityAction<T> listener)
@@ -98,11 +85,6 @@ public class ValueChangeEvent
         if (runtimeEvent == null) return;
         if (runtimeEvent is ValueChangeEvent<T>) (runtimeEvent as ValueChangeEvent<T>).RemoveListener(listener);
         else Debug.LogError("ValueChangeEvent type mismatch.");
-    }
-
-    public void Enslave<T>(bool enslave)
-    {
-        Enslave(enslave);
     }
 
     public void Enslave(bool enslave)
@@ -115,10 +97,9 @@ public class ValueChangeEvent
 
         for (int i = 0; i < MasterCount; i++)
         {
-            ValueChangeEvent master = mastersID[i].ValueChangeEvent;
-            bool removeMasterId = (master == null);
+            bool removeMasterId = ValueChangeEventID.GetValueChangeEvent(mastersID[i], out ValueChangeEvent master);
 
-            if (removeMasterId == false)
+            if (removeMasterId == true)
             {
                 if (enslave)
                     runtimeEvent.EnslaveTo(ref master.runtimeEvent, out removeMasterId);
@@ -126,7 +107,7 @@ public class ValueChangeEvent
                     runtimeEvent.FreeFrom(master.runtimeEvent, out removeMasterId);
             }
             else
-                Debug.LogWarning("Master is null.");
+                Debug.LogWarning(master == null ? "Master is null." : "ID doesn't match any event.");
 
             if (removeMasterId == true)
             {
@@ -141,14 +122,18 @@ public class ValueChangeEvent
         if (mastersID == null || index < 0 || index > mastersID.Length)
             return null;
         else
-            return mastersID[index].ValueChangeEvent;
+        {
+            ValueChangeEventID.GetValueChangeEvent(mastersID[index], out ValueChangeEvent mastervce);
+            return mastervce;
+        }
     }
 
     public int FindMasterIndex(ValueChangeEvent other)
     {
         if (mastersID != null && other != null)
             for (int i = 0; i < MasterCount; i++)
-                if (mastersID[i].ValueChangeEvent == other) return i;
+                if (ValueChangeEventID.GetValueChangeEvent(mastersID[i], out ValueChangeEvent mastervce) && mastervce == other)
+                    return i;
 
         return -1;
     }
@@ -176,8 +161,8 @@ public class ValueChangeEvent
     {
         if (masterIndex >= 0 && masterIndex < MasterCount)
         {
-            if (runtimeEvent != null)
-                runtimeEvent.FreeFrom(mastersID[masterIndex].ValueChangeEvent.runtimeEvent, out bool typeMismatch);
+            if (runtimeEvent != null && ValueChangeEventID.GetValueChangeEvent(mastersID[masterIndex], out ValueChangeEvent mastervce))
+                runtimeEvent.FreeFrom(mastervce.runtimeEvent, out bool typeMismatch);
 
             for (int i = masterIndex; i < MasterCount - 1; i++)
                 mastersID[i] = mastersID[i + 1];

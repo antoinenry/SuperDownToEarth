@@ -14,8 +14,8 @@ public class Lever : MonoBehaviour, IValueChangeEventsComponent
     private Rigidbody2D rb2D;
     private float leverActionTimer;
 
-    public ValueChangeEvent LeverPosition = ValueChangeEvent.NewValueChangeEvent<int>();
-    public ValueChangeEvent LeverActionDirection = ValueChangeEvent.NewValueChangeEvent<int>();
+    public ValueChangeEvent LeverPosition = ValueChangeEvent.New<int>();
+    public ValueChangeEvent LeverActionDirection = ValueChangeEvent.New<int>();
     
     public int GetValueChangeEvents(out ValueChangeEvent[] vces)
     {
@@ -23,16 +23,17 @@ public class Lever : MonoBehaviour, IValueChangeEventsComponent
         return vces.Length;
     }
 
-    public void SetValueChangeEventsID()
+    public int SetValueChangeEventsID()
     {
         LeverPosition.SetID("LeverPosition", this, 0);
         LeverActionDirection.SetID("LeverActionDirection", this, 1);
+        return 2;
     }
 
     public void EnslaveValueChangeEvents(bool enslave)
     {
-        LeverPosition.Enslave<int>(enslave);
-        LeverActionDirection.Enslave<int>(enslave);
+        LeverPosition.Enslave(enslave);
+        LeverActionDirection.Enslave(enslave);
     }
 
     private void Awake()
@@ -53,8 +54,6 @@ public class Lever : MonoBehaviour, IValueChangeEventsComponent
                 leverActionTimer = 0f;
             }
         }
-
-        LeverActionDirection.Invoked = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -96,7 +95,5 @@ public class Lever : MonoBehaviour, IValueChangeEventsComponent
 
         rb2D.MoveRotation(wantedRotation);
         rb2D.angularVelocity = 0f;
-
-        LeverPosition.Invoked = false;
     }
 }

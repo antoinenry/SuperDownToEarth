@@ -8,9 +8,10 @@ public class ValueChangeEvent<T> : UnityEvent<T>, IValueChangeEvent
 {
     private T _value;
     private ValueChangeEvent<T>[] masters;
-    private bool invoked;
 
-    //public string Name { get; private set; }
+    private UnityEvent OnInvoke;
+
+    public UnityAction InvokeEventAction { get; private set; }
     public UnityAction<T> SetValueAction { get; private set; }
 
     public T Value
@@ -23,7 +24,7 @@ public class ValueChangeEvent<T> : UnityEvent<T>, IValueChangeEvent
                 if (value != null)
                 {
                     _value = value;
-                    ForceInvoke();
+                    InvokeEvent();
                 }
 
                 return;
@@ -32,36 +33,39 @@ public class ValueChangeEvent<T> : UnityEvent<T>, IValueChangeEvent
             if (_value.Equals(value) == false)
             {
                 _value = value;
-                ForceInvoke();
+                InvokeEvent();
             }
         }
     }
 
-    public ValueChangeEvent(T initValue = default(T), string name = "NewValueChangeEvent")
+    public ValueChangeEvent()
     {
+        OnInvoke = new UnityEvent();
+        InvokeEventAction = new UnityAction(InvokeEvent);
         SetValueAction = new UnityAction<T>(x => Value = x);
-        _value = initValue;
+        
         masters = null;
     }
 
-    public bool GetInvoked()
-    {
-        return invoked;
-    }
-
-    public void SetInvoked(bool value)
-    {
-        invoked = value;
-    }
-
-    public void ForceInvoke()
+    public void InvokeEvent()
     {
         Invoke(_value);
+        OnInvoke.Invoke();
     }
 
     public Type GetValueType()
     {
         return typeof(T);
+    }
+
+    public void AddListener(UnityAction listener)
+    {
+        OnInvoke.AddListener(listener);
+    }
+
+    public void RemoveListener(UnityAction listener)
+    {
+        OnInvoke.RemoveListener(listener);
     }
 
     public int GetMasterCount()
