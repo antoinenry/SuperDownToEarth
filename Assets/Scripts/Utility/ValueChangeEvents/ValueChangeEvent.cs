@@ -130,8 +130,8 @@ public class ValueChangeEvent
 
             if (removeMasterId == true)
             {
+                Debug.LogWarning("Removed master " + mastersID[i].ToString());
                 RemoveMasterAt(i);
-                    Debug.LogWarning("Removed master " + mastersID[i].ToString());
             }
         }
     }

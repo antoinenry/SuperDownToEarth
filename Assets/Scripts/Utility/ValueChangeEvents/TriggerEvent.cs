@@ -81,7 +81,7 @@ public class TriggerEvent : UnityEvent, IValueChangeEvent
     {
         if (other == null)
         {
-            Debug.LogError("Trying to free trigger from null.");
+            Debug.LogWarning("Trying to free trigger from null.");
             typeMismatch = false;
             return;
         }
@@ -95,7 +95,7 @@ public class TriggerEvent : UnityEvent, IValueChangeEvent
         }
         else
         {
-            Debug.LogError("Trying to free trigger from type " + other.GetValueType().Name);
+            Debug.LogWarning("Trying to free trigger from type " + other.GetValueType().Name);
             typeMismatch = true;
         }
     }
