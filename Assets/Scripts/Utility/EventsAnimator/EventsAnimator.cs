@@ -155,7 +155,7 @@ public class EventsAnimator : MonoBehaviour, IValueChangeEventsComponent
                 updated[i] = ValueChangeEvent.New<T>();
             else
             {
-                if (match.runtimeEvent == null) match.runtimeEvent = new ValueChangeEvent<T>();
+                if (match.runtimeEvent == null) match.ResetRuntimeEvent<T>();
                 if (updated[i] != match) updated[i] = match;
             }
         }

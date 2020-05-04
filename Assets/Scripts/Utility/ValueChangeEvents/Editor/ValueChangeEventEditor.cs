@@ -45,7 +45,7 @@ public class ValueChangeEventEditor
             }
 
             EditorHeaderGUI(headerRect);
-            valueChangeEvent.Enslave(true);       
+            //valueChangeEvent.Enslave(true);       
 
             if (hasSlaveEditor) SlaveGUILayout();
         }      
@@ -148,54 +148,46 @@ public class ValueChangeEventEditor
             EditorGUI.HelpBox(rect, "ValueChangeEvent is null.", MessageType.Error);
             return;
         }
+        
+        if (vceTarget.IsValueType<trigger>()) TriggerEventGUI(rect, vceTarget);
+        else if (vceTarget.IsValueType<bool>()) BoolEventGUI(rect, vceTarget);
+        else if (vceTarget.IsValueType<int>()) IntEventGUI(rect, vceTarget);
+        else if (vceTarget.IsValueType<float>()) FloatEventGUI(rect, vceTarget);
+        else if (vceTarget.IsValueType<Vector2>()) Vector2EventGUI(rect, vceTarget);
+        else if (vceTarget.IsValueType<GameObject>()) GameObjectEventGUI(rect, vceTarget);
 
-        IValueChangeEvent vce = vceTarget.runtimeEvent;
-        if (vce == null)
-        {
-            EditorGUI.HelpBox(rect, vceTarget.Name + " runtime event is null.", MessageType.Error);
-            return;
-        }
-
-
-        if (vce is ValueChangeEvent<trigger>) ValueChangeEventGUI(rect, vce as ValueChangeEvent<trigger>);
-        else if (vce is ValueChangeEvent<bool>) ValueChangeEventGUI(rect, vce as ValueChangeEvent<bool>);
-        else if (vce is ValueChangeEvent<int>) ValueChangeEventGUI(rect, vce as ValueChangeEvent<int>);
-        else if (vce is ValueChangeEvent<float>) ValueChangeEventGUI(rect, vce as ValueChangeEvent<float>);
-        else if (vce is ValueChangeEvent<Vector2>) ValueChangeEventGUI(rect, vce as ValueChangeEvent<Vector2>);
-        else if (vce is ValueChangeEvent<GameObject>) ValueChangeEventGUI(rect, vce as ValueChangeEvent<GameObject>);
-
-        else EditorGUILayout.HelpBox("Inspector for ValueChangeEvent<" + vce.GetValueType().Name + "> is not implemented", MessageType.Warning);
+        else EditorGUILayout.HelpBox("Inspector for ValueChangeEvent<" + vceTarget.ValueType.Name + "> is not implemented", MessageType.Warning);
     }
 
-    private static void ValueChangeEventGUI(Rect rect, ValueChangeEvent<trigger> vce)
+    private static void TriggerEventGUI(Rect rect, ValueChangeEvent vce)
     {
         Rect buttonRect = rect;
         rect.width = 20f;
-        if (GUI.Button(rect, " ")) vce.InvokeEvent();
+        if (GUI.Button(rect, " ")) vce.Invoke();
     }
 
-    private static void ValueChangeEventGUI(Rect rect, ValueChangeEvent<bool> vce)
+    private static void BoolEventGUI(Rect rect, ValueChangeEvent vce)
     {
-        vce.Value = EditorGUI.Toggle(rect, vce.Value);
+        vce.SetValue(EditorGUI.Toggle(rect, vce.GetValue<bool>()));
     }
 
-    private static void ValueChangeEventGUI(Rect rect, ValueChangeEvent<int> vce)
+    private static void IntEventGUI(Rect rect, ValueChangeEvent vce)
     {
-        vce.Value = EditorGUI.IntField(rect, vce.Value);
+        vce.SetValue(EditorGUI.IntField(rect, vce.GetValue<int>()));
     }
 
-    private static void ValueChangeEventGUI(Rect rect, ValueChangeEvent<float> vce)
+    private static void FloatEventGUI(Rect rect, ValueChangeEvent vce)
     {
-        vce.Value = EditorGUI.FloatField(rect, vce.Value);
+        vce.SetValue(EditorGUI.FloatField(rect, vce.GetValue<float>()));
     }
 
-    private static void ValueChangeEventGUI(Rect rect, ValueChangeEvent<Vector2> vce)
+    private static void Vector2EventGUI(Rect rect, ValueChangeEvent vce)
     {
-        vce.Value = EditorGUI.Vector2Field(rect, "", vce.Value);
+        vce.SetValue(EditorGUI.Vector2Field(rect, "", vce.GetValue<Vector2>()));
     }
 
-    private static void ValueChangeEventGUI(Rect rect, ValueChangeEvent<GameObject> vce)
+    private static void GameObjectEventGUI(Rect rect, ValueChangeEvent vce)
     {
-        vce.Value = EditorGUI.ObjectField(rect, vce.Value, typeof(GameObject), true) as GameObject;
+        vce.SetValue(EditorGUI.ObjectField(rect, vce.GetValue<GameObject>(), typeof(GameObject), true) as GameObject);
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Muncher : MonoBehaviour
+public class Muncher : MonoBehaviour, IValueChangeEventsComponent
 {
     public List<string> eatableTags;
     [Min(0f)] public float munchDelay;
@@ -14,17 +14,33 @@ public class Muncher : MonoBehaviour
     public float spitForce;
 
     [HideInInspector] public UnityEvent OnMunch;
-    public ValueChangeEvent<bool> IsFull;
+    public ValueChangeEvent IsFull = ValueChangeEvent.New<bool>();
 
     private bool isClosed;
     private List<GameObject> preys;
     private float munchTimer;
     private Collider2D trigger;
 
+    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
+    {
+        vces = new ValueChangeEvent[] { IsFull };
+        return 1;
+    }
+
+    public int SetValueChangeEventsID()
+    {
+        IsFull.SetID("IsFull", this, 0);
+        return 1;
+    }
+
+    public void EnslaveValueChangeEvents(bool enslave)
+    {
+        IsFull.Enslave(enslave);
+    }
+
     private void Awake()
     {
         OnMunch = new UnityEvent();
-        IsFull = new ValueChangeEvent<bool>();
         preys = new List<GameObject>();
         trigger = GetComponent<Collider2D>();
     }
@@ -43,7 +59,7 @@ public class Muncher : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         preys.Add(collision.gameObject);
-        IsFull.Value = true;
+        IsFull.SetValue(true);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -53,7 +69,7 @@ public class Muncher : MonoBehaviour
         preys.Remove(collision.gameObject);
         if (preys.Count == 0)
         {
-            IsFull.Value = false;
+            IsFull.SetValue(false);
             munchTimer = 0f;
         }
     }
@@ -79,7 +95,7 @@ public class Muncher : MonoBehaviour
                 Digest(preys[i]);
         }
         
-        IsFull.Value = false;
+        IsFull.SetValue(false);
         yield return new WaitForSeconds(spitDelay);
 
         foreach (GameObject caughtPrey in preys)

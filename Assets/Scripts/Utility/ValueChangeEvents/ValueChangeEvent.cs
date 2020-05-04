@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.Events;
 
 [Serializable]
-public class ValueChangeEvent
-{
+public partial class ValueChangeEvent
+{    
     public IValueChangeEvent runtimeEvent;
 
     [SerializeField] private ValueChangeEventID ID;
     [SerializeField] private ValueChangeEventID[] mastersID;
-    
+
     public string Name { get => ID.name; }
     public Component Component { get => ID.component; }
 
@@ -17,13 +19,19 @@ public class ValueChangeEvent
     public int RuntimeMasterCount { get => runtimeEvent == null ? 0 : runtimeEvent.GetMasterCount(); }
     public Type ValueType { get => runtimeEvent == null ? (Type)Type.Missing : runtimeEvent.GetValueType(); }
     
-    private ValueChangeEvent() { }
 
+    private ValueChangeEvent() { }
+    
     public static ValueChangeEvent New<T>()
     {
         ValueChangeEvent vce = new ValueChangeEvent();
-        vce.runtimeEvent = new ValueChangeEvent<T>();
+        vce.runtimeEvent = new RuntimeValueChangeEvent<T>();
         return vce;
+    }
+
+    public void ResetRuntimeEvent<T>()
+    {
+        runtimeEvent = new RuntimeValueChangeEvent<T>();
     }
 
     public void SetID(string name, Component component, int indexInComponent)
@@ -39,11 +47,16 @@ public class ValueChangeEvent
             runtimeEvent.InvokeEvent();
     }
 
+    public bool IsValueType<T>()
+    {
+        return ValueType == typeof(T);
+    }
+
     public T GetValue<T>()
     {
         if (runtimeEvent != null)
         {
-            if (runtimeEvent is ValueChangeEvent<T>) return (runtimeEvent as ValueChangeEvent<T>).Value;
+            if (runtimeEvent is RuntimeValueChangeEvent<T>) return (runtimeEvent as RuntimeValueChangeEvent<T>).Value;
             else Debug.LogError("ValueChangeEvent type mismatch.");
         }
         return default(T);        
@@ -53,7 +66,7 @@ public class ValueChangeEvent
     {
         if (runtimeEvent != null)
         {
-            if (runtimeEvent is ValueChangeEvent<T>) (runtimeEvent as ValueChangeEvent<T>).Value = value;
+            if (runtimeEvent is RuntimeValueChangeEvent<T>) (runtimeEvent as RuntimeValueChangeEvent<T>).Value = value;
             else Debug.LogError("ValueChangeEvent type mismatch.");
         }
     }
@@ -68,7 +81,7 @@ public class ValueChangeEvent
     {
         if (runtimeEvent != null)
         {
-            if (runtimeEvent is ValueChangeEvent<T>) (runtimeEvent as ValueChangeEvent<T>).AddListener(listener);
+            if (runtimeEvent is RuntimeValueChangeEvent<T>) (runtimeEvent as RuntimeValueChangeEvent<T>).AddListener(listener);
             else Debug.LogError("ValueChangeEvent type mismatch.");
         }
         else Debug.LogError("Runtime event is null.");
@@ -83,7 +96,7 @@ public class ValueChangeEvent
     public void RemoveListener<T>(UnityAction<T> listener)
     {
         if (runtimeEvent == null) return;
-        if (runtimeEvent is ValueChangeEvent<T>) (runtimeEvent as ValueChangeEvent<T>).RemoveListener(listener);
+        if (runtimeEvent is RuntimeValueChangeEvent<T>) (runtimeEvent as RuntimeValueChangeEvent<T>).RemoveListener(listener);
         else Debug.LogError("ValueChangeEvent type mismatch.");
     }
 

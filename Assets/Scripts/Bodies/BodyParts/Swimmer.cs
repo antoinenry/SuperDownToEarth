@@ -3,24 +3,40 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-public class Swimmer : BodyPart
+public class Swimmer : BodyPart, IValueChangeEventsComponent
 {
     public LayerMask floatLayer;
 
-    public ValueChangeEvent<bool> IsInFluid;
+    public ValueChangeEvent IsInFluid = ValueChangeEvent.New<bool>();
     
     private int fluidCount;
+
+    public void EnslaveValueChangeEvents(bool enslave)
+    {
+        IsInFluid.Enslave(enslave);
+    }
+
+    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
+    {
+        vces = new ValueChangeEvent[] { IsInFluid };
+        return 1;
+    }
+
+    public int SetValueChangeEventsID()
+    {
+        IsInFluid.SetID("IsInFluid", this, 0);
+        return 1;
+    }
 
     private void Awake()
     {
         AttachedBody = GetComponent<Body>();
-        IsInFluid = new ValueChangeEvent<bool>();
         fluidCount = 0;
     }
 
     private void FixedUpdate()
     {
-        IsInFluid.Value = (fluidCount > 0);
+        IsInFluid.SetValue(fluidCount > 0);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

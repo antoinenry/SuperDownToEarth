@@ -3,14 +3,26 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-public class SimpleTrigger2D : MonoBehaviour
+public class SimpleTrigger2D : MonoBehaviour, IValueChangeEventsComponent
 {
-    public ValueChangeEvent<bool> IsTriggered;
+    public ValueChangeEvent IsTriggered = ValueChangeEvent.New<bool>();
     public int TriggeredCounter { get; private set; }
 
-    private void Awake()
+    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
     {
-        IsTriggered = new ValueChangeEvent<bool>();
+        vces = new ValueChangeEvent[] { IsTriggered };
+        return 1;
+    }
+
+    public int SetValueChangeEventsID()
+    {
+        IsTriggered.SetID("IsTriggered", this, 0);
+        return 1;
+    }
+
+    public void EnslaveValueChangeEvents(bool enslave)
+    {
+        IsTriggered.Enslave(true);
     }
 
     public int GettriggeredCounter()
@@ -26,12 +38,12 @@ public class SimpleTrigger2D : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         TriggeredCounter++;
-        IsTriggered.Value = true;
+        IsTriggered.SetValue(true);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         TriggeredCounter--;
-        if (GettriggeredCounter() == 0) IsTriggered.Value = false;
+        if (GettriggeredCounter() == 0) IsTriggered.SetValue(false);
     }
 }

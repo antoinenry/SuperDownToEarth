@@ -13,11 +13,11 @@ public class FlatGroundProbe : BodyPart, IValueChangeEventsComponent
     public SimpleTrigger2D backUp;
     public SimpleTrigger2D backDown;
 
-    public bool CenterCollision { get => center != null && center.IsTriggered.Value; }
-    public bool FrontDownCollision { get => frontDown != null && frontDown.IsTriggered.Value; }
-    public bool FrontUpCollision { get => frontUp != null && frontUp.IsTriggered.Value; }
-    public bool BackDownCollision { get => backDown != null && backDown.IsTriggered.Value; }
-    public bool BackUpCollision { get => backUp != null && backUp.IsTriggered.Value; }
+    public bool CenterCollision { get => center != null && center.IsTriggered.GetValue<bool>(); }
+    public bool FrontDownCollision { get => frontDown != null && frontDown.IsTriggered.GetValue<bool>(); }
+    public bool FrontUpCollision { get => frontUp != null && frontUp.IsTriggered.GetValue<bool>(); }
+    public bool BackDownCollision { get => backDown != null && backDown.IsTriggered.GetValue<bool>(); }
+    public bool BackUpCollision { get => backUp != null && backUp.IsTriggered.GetValue<bool>(); }
 
     public ValueChangeEvent GroundFlatness = ValueChangeEvent.New<int>();
 
@@ -42,11 +42,11 @@ public class FlatGroundProbe : BodyPart, IValueChangeEventsComponent
     {
         OnTriggerEvent();
 
-        if (center != null) center.IsTriggered.AddListener(OnTriggerEvent);
-        if (frontUp != null) frontUp.IsTriggered.AddListener(OnTriggerEvent);
-        if (frontDown != null) frontDown.IsTriggered.AddListener(OnTriggerEvent);
-        if (backUp != null) backUp.IsTriggered.AddListener(OnTriggerEvent);
-        if (backDown != null) backDown.IsTriggered.AddListener(OnTriggerEvent);
+        if (center != null) center.IsTriggered.AddListener<bool>(OnTriggerEvent);
+        if (frontUp != null) frontUp.IsTriggered.AddListener<bool>(OnTriggerEvent);
+        if (frontDown != null) frontDown.IsTriggered.AddListener<bool>(OnTriggerEvent);
+        if (backUp != null) backUp.IsTriggered.AddListener<bool>(OnTriggerEvent);
+        if (backDown != null) backDown.IsTriggered.AddListener<bool>(OnTriggerEvent);
     }
 
     private void OnTriggerEvent(bool triggered = false)
