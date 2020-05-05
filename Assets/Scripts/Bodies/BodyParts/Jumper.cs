@@ -65,7 +65,7 @@ public class Jumper : BodyPart, IValueChangeEventsComponent
 
     public void Jump()
     {
-        if ((airJump || Feet.IsOnGround.GetValue<bool>() == true) && Feet.IsTumbling.GetValue<bool>() == false)
+        if ((airJump || Feet.IsOnGround.Get<bool>() == true) && Feet.IsTumbling.Get<bool>() == false)
         {
             OnJump.Invoke();
             StartCoroutine(JumpCoroutine());
@@ -103,15 +103,15 @@ public class Jumper : BodyPart, IValueChangeEventsComponent
 
             yield return new WaitForFixedUpdate();
 
-            if (Feet.IsTumbling.GetValue<bool>() == true) break;
+            if (Feet.IsTumbling.Get<bool>() == true) break;
 
             if (onGround)
             {
-                if (Feet.IsOnGround.GetValue<bool>() == false) onGround = false;
+                if (Feet.IsOnGround.Get<bool>() == false) onGround = false;
             }
             else
             {
-                if (Feet.IsOnGround.GetValue<bool>() == true) break;
+                if (Feet.IsOnGround.Get<bool>() == true) break;
             }
         }
     }

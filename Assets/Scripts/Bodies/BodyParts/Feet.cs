@@ -64,23 +64,23 @@ public class Feet : BodyPart, IValueChangeEventsComponent
         CheckGround();
         groundContacts.Clear();
 
-        if (groundCount > 0 && IsTumbling.GetValue<bool>() == false)
+        if (groundCount > 0 && IsTumbling.Get<bool>() == false)
         {
             AttachedRigidbody.velocity = GroundVelocity;
             AttachedRigidbody.angularVelocity = GroundAngularVelocity;
             AttachedRigidbody.rotation = groundAngle;            
 
-            if (IsOnGround.GetValue<bool>() == true)
+            if (IsOnGround.Get<bool>() == true)
             {
                 //if (groundProbe != null) AdjustRotationOnCorner();
             }
             else
-                IsOnGround.SetValue(true);
+                IsOnGround.Set(true);
         }
-        else if (groundProbe == null || groundProbe.GroundFlatness.GetValue<int>() == (int)FlatGroundProbe.Flatness.NoGround)
+        else if (groundProbe == null || groundProbe.GroundFlatness.Get<int>() == (int)FlatGroundProbe.Flatness.NoGround)
         {
             AttachedRigidbody.constraints &= ~RigidbodyConstraints2D.FreezeRotation;
-            IsOnGround.SetValue(false);
+            IsOnGround.Set(false);
         }
     }
 
@@ -141,7 +141,7 @@ public class Feet : BodyPart, IValueChangeEventsComponent
             tumbleDirection += contact.normal;
         }
 
-        IsTumbling.SetValue(!balanced);
+        IsTumbling.Set(!balanced);
         if (balanced == false) StartCoroutine(TumbleCoroutine(tumbleDirection.normalized));
     }
 
@@ -156,7 +156,7 @@ public class Feet : BodyPart, IValueChangeEventsComponent
         //bool clockwiseSpin = Vector2.SignedAngle(rb.velocity, direction) > 0f;
         AttachedRigidbody.velocity = Vector2.zero;
 
-        while (IsTumbling.GetValue<bool>() ==true && currentTime < tumbleDuration)
+        while (IsTumbling.Get<bool>() ==true && currentTime < tumbleDuration)
         {
             lastHeight = currentHeight;
             currentHeight = tumbleBounceCurve.Evaluate(currentTime);
@@ -169,12 +169,12 @@ public class Feet : BodyPart, IValueChangeEventsComponent
         }
 
         AttachedRigidbody.velocity = direction * (currentHeight - lastHeight)/Time.fixedDeltaTime;
-        IsTumbling.SetValue(false);
+        IsTumbling.Set(false);
     }
 
     private void AdjustRotationOnCorner()
     {
-        if (groundProbe.GroundFlatness.GetValue<int>() ==(int)FlatGroundProbe.Flatness.Hole)
+        if (groundProbe.GroundFlatness.Get<int>() ==(int)FlatGroundProbe.Flatness.Hole)
         {
             float facing = groundProbe.transform.lossyScale.x > 0 ? 1f : -1f;
 

@@ -38,12 +38,12 @@ public class SimpleTrigger2D : MonoBehaviour, IValueChangeEventsComponent
     private void OnTriggerEnter2D(Collider2D collision)
     {
         TriggeredCounter++;
-        IsTriggered.SetValue(true);
+        IsTriggered.Set(true);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         TriggeredCounter--;
-        if (GettriggeredCounter() == 0) IsTriggered.SetValue(false);
+        if (GettriggeredCounter() == 0) IsTriggered.Set(false);
     }
 }

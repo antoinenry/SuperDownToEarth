@@ -51,12 +51,12 @@ public class CircuitBody : MonoBehaviour, IValueChangeEventsComponent
     {
         if(Application.isPlaying == false && circuit != null)
         {
-            int currentStep = Step.GetValue<int>();
+            int currentStep = Step.Get<int>();
 
             if (currentStep < 0) currentStep = circuit.Length - 1;
             else if (currentStep >= circuit.Length) currentStep = 0;
 
-            Step.SetValue<int>(currentStep);
+            Step.Set<int>(currentStep);
             transform.position = circuit.GetPoint(currentStep);
         }
     }
@@ -131,14 +131,14 @@ public class CircuitBody : MonoBehaviour, IValueChangeEventsComponent
 
     private void MoveOneStep()
     {
-        Step.SetValue<int>(nextStep);
+        Step.Set<int>(nextStep);
         SetNextStep();
     }
 
     private void SetNextStep()
     {
         int stepDirection = invertDirection ? -1 : 1;
-        int currentStep = Step.GetValue<int>();
+        int currentStep = Step.Get<int>();
 
         if (speed >= 0)
             nextStep = currentStep + stepDirection;

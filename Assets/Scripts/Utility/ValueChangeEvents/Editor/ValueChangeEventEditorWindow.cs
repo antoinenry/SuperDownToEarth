@@ -17,8 +17,7 @@ public class ValueChangeEventEditorWindow : EditorWindow
 
     private void OnHierarchyChange()
     {
-        if (inspectedComponents == null)
-            FetchComponents();
+        UpdateComponents();
     }
 
     private void OnInspectorUpdate()
@@ -33,8 +32,7 @@ public class ValueChangeEventEditorWindow : EditorWindow
 
     private void OnGUI()
     {
-        if (inspectedComponents == null)
-            FetchComponents();
+        UpdateComponents();
 
         if (inspectedComponents.Length == 0)
         {
@@ -47,6 +45,25 @@ public class ValueChangeEventEditorWindow : EditorWindow
                 componentEditor.EditorGUI();
             }
         }
+    }
+
+    private void UpdateComponents()
+    {
+        bool reset = (inspectedComponents == null);
+
+        if (reset == false)
+        {
+            foreach(ValueChangeEventComponentEditor componentEditor in inspectedComponents)
+            {
+                if (componentEditor.component == null)
+                {
+                    reset = true;
+                    break;
+                }
+            }
+        }
+
+        if (reset) FetchComponents();
     }
 
     private void FetchComponents()
@@ -69,5 +86,5 @@ public class ValueChangeEventEditorWindow : EditorWindow
             
             inspectedComponents = fetchList.ToArray();
         }
-    }     
+    }  
 }

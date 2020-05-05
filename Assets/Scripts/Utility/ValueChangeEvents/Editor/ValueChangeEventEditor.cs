@@ -168,26 +168,26 @@ public class ValueChangeEventEditor
 
     private static void BoolEventGUI(Rect rect, ValueChangeEvent vce)
     {
-        vce.SetValue(EditorGUI.Toggle(rect, vce.GetValue<bool>()));
+        vce.Set(EditorGUI.Toggle(rect, vce.Get<bool>()));
     }
 
     private static void IntEventGUI(Rect rect, ValueChangeEvent vce)
     {
-        vce.SetValue(EditorGUI.IntField(rect, vce.GetValue<int>()));
+        vce.Set(EditorGUI.IntField(rect, vce.Get<int>()));
     }
 
     private static void FloatEventGUI(Rect rect, ValueChangeEvent vce)
     {
-        vce.SetValue(EditorGUI.FloatField(rect, vce.GetValue<float>()));
+        vce.Set(EditorGUI.FloatField(rect, vce.Get<float>()));
     }
 
     private static void Vector2EventGUI(Rect rect, ValueChangeEvent vce)
     {
-        vce.SetValue(EditorGUI.Vector2Field(rect, "", vce.GetValue<Vector2>()));
+        vce.Set(EditorGUI.Vector2Field(rect, "", vce.Get<Vector2>()));
     }
 
     private static void GameObjectEventGUI(Rect rect, ValueChangeEvent vce)
     {
-        vce.SetValue(EditorGUI.ObjectField(rect, vce.GetValue<GameObject>(), typeof(GameObject), true) as GameObject);
+        vce.Set(EditorGUI.ObjectField(rect, vce.Get<GameObject>(), typeof(GameObject), true) as GameObject);
     }
 }

@@ -13,11 +13,11 @@ public class FlatGroundProbe : BodyPart, IValueChangeEventsComponent
     public SimpleTrigger2D backUp;
     public SimpleTrigger2D backDown;
 
-    public bool CenterCollision { get => center != null && center.IsTriggered.GetValue<bool>(); }
-    public bool FrontDownCollision { get => frontDown != null && frontDown.IsTriggered.GetValue<bool>(); }
-    public bool FrontUpCollision { get => frontUp != null && frontUp.IsTriggered.GetValue<bool>(); }
-    public bool BackDownCollision { get => backDown != null && backDown.IsTriggered.GetValue<bool>(); }
-    public bool BackUpCollision { get => backUp != null && backUp.IsTriggered.GetValue<bool>(); }
+    public bool CenterCollision { get => center != null && center.IsTriggered.Get<bool>(); }
+    public bool FrontDownCollision { get => frontDown != null && frontDown.IsTriggered.Get<bool>(); }
+    public bool FrontUpCollision { get => frontUp != null && frontUp.IsTriggered.Get<bool>(); }
+    public bool BackDownCollision { get => backDown != null && backDown.IsTriggered.Get<bool>(); }
+    public bool BackUpCollision { get => backUp != null && backUp.IsTriggered.Get<bool>(); }
 
     public ValueChangeEvent GroundFlatness = ValueChangeEvent.New<int>();
 
@@ -52,23 +52,23 @@ public class FlatGroundProbe : BodyPart, IValueChangeEventsComponent
     private void OnTriggerEvent(bool triggered = false)
     {
         if (!CenterCollision)// && !FrontUpCollision && !BackDownCollision)
-            GroundFlatness.SetValue((int)Flatness.NoGround);
+            GroundFlatness.Set((int)Flatness.NoGround);
 
         else if (FrontUpCollision || BackUpCollision)
-            GroundFlatness.SetValue((int)Flatness.Hole);
+            GroundFlatness.Set((int)Flatness.Hole);
 
         else if (FrontDownCollision && BackDownCollision)
-            GroundFlatness.SetValue((int)Flatness.Flat);
+            GroundFlatness.Set((int)Flatness.Flat);
 
         else if (!FrontDownCollision && !BackDownCollision)
-            GroundFlatness.SetValue((int)Flatness.Point);
+            GroundFlatness.Set((int)Flatness.Point);
 
         else if (FrontDownCollision && !BackDownCollision)
-            GroundFlatness.SetValue((int)Flatness.BackDrop);
+            GroundFlatness.Set((int)Flatness.BackDrop);
 
         else if (!FrontDownCollision && BackDownCollision)
-            GroundFlatness.SetValue((int)Flatness.FrontDrop);
+            GroundFlatness.Set((int)Flatness.FrontDrop);
 
-        else GroundFlatness.SetValue((int)Flatness.Other);
+        else GroundFlatness.Set((int)Flatness.Other);
     }
 }

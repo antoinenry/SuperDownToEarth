@@ -57,13 +57,13 @@ public class Vehicle : PhysicalBody, IValueChangeEventsComponent
 
         if (body == null)
         {
-            IsFull.SetValue(false);
+            IsFull.Set(false);
             isFree = true;
             pilotableConfig.Enabled = Pilotable.PartEnabled.AllDisabled;
         }
         else
         {
-            IsFull.SetValue(true);
+            IsFull.Set(true);
             isFree = false;
             pilotableConfig.Enabled = Pilotable.PartEnabled.AllEnabled;
         }

@@ -37,7 +37,7 @@ public class GearBox : BodyPart, IValueChangeEventsComponent
 
     public float GetCurrentSpeed()
     {  
-        int speedIndex = ClampedGear(CurrentGear.GetValue<int>());
+        int speedIndex = ClampedGear(CurrentGear.Get<int>());
         return speed[speedIndex];
     }
 
@@ -46,7 +46,7 @@ public class GearBox : BodyPart, IValueChangeEventsComponent
         timeSinceLastSwitch += Time.fixedTime;
         if(timeSinceLastSwitch >= switchDelay)
         {
-            CurrentGear.SetValue(CurrentGear.GetValue<int>() + 1);
+            CurrentGear.Set(CurrentGear.Get<int>() + 1);
             if (false)// (CurrentGear.Invoked)
             {
                 OnGearUp.Invoke();
@@ -60,7 +60,7 @@ public class GearBox : BodyPart, IValueChangeEventsComponent
         timeSinceLastSwitch += Time.fixedTime;
         if (timeSinceLastSwitch >= switchDelay)
         {
-            CurrentGear.SetValue(CurrentGear.GetValue<int>() - 1);
+            CurrentGear.Set(CurrentGear.Get<int>() - 1);
             if (false)// (CurrentGear.Invoked)
             {
                 OnGearUp.Invoke();

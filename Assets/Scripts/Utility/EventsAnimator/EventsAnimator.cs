@@ -165,7 +165,6 @@ public class EventsAnimator : MonoBehaviour, IValueChangeEventsComponent
 
     private void UpdateActions()
     {
-        Debug.Log("UpdateActions");
         Animator animator = GetComponent<Animator>();
 
         SetTriggerActions = new UnityAction[TriggerCount];

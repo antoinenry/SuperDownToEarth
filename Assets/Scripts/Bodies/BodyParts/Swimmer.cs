@@ -36,7 +36,7 @@ public class Swimmer : BodyPart, IValueChangeEventsComponent
 
     private void FixedUpdate()
     {
-        IsInFluid.SetValue(fluidCount > 0);
+        IsInFluid.Set(fluidCount > 0);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

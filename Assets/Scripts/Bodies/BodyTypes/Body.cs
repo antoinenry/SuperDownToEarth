@@ -55,14 +55,14 @@ public class Body : SaveComponent, IValueChangeEventsComponent
 
     public virtual void Kill()
     {
-        IsDead.SetValue(true);
+        IsDead.Set(true);
         foreach (BodyPart part in parts)
             part.enabled = false;
     }
 
     public virtual void Respawn()
     {
-        IsDead.SetValue(false);
+        IsDead.Set(false);
         foreach (BodyPart part in parts)
             part.enabled = true;
     }
@@ -70,7 +70,7 @@ public class Body : SaveComponent, IValueChangeEventsComponent
     {
         //Debug.Log("CheckPoint save " + name);
 
-        if (IsDead.GetValue<bool>() == true)
+        if (IsDead.Get<bool>() == true)
         {
             Destroy(this.gameObject);
             return;

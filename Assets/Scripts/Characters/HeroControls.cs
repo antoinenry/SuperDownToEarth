@@ -59,9 +59,9 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
     {
         float axis = Input.GetAxisRaw(directionAxisName);
 
-        if (axis == 0f) AxisInput.SetValue(0);
-        else if (axis > 0) AxisInput.SetValue(1);
-        else AxisInput.SetValue(-1);
+        if (axis == 0f) AxisInput.Set(0);
+        else if (axis > 0) AxisInput.Set(1);
+        else AxisInput.Set(-1);
         
         if (Input.GetButtonDown(jumpButtonName))
             Action1Input.Invoke();
@@ -73,9 +73,9 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
     private void GetTouchControls()
     {
         if (touchInput.Holds.Length == 1)
-            AxisInput.SetValue(touchInput.Holds[0].x < Screen.width/2f ? -1 : 1);
+            AxisInput.Set(touchInput.Holds[0].x < Screen.width/2f ? -1 : 1);
         else
-            AxisInput.SetValue(0);
+            AxisInput.Set(0);
 
         if ((touchInput.Taps.Length > 0))
             Action1Input.Invoke();

@@ -59,7 +59,7 @@ public class Muncher : MonoBehaviour, IValueChangeEventsComponent
     private void OnTriggerEnter2D(Collider2D collision)
     {
         preys.Add(collision.gameObject);
-        IsFull.SetValue(true);
+        IsFull.Set(true);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -69,7 +69,7 @@ public class Muncher : MonoBehaviour, IValueChangeEventsComponent
         preys.Remove(collision.gameObject);
         if (preys.Count == 0)
         {
-            IsFull.SetValue(false);
+            IsFull.Set(false);
             munchTimer = 0f;
         }
     }
@@ -95,7 +95,7 @@ public class Muncher : MonoBehaviour, IValueChangeEventsComponent
                 Digest(preys[i]);
         }
         
-        IsFull.SetValue(false);
+        IsFull.Set(false);
         yield return new WaitForSeconds(spitDelay);
 
         foreach (GameObject caughtPrey in preys)

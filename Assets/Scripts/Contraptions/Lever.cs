@@ -43,9 +43,9 @@ public class Lever : MonoBehaviour, IValueChangeEventsComponent
 
     private void FixedUpdate()
     {
-        int leverAction = LeverActionDirection.GetValue<int>();
+        int leverAction = LeverActionDirection.Get<int>();
 
-        if ((leverAction > 0 && LeverPosition.GetValue<int>() < numPositions - 1) || (leverAction < 0 && LeverPosition.GetValue<int>() > 0))
+        if ((leverAction > 0 && LeverPosition.Get<int>() < numPositions - 1) || (leverAction < 0 && LeverPosition.Get<int>() > 0))
         {
             leverActionTimer += Time.fixedDeltaTime;
             if (leverActionTimer > reactionDelay)
@@ -59,22 +59,22 @@ public class Lever : MonoBehaviour, IValueChangeEventsComponent
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (Vector2.Dot(transform.right, collision.GetContact(0).normal) < 0f)
-            LeverActionDirection.SetValue(1);
+            LeverActionDirection.Set(1);
         else
-            LeverActionDirection.SetValue(-1);
+            LeverActionDirection.Set(-1);
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        LeverActionDirection.SetValue(0);
+        LeverActionDirection.Set(0);
         leverActionTimer = 0f;
     }
 
     private IEnumerator RotateLeverCoroutine(int direction)
     {
-        LeverPosition.SetValue(LeverPosition.GetValue<int>() + direction);
+        LeverPosition.Set(LeverPosition.Get<int>() + direction);
 
-        float wantedRotation = ((float)LeverPosition.GetValue<int>() / (numPositions - 1) - .5f) * angleRange + transform.parent.rotation.eulerAngles.z;
+        float wantedRotation = ((float)LeverPosition.Get<int>() / (numPositions - 1) - .5f) * angleRange + transform.parent.rotation.eulerAngles.z;
 
         if (direction > 0)
         {

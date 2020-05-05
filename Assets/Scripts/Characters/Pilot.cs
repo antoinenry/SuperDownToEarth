@@ -11,7 +11,7 @@ public class Pilot : MonoBehaviour, IValueChangeEventsComponent
     [HideInInspector] public BodyPart[] transferPartsToVehicle;
         
     public Vehicle CurrentVehicle { get; private set; }
-    public Body PilotedBody { get => IsPilotingVehicle.GetValue<bool>() ? CurrentVehicle : body; }
+    public Body PilotedBody { get => IsPilotingVehicle.Get<bool>() ? CurrentVehicle : body; }
     
     public ValueChangeEvent IsPilotingVehicle = ValueChangeEvent.New<bool>();
 
@@ -46,7 +46,7 @@ public class Pilot : MonoBehaviour, IValueChangeEventsComponent
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (IsPilotingVehicle.GetValue<bool>() == false)
+        if (IsPilotingVehicle.Get<bool>() == false)
         {
             Vehicle vehicle = collision.gameObject.GetComponent<Vehicle>();
             if (vehicle != null) EnterVehicle(vehicle);
@@ -81,7 +81,7 @@ public class Pilot : MonoBehaviour, IValueChangeEventsComponent
             part.AttachedBody = vehicle;
 
         CurrentVehicle = vehicle;
-        IsPilotingVehicle.SetValue(true);
+        IsPilotingVehicle.Set(true);
     }
 
     public void ExitCurrentVehicle()
@@ -96,7 +96,7 @@ public class Pilot : MonoBehaviour, IValueChangeEventsComponent
 
     private IEnumerator ExitVehicleCoroutine(bool immediate)
     {
-        if (IsPilotingVehicle.GetValue<bool>() == true && CurrentVehicle != null)
+        if (IsPilotingVehicle.Get<bool>() == true && CurrentVehicle != null)
         {
             //exitingVehicle.Stop();
 
@@ -128,7 +128,7 @@ public class Pilot : MonoBehaviour, IValueChangeEventsComponent
                 part.AttachedBody = body;
 
             CurrentVehicle = null;
-            IsPilotingVehicle.SetValue(false);
+            IsPilotingVehicle.Set(false);
         }
     }
 
@@ -154,7 +154,7 @@ public class Pilot : MonoBehaviour, IValueChangeEventsComponent
 
     private void Die()
     {
-        if (IsPilotingVehicle.GetValue<bool>() == true && CurrentVehicle != null)
+        if (IsPilotingVehicle.Get<bool>() == true && CurrentVehicle != null)
         {
             //current.Stop();
             if (body != null)
@@ -162,7 +162,7 @@ public class Pilot : MonoBehaviour, IValueChangeEventsComponent
 
             CurrentVehicle.SetBodyInside(null);
             CurrentVehicle = null;
-            IsPilotingVehicle.SetValue(false);
+            IsPilotingVehicle.Set(false);
         }
     }
 }

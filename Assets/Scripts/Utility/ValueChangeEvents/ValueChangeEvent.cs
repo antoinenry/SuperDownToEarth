@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.Events;
 
 [Serializable]
 public partial class ValueChangeEvent
-{    
+{
     public IValueChangeEvent runtimeEvent;
 
     [SerializeField] private ValueChangeEventID ID;
@@ -18,10 +17,10 @@ public partial class ValueChangeEvent
     public int MasterCount { get => mastersID == null ? 0 : mastersID.Length; }
     public int RuntimeMasterCount { get => runtimeEvent == null ? 0 : runtimeEvent.GetMasterCount(); }
     public Type ValueType { get => runtimeEvent == null ? (Type)Type.Missing : runtimeEvent.GetValueType(); }
-    
+
 
     private ValueChangeEvent() { }
-    
+
     public static ValueChangeEvent New<T>()
     {
         ValueChangeEvent vce = new ValueChangeEvent();
@@ -52,7 +51,7 @@ public partial class ValueChangeEvent
         return ValueType == typeof(T);
     }
 
-    public T GetValue<T>()
+    public T Get<T>()
     {
         if (runtimeEvent != null)
         {
@@ -62,7 +61,7 @@ public partial class ValueChangeEvent
         return default(T);        
     }
 
-    public void SetValue<T>(T value)
+    public void Set<T>(T value)
     {
         if (runtimeEvent != null)
         {

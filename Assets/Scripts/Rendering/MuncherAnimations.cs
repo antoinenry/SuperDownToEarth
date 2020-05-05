@@ -30,7 +30,7 @@ public class MuncherAnimations : MonoBehaviour
         {
             muncher.OnMunch.AddListener(munchAnimation);
             muncher.IsFull.AddListener(fullAnimation);
-            FullAnimation(muncher.IsFull.GetValue<bool>());
+            FullAnimation(muncher.IsFull.Get<bool>());
         }
     }
 
