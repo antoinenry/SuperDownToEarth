@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class BodyPart : MonoBehaviour
+public abstract class BodyPart : ValueChangeEventsBehaviour
 {
     private Body body;
 

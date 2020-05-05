@@ -4,14 +4,26 @@ using UnityEngine;
 
 public class Spinner : BodyPart
 {
+    public bool invertDirection = true;
     public float spinVelocity;
     public float spinInertia;
     public float tumbleRecuperation;
     
     public Feet Feet { get; private set; }
+    
+    public ValueChangeEvent spinDirection = ValueChangeEvent.New<int>();
+    
+    public override int GetValueChangeEvents(out ValueChangeEvent[] vces)
+    {
+        vces = new ValueChangeEvent[] { spinDirection };
+        return 1;
+    }
 
-    public enum Direction { IDLE, CLOCKWISE, COUNTERCLOCKWISE }
-    public Direction CurrentDirection { get; private set; }
+    public override int SetValueChangeEventsID()
+    {
+        spinDirection.SetID("spinDirection", this, 0);
+        return 1;
+    }
 
     private void Awake()
     {
@@ -19,68 +31,21 @@ public class Spinner : BodyPart
         Feet = GetComponent<Feet>();
     }
 
-    private void SetSpinVelocity(float sv)
+    private void FixedUpdate()
+    {
+        SetBodyVelocity((invertDirection ? -1f : 1f) * spinVelocity * spinDirection.Get<int>());
+    }
+
+    public void Spin(int intDirection)
+    {
+        spinDirection.Set(intDirection);
+    }
+    
+    private void SetBodyVelocity(float sv)
     {
         if (spinInertia <= 0f)
             AttachedRigidbody.angularVelocity = sv;
         else
             AttachedRigidbody.angularVelocity = Mathf.MoveTowards(AttachedRigidbody.angularVelocity, sv, Time.fixedDeltaTime / spinInertia);
-    }
-
-    public Direction IntToSpinDirection(int intDirection)
-    {
-        switch (intDirection)
-        {
-            case 1: return Spinner.Direction.CLOCKWISE;
-            case -1: return Spinner.Direction.COUNTERCLOCKWISE;
-        }
-
-        return Spinner.Direction.IDLE;
-    }
-
-    public void Spin(int intDirection)
-    {
-        Spin(IntToSpinDirection(intDirection));
-    }
-
-    public void Spin(Direction spinDirection)
-    {
-        if (Feet.IsOnGround.Get<bool>() == false && CurrentDirection != spinDirection)
-        {
-            CurrentDirection = spinDirection;
-            StartCoroutine(SpinCoroutine());
-        }
-    }
-
-    private IEnumerator SpinCoroutine()
-    {
-        switch (CurrentDirection)
-        {
-            case Direction.IDLE:
-                while (CurrentDirection == Direction.IDLE && Feet.IsOnGround.Get<bool>() == false && Feet.IsTumbling.Get<bool>() == false)
-                {
-                    SetSpinVelocity(0f);
-                    yield return new WaitForFixedUpdate();
-                }
-                break;
-
-            case Direction.CLOCKWISE:
-                while (CurrentDirection == Direction.CLOCKWISE && Feet.IsOnGround.Get<bool>() == false && Feet.IsTumbling.Get<bool>() == false)
-                {
-                    SetSpinVelocity(-spinVelocity);
-                    yield return new WaitForFixedUpdate();
-                }
-                break;
-
-            case Direction.COUNTERCLOCKWISE:
-                while (CurrentDirection == Direction.COUNTERCLOCKWISE && Feet.IsOnGround.Get<bool>() == false && Feet.IsTumbling.Get<bool>() == false)
-                {
-                    SetSpinVelocity(spinVelocity);
-                    yield return new WaitForFixedUpdate();
-                }
-                break;
-        }
-
-        CurrentDirection = Direction.IDLE;
     }
 }

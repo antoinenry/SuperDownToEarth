@@ -7,7 +7,6 @@ using UnityEditor;
 public class ValueChangeEventEditorWindow : EditorWindow
 {   
     private ValueChangeEventComponentEditor[] inspectedComponents;
-    private GameObject vceExplorerLastSelectedGameObject;
 
     [MenuItem("Window/ValueChangeEvents")]
     public static void ShowWindow()
@@ -78,9 +77,8 @@ public class ValueChangeEventEditorWindow : EditorWindow
                 IValueChangeEventsComponent[] fetchedComponents = selected.GetComponents<IValueChangeEventsComponent>();
                 foreach (IValueChangeEventsComponent iComponent in fetchedComponents)
                 {
-                    ValueChangeEventComponentEditor componentEditor = new ValueChangeEventComponentEditor(iComponent as Component, vceExplorerLastSelectedGameObject);
+                    ValueChangeEventComponentEditor componentEditor = new ValueChangeEventComponentEditor(iComponent as Component);
                     fetchList.Add(componentEditor);
-                    vceExplorerLastSelectedGameObject = componentEditor.lastSelectedGameObject;
                 }
             }
             

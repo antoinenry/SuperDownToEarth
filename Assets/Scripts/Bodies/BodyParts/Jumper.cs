@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Jumper : BodyPart, IValueChangeEventsComponent
+public class Jumper : BodyPart
 {
     public AnimationCurve jumpCurve;
     public bool airJump;
@@ -15,21 +15,16 @@ public class Jumper : BodyPart, IValueChangeEventsComponent
     
     public Feet Feet { get; private set; }
 
-    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
+    public override int GetValueChangeEvents(out ValueChangeEvent[] vces)
     {
         vces = new ValueChangeEvent[] { jump };
         return vces.Length;
     }
 
-    public int SetValueChangeEventsID()
+    public override int SetValueChangeEventsID()
     {
         jump.SetID("jump", this, 0);
         return 1;
-    }
-
-    public void EnslaveValueChangeEvents(bool enslave)
-    {
-        jump.Enslave(enslave);
     }
 
     private void OnDrawGizmos()
@@ -63,8 +58,9 @@ public class Jumper : BodyPart, IValueChangeEventsComponent
         jump.AddListener(OnJump);
     }
 
-    private void OnDisable()
+    public override void OnDisable()
     {
+        base.OnDisable();
         StopAllCoroutines();
     }
 

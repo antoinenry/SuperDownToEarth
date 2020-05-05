@@ -46,7 +46,12 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
 
     private void Start()
     {
-        
+        Action1Input.AddListener(OnAction1Input);
+    }
+
+    private void OnAction1Input()
+    {
+        Debug.Log("Action 1");
     }
 
     private void Update()
