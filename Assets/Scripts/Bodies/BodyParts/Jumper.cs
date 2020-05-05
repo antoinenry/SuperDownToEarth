@@ -11,25 +11,25 @@ public class Jumper : BodyPart, IValueChangeEventsComponent
     public float startVelocityDamping;
     public bool showGizmo;
         
-    public ValueChangeEvent OnJump = ValueChangeEvent.New<trigger>();
+    public ValueChangeEvent jump = ValueChangeEvent.New<trigger>();
     
     public Feet Feet { get; private set; }
 
     public int GetValueChangeEvents(out ValueChangeEvent[] vces)
     {
-        vces = new ValueChangeEvent[] { OnJump };
+        vces = new ValueChangeEvent[] { jump };
         return vces.Length;
     }
 
     public int SetValueChangeEventsID()
     {
-        OnJump.SetID("onJump", this, 0);
+        jump.SetID("jump", this, 0);
         return 1;
     }
 
     public void EnslaveValueChangeEvents(bool enslave)
     {
-        OnJump.Enslave(enslave);
+        jump.Enslave(enslave);
     }
 
     private void OnDrawGizmos()
@@ -58,6 +58,11 @@ public class Jumper : BodyPart, IValueChangeEventsComponent
         Feet = GetComponent<Feet>();
     }
 
+    private void Start()
+    {
+        jump.AddListener(OnJump);
+    }
+
     private void OnDisable()
     {
         StopAllCoroutines();
@@ -65,9 +70,13 @@ public class Jumper : BodyPart, IValueChangeEventsComponent
 
     public void Jump()
     {
+        jump.Invoke();
+    }
+
+    private void OnJump()
+    {
         if ((airJump || Feet.IsOnGround.Get<bool>() == true) && Feet.IsTumbling.Get<bool>() == false)
         {
-            OnJump.Invoke();
             StartCoroutine(JumpCoroutine());
         }
     }
