@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
 {
-    [Header("Buttons")]
+    public string heroTag = "Player";
     public bool useButtonControls;
+
+    [Header("Buttons")]
     public string directionAxisName = "Horizontal";
     public string jumpButtonName = "Jump";
     public string actionButtonName = "Fire1";
@@ -44,7 +46,7 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
 
     private void Start()
     {
-        AxisInput.AddListener<int>(OnAxisInput);
+        
     }
 
     private void Update()
@@ -79,10 +81,5 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
 
         if ((touchInput.Taps.Length > 0))
             Action1Input.Invoke();
-    }
-
-    private void OnAxisInput(int axis)
-    {
-        Debug.Log(axis);
     }
 }

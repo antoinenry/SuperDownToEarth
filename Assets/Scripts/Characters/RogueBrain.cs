@@ -16,8 +16,11 @@ public class RogueBrain : MonoBehaviour
     public BrainState currentState;
 
     private Pilot pilot;
-    private PilotableRogue rogue;
     private float thinkTime;
+
+    //Rework here
+    public Walker walker;
+    public Jumper jumper;
 
     private void OnDrawGizmosSelected()
     {
@@ -44,7 +47,6 @@ public class RogueBrain : MonoBehaviour
 
     private void Start()
     {
-        rogue = pilot.PilotedBody.pilotableConfig as PilotableRogue;
         SwitchCoroutine();
     }
 
@@ -70,7 +72,7 @@ public class RogueBrain : MonoBehaviour
 
         while (currentState == BrainState.Thinking)
         {
-            rogue.walker.Walk(Walker.Direction.IDLE);
+            walker.Walk(Walker.Direction.IDLE);
 
             yield return new WaitForFixedUpdate();
 
@@ -91,23 +93,23 @@ public class RogueBrain : MonoBehaviour
 
                 if (horizontalToTarget > detectionWidth / 2f && CheckRight() != DetectionResult.Avoid)
                 {
-                    if (rogue.walker.CurrentDirection == Walker.Direction.LEFT)
+                    if (walker.CurrentDirection == Walker.Direction.LEFT)
                         currentState = BrainState.Thinking;
                     else
-                        rogue.walker.Walk(Walker.Direction.RIGHT);
+                        walker.Walk(Walker.Direction.RIGHT);
                 }
                 else if (horizontalToTarget < -detectionWidth / 2f && CheckLeft() != DetectionResult.Avoid)
                 {
-                    if (rogue.walker.CurrentDirection == Walker.Direction.RIGHT)
+                    if (walker.CurrentDirection == Walker.Direction.RIGHT)
                         currentState = BrainState.Thinking;
                     else
-                        rogue.walker.Walk(Walker.Direction.LEFT);
+                        walker.Walk(Walker.Direction.LEFT);
                 }
                 else
                 {
                     float verticalToTarget = Vector2.Dot(target.position - transform.position, transform.up);
                     if (CheckAbove() != DetectionResult.Avoid)
-                        rogue.jumper.Jump();
+                        jumper.Jump();
 
                     currentState = BrainState.Thinking;
                 }

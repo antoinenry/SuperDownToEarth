@@ -5,8 +5,6 @@ using UnityEngine;
 public class Body : SaveComponent, IValueChangeEventsComponent
 {
     [Header("Body")]
-    public Pilotable pilotableConfig;
-
     public ValueChangeEvent IsDead = ValueChangeEvent.New<bool>();
 
     public BodyPart[] parts { get; private set; }
@@ -50,7 +48,6 @@ public class Body : SaveComponent, IValueChangeEventsComponent
         SaveSystem.InitSaveSystem();
 
         parts = GetComponentsInChildren<BodyPart>(true);
-        pilotableConfig = pilotableConfig.New(parts);
     }
 
     public virtual void Kill()
