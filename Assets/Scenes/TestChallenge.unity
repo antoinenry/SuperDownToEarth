@@ -549,6 +549,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c070f8e2330edca4e9a849d497dd7b6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsTriggered:
+    ID:
+      name: 
+      component: {fileID: 0}
+      indexInComponent: 0
+    mastersID: []
 --- !u!58 &53667280
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -794,7 +800,7 @@ Transform:
   - {fileID: 955425436}
   - {fileID: 1067459109}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &69449974
 GameObject:
@@ -1764,7 +1770,7 @@ Transform:
   - {fileID: 456418129}
   - {fileID: 1509909299}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.68}
 --- !u!114 &169461414
 MonoBehaviour:
@@ -2465,6 +2471,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c070f8e2330edca4e9a849d497dd7b6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsTriggered:
+    ID:
+      name: 
+      component: {fileID: 0}
+      indexInComponent: 0
+    mastersID: []
 --- !u!58 &341959689
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2629,8 +2641,6 @@ GameObject:
   m_Component:
   - component: {fileID: 433034810}
   - component: {fileID: 433034811}
-  - component: {fileID: 433034815}
-  - component: {fileID: 433034814}
   - component: {fileID: 433034813}
   - component: {fileID: 433034812}
   - component: {fileID: 5060116885053176662}
@@ -2706,54 +2716,6 @@ MonoBehaviour:
       name: IsPilotingVehicle
       component: {fileID: 433034813}
       indexInComponent: 0
-    mastersID: []
---- !u!114 &433034814
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 433034809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbf9fbabf5c2a8c4ea103c9e9be04664, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxTouch: 2
-  tapDuration: 0.1
---- !u!114 &433034815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 433034809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9034cf759ac6c704e81540898a37a041, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  useButtonControls: 1
-  directionAxisName: Horizontal
-  jumpButtonName: Jump
-  actionButtonName: Fire1
-  AxisInput:
-    ID:
-      name: Axis1Input
-      component: {fileID: 433034815}
-      indexInComponent: 0
-    mastersID: []
-  Action1Input:
-    ID:
-      name: Action1Input
-      component: {fileID: 433034815}
-      indexInComponent: 1
-    mastersID: []
-  Action2Input:
-    ID:
-      name: Action2Input
-      component: {fileID: 433034815}
-      indexInComponent: 2
     mastersID: []
 --- !u!114 &433034816
 MonoBehaviour:
@@ -3280,7 +3242,7 @@ Transform:
   - {fileID: 1297714637}
   - {fileID: 1205126156}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.68}
 --- !u!61 &512554181
 BoxCollider2D:
@@ -4446,6 +4408,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c070f8e2330edca4e9a849d497dd7b6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsTriggered:
+    ID:
+      name: 
+      component: {fileID: 0}
+      indexInComponent: 0
+    mastersID: []
 --- !u!58 &639276641
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4862,6 +4830,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c070f8e2330edca4e9a849d497dd7b6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsTriggered:
+    ID:
+      name: 
+      component: {fileID: 0}
+      indexInComponent: 0
+    mastersID: []
 --- !u!58 &668580602
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4913,7 +4887,7 @@ Transform:
   - {fileID: 1312557298}
   - {fileID: 2113946659}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &704286513
 MonoBehaviour:
@@ -5288,6 +5262,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c070f8e2330edca4e9a849d497dd7b6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsTriggered:
+    ID:
+      name: 
+      component: {fileID: 0}
+      indexInComponent: 0
+    mastersID: []
 --- !u!58 &761300783
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5631,6 +5611,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c070f8e2330edca4e9a849d497dd7b6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsTriggered:
+    ID:
+      name: 
+      component: {fileID: 0}
+      indexInComponent: 0
+    mastersID: []
 --- !u!58 &854031070
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -6255,6 +6241,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c070f8e2330edca4e9a849d497dd7b6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsTriggered:
+    ID:
+      name: 
+      component: {fileID: 0}
+      indexInComponent: 0
+    mastersID: []
 --- !u!58 &891816436
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -7021,7 +7013,7 @@ Transform:
   - {fileID: 193538504}
   - {fileID: 210105877}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.68}
 --- !u!1 &954675468
 GameObject:
@@ -7610,6 +7602,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c070f8e2330edca4e9a849d497dd7b6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsTriggered:
+    ID:
+      name: 
+      component: {fileID: 0}
+      indexInComponent: 0
+    mastersID: []
 --- !u!58 &967458415
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -8183,6 +8181,86 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1 &1031615102
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1031615105}
+  - component: {fileID: 1031615104}
+  - component: {fileID: 1031615103}
+  m_Layer: 0
+  m_Name: PlayerInput
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1031615103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031615102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9034cf759ac6c704e81540898a37a041, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useButtonControls: 1
+  directionAxisName: Horizontal
+  jumpButtonName: Jump
+  actionButtonName: Fire1
+  AxisInput:
+    ID:
+      name: Axis1Input
+      component: {fileID: 1031615103}
+      indexInComponent: 0
+    mastersID: []
+  Action1Input:
+    ID:
+      name: Action1Input
+      component: {fileID: 1031615103}
+      indexInComponent: 1
+    mastersID: []
+  Action2Input:
+    ID:
+      name: Action2Input
+      component: {fileID: 1031615103}
+      indexInComponent: 2
+    mastersID: []
+--- !u!114 &1031615104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031615102}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbf9fbabf5c2a8c4ea103c9e9be04664, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxTouch: 2
+  tapDuration: 0.1
+--- !u!4 &1031615105
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031615102}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1032862390
 Mesh:
   m_ObjectHideFlags: 0
@@ -8662,7 +8740,7 @@ Transform:
   - {fileID: 1547857608}
   - {fileID: 2142686425}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -179.11601}
 --- !u!114 &1106560697
 MonoBehaviour:
@@ -9482,7 +9560,7 @@ Transform:
   - {fileID: 985299726}
   - {fileID: 1137402717}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1187898412
 GameObject:
@@ -9550,6 +9628,12 @@ MonoBehaviour:
   floatLayer:
     serializedVersion: 2
     m_Bits: 16
+  IsInFluid:
+    ID:
+      name: IsInFluid
+      component: {fileID: 1187898414}
+      indexInComponent: 0
+    mastersID: []
 --- !u!114 &1187898415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9758,14 +9842,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1187898412}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -38.91, y: 37.86, z: 0}
+  m_LocalPosition: {x: -36.9, y: 42.48, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 954675472}
   - {fileID: 433034810}
   - {fileID: 851103339}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1194799168
 GameObject:
@@ -10223,6 +10307,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c070f8e2330edca4e9a849d497dd7b6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsTriggered:
+    ID:
+      name: 
+      component: {fileID: 0}
+      indexInComponent: 0
+    mastersID: []
 --- !u!1 &1253587758
 GameObject:
   m_ObjectHideFlags: 0
@@ -10369,7 +10459,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1279257986
 GameObject:
@@ -10600,7 +10690,7 @@ Transform:
   - {fileID: 2124687246}
   - {fileID: 265853626}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1295556243
 GameObject:
@@ -10653,7 +10743,7 @@ Transform:
   m_Children:
   - {fileID: 827959861}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1297714636
 GameObject:
@@ -10993,7 +11083,7 @@ Transform:
   - {fileID: 2069116037}
   - {fileID: 454957934}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1307941818
 GameObject:
@@ -12258,6 +12348,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c070f8e2330edca4e9a849d497dd7b6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsTriggered:
+    ID:
+      name: 
+      component: {fileID: 0}
+      indexInComponent: 0
+    mastersID: []
 --- !u!58 &1603238457
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -15040,7 +15136,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 44.1, y: 49.66, z: 0}
 --- !u!1 &1968078829
 GameObject:
@@ -15390,6 +15486,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c070f8e2330edca4e9a849d497dd7b6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsTriggered:
+    ID:
+      name: 
+      component: {fileID: 0}
+      indexInComponent: 0
+    mastersID: []
 --- !u!1 &1996710241
 GameObject:
   m_ObjectHideFlags: 0
@@ -17860,7 +17962,7 @@ Transform:
   - {fileID: 1438955612}
   - {fileID: 1225588143}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -100.11301}
 --- !u!114 &8251557782544366455
 MonoBehaviour:

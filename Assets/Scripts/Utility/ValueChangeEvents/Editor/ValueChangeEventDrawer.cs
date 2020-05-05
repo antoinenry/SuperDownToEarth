@@ -27,11 +27,12 @@ public class ValueChangeEventDrawer : PropertyDrawer
         {
 
             ValueChangeEventID.GetValueChangeEvent(ID_component, ID_indexInComponent, out ValueChangeEvent valueChangeEvent);
-            Draw(position, valueChangeEvent, label);            
+            Draw(position, valueChangeEvent, label);
+            EditorUtility.SetDirty(ID_component);
         }        
 
         EditorGUI.indentLevel = indent;
-        EditorGUI.EndProperty();
+        EditorGUI.EndProperty();       
     }
 
     public static void Draw(Rect position, ValueChangeEvent valueChangeEvent, GUIContent label)

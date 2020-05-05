@@ -11,8 +11,6 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
     public string actionButtonName = "Fire1";
     
     private TouchScreen touchInput;
-    private Pilot pilot;
-    private Pilotable.PilotingType currentPilotingType;
 
     public ValueChangeEvent AxisInput = ValueChangeEvent.New<int>();
     public ValueChangeEvent Action1Input = ValueChangeEvent.New<trigger>();
@@ -42,55 +40,25 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
     private void Awake()
     {
         touchInput = GetComponent<TouchScreen>();
-        pilot = GetComponent<Pilot>();
     }
 
     private void Start()
     {
-        if (pilot != null)
-        {
-            pilot.IsPilotingVehicle.AddListener<bool>(OnPilotingChange);
-            OnPilotingChange(pilot.IsPilotingVehicle.GetValue<bool>());
-        }
-
-        StopAllCoroutines();
-        SwitchControls();
+        AxisInput.AddListener<int>(OnAxisInput);
     }
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.B)) Debug.Break();
-    }
-
-    private void OnEnable()
-    {
-        StopAllCoroutines();
-        SwitchControls();
-    }
-
-    private void OnDisable()
-    {
-        StopAllCoroutines();
-    }
-
-    private void OnDestroy()
-    {
-        if (pilot != null) pilot.IsPilotingVehicle.RemoveListener<bool>(OnPilotingChange);
-    }
-
-    private void OnPilotingChange(bool isPiloting)
-    {
-        Body newPilotedBody = isPiloting ? pilot.CurrentVehicle : pilot.body;
-
-        if (newPilotedBody != null && newPilotedBody.pilotableConfig != null)
-            currentPilotingType = newPilotedBody.pilotableConfig.GetPilotingType();
+        if (useButtonControls)
+            GetButtonControl();
         else
-            currentPilotingType = Pilotable.PilotingType.None;
+            GetTouchControls();
     }
 
     private void GetButtonControl()
     {
         float axis = Input.GetAxisRaw(directionAxisName);
+
         if (axis == 0f) AxisInput.SetValue(0);
         else if (axis > 0) AxisInput.SetValue(1);
         else AxisInput.SetValue(-1);
@@ -102,7 +70,7 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
             Action2Input.Invoke();
     }
 
-    private void GetTouchControl()
+    private void GetTouchControls()
     {
         if (touchInput.Holds.Length == 1)
             AxisInput.SetValue(touchInput.Holds[0].x < Screen.width/2f ? -1 : 1);
@@ -113,143 +81,8 @@ public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
             Action1Input.Invoke();
     }
 
-    private void SwitchControls()
-    {        
-        switch(currentPilotingType)
-        {
-            case Pilotable.PilotingType.Blob: StartCoroutine(BlobControlsCoroutine());
-                break;
-            case Pilotable.PilotingType.Bot: StartCoroutine(BotControlsCoroutine());
-                break;
-            case Pilotable.PilotingType.Bug: StartCoroutine(BugControlsCoroutine());
-                break;
-            case Pilotable.PilotingType.Jet: StartCoroutine(JetControlsCoroutine());
-                break;                
-            case Pilotable.PilotingType.Buzz: StartCoroutine(BuzzControlsCoroutine());
-                break;
-        }
-    }
-
-    private IEnumerator BlobControlsCoroutine()
+    private void OnAxisInput(int axis)
     {
-        PilotableBlob blob = pilot.PilotedBody.pilotableConfig as PilotableBlob;
-
-        while (currentPilotingType == Pilotable.PilotingType.Blob)
-        {
-            if (useButtonControls) GetButtonControl();
-            else GetTouchControl();
-
-            //if (Action1Input.Invoked) blob.jumper.Jump();
-
-            blob.spinner.Spin(AxisInput.GetValue<int>());
-            yield return null;
-        }
-
-        SwitchControls();
-    }
-
-    private IEnumerator BotControlsCoroutine()
-    {
-        PilotableBot bot = pilot.PilotedBody.pilotableConfig as PilotableBot;
-
-        while (currentPilotingType == Pilotable.PilotingType.Bot)
-        {
-            if (useButtonControls) GetButtonControl();
-            else GetTouchControl();
-
-            bot.walker.Walk(AxisInput.GetValue<int>());
-            //if (Action1Input.Invoked) bot.jumper.Jump();
-            bot.spinner.Spin(AxisInput.GetValue<int>());
-
-            //if (Action2Input.Invoked) pilot.ExitCurrentVehicle();
-
-            yield return null;
-        }
-
-        SwitchControls();
-    }
-
-    private IEnumerator BugControlsCoroutine()
-    {
-        PilotableBug bug = pilot.PilotedBody.pilotableConfig as PilotableBug;
-        int directionBuffer = 0;
-        int gearBuffer = 0;
-
-        while (currentPilotingType == Pilotable.PilotingType.Bug)
-        {
-            if (useButtonControls) GetButtonControl();
-            else GetTouchControl();
-
-            if (false) //AxisInput.Invoked)
-            {
-                int axis = AxisInput.GetValue<int>();
-                if (axis != 0)
-                {
-                    if (directionBuffer != 0)
-                    {
-                        if (axis * directionBuffer > 0)
-                            gearBuffer = bug.gearBox.ClampedGear(gearBuffer + 1);
-                        else
-                        {
-                            directionBuffer = 0;
-                            gearBuffer = 0;
-                        }
-                    }
-                    else
-                        directionBuffer = axis;
-                }
-            }
-
-            if (bug.walker.CurrentDirection == Walker.Direction.IDLE || bug.groundProbe.GroundFlatness.GetValue<int>() == (int)FlatGroundProbe.Flatness.Flat)
-            {
-                bug.walker.Walk(directionBuffer);
-                if (bug.gearBox.CurrentGear.GetValue<int>() < gearBuffer) bug.gearBox.GearUp();
-                //if (Action2Input.Invoked) pilot.ExitCurrentVehicle();
-            }
-
-            yield return null;
-        }
-
-        SwitchControls();
-    }
-
-    private IEnumerator JetControlsCoroutine()
-    {
-        PilotableJet jet = pilot.PilotedBody.pilotableConfig as PilotableJet;
-
-        while (currentPilotingType == Pilotable.PilotingType.Jet)
-        {
-            if (useButtonControls) GetButtonControl();
-            else GetTouchControl();
-
-            //if (Action1Input.Invoked) jet.jumper.Jump();
-            jet.spinner.Spin(AxisInput.GetValue<int>());
-
-            //if (Action2Input.Invoked) pilot.ExitCurrentVehicle();
-            
-            yield return null;
-        }
-
-        SwitchControls();
-    }
-    
-    private IEnumerator BuzzControlsCoroutine()
-    {
-        PilotableBuzz buzz = pilot.PilotedBody.pilotableConfig as PilotableBuzz;
-
-        while (currentPilotingType == Pilotable.PilotingType.Buzz)
-        {
-            if (useButtonControls) GetButtonControl();
-            else GetTouchControl();
-
-            //if (Action1Input.Invoked) buzz.jumper.Jump();
-            buzz.spinner.Spin(AxisInput.GetValue<int>());
-
-            //if (Action2Input.Invoked) pilot.ExitCurrentVehicle();
-            
-            yield return null;
-        }
-
-        SwitchControls();
+        Debug.Log(axis);
     }
 }

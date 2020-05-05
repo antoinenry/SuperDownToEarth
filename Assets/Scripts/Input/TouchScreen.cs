@@ -14,6 +14,9 @@ public class TouchScreen : MonoBehaviour
 
     private void Awake()
     {
+        Taps = new Vector2[0];
+        Holds = new Vector2[0];
+
         touchInputs = new List<TouchInput>(maxTouch);
         for (int i = 0; i < maxTouch; i++) touchInputs.Add(new TouchInput());
     }
