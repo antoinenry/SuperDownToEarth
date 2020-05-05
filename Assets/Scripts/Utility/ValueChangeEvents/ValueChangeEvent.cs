@@ -185,8 +185,8 @@ public partial class ValueChangeEvent
     public override string ToString()
     {
         if (ValueType == null)
-            return ID.name + "(trigger)";
+            return ID.name + " (trigger)";
         else
-            return ID.name + "(" + ValueType.Name + ")";
+            return ID.name + " (" + ValueType.Name + ")";
     }
 }

@@ -53,10 +53,20 @@ public class ValueChangeEventEditor
 
     private void EditorHeaderGUI(Rect rect)
     {
-        if (valueChangeEvent == null) return;
+        if (valueChangeEvent == null)
+        {
+            EditorGUILayout.HelpBox("Event is null.", MessageType.Warning);
+            return;
+        }
+
+        if (valueChangeEvent.Component == null)
+        {
+            EditorGUILayout.HelpBox("Event's ID is corrupted.", MessageType.Warning);
+            return;
+        }
 
         string label ;
-        if (detailedLabel && valueChangeEvent.Component != null)
+        if (detailedLabel)
             label = valueChangeEvent.Component.ToString() + "." + valueChangeEvent.Name;
         else
             label = valueChangeEvent.Name;

@@ -21,6 +21,12 @@ public partial class ValueChangeEvent
             get { return _value; }
             set
             {
+                if (GetValueType() == typeof(trigger))
+                {
+                    InvokeEvent();
+                    return;
+                }
+
                 if (_value == null)
                 {
                     if (value != null)
@@ -43,6 +49,7 @@ public partial class ValueChangeEvent
         public RuntimeValueChangeEvent()
         {
             OnInvoke = new UnityEvent();
+
             InvokeEventAction = new UnityAction(InvokeEvent);
             SetValueAction = new UnityAction<T>(x => Value = x);
 
@@ -96,7 +103,7 @@ public partial class ValueChangeEvent
                     Array.Resize(ref masters, currentMasterCount + 1);
                     masters[currentMasterCount] = newMaster;
                 }
-
+                
                 newMaster.AddListener(SetValueAction);
             }
             else

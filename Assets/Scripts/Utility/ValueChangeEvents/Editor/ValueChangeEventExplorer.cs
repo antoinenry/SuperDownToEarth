@@ -71,7 +71,9 @@ public class ValueChangeEventExplorer
         }
         else
         {
-            (SelectedComponent as IValueChangeEventsComponent).GetValueChangeEvents(out ValueChangeEvent[] vces);
+            IValueChangeEventsComponent selectedComponent = SelectedComponent as IValueChangeEventsComponent;
+            selectedComponent.SetValueChangeEventsID();
+            selectedComponent.GetValueChangeEvents(out ValueChangeEvent[] vces);
 
             if(filter == null)
                 vceOptions = vces;
