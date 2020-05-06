@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Body : SaveComponent, IValueChangeEventsComponent
+public class Body : SaveComponent //, IValueChangeEventsComponent
 {
     [Header("Body")]
     public ValueChangeEvent IsDead = ValueChangeEvent.New<bool>();

@@ -13,19 +13,7 @@ public class Jumper : BodyPart
         
     public ValueChangeEvent jump = ValueChangeEvent.New<trigger>();
     
-    public Feet Feet { get; private set; }
-
-    public override int GetValueChangeEvents(out ValueChangeEvent[] vces)
-    {
-        vces = new ValueChangeEvent[] { jump };
-        return vces.Length;
-    }
-
-    public override int SetValueChangeEventsID()
-    {
-        jump.SetID("jump", this, 0);
-        return 1;
-    }
+    public Feet Feet { get; private set; }    
 
     private void OnDrawGizmos()
     {

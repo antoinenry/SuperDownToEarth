@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Feet : BodyPart, IValueChangeEventsComponent
+public class Feet : BodyPart // //, IValueChangeEventsComponent
 {
     [Range(0f,180f)] public float balanceAngle = 180f;
     public AnimationCurve tumbleBounceCurve;

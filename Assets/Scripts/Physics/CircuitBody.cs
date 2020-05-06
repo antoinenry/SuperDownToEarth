@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteAlways]
-public class CircuitBody : MonoBehaviour, IValueChangeEventsComponent
+public class CircuitBody : MonoBehaviour //, IValueChangeEventsComponent
 {
     public bool enableMovement = true;
     public Circuit circuit;

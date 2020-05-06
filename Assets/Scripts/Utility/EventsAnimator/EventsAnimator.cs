@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 [ExecuteAlways]
 [RequireComponent(typeof(Animator))]
-public class EventsAnimator : MonoBehaviour, IValueChangeEventsComponent
+public class EventsAnimator : MonoBehaviour //, IValueChangeEventsComponent
 {    
     [SerializeField] private ValueChangeEvent[] TriggerParameters = new ValueChangeEvent[0];
     [SerializeField] private ValueChangeEvent[] BootParameters = new ValueChangeEvent[0];

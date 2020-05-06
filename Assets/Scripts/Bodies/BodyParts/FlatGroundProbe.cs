@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlatGroundProbe : BodyPart, IValueChangeEventsComponent
+public class FlatGroundProbe : BodyPart //, IValueChangeEventsComponent
 {
     public enum Flatness { Flat, Hole, Point, BackDrop, FrontDrop, NoGround, Other}    
 

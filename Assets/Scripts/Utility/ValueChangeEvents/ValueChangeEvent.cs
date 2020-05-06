@@ -8,36 +8,31 @@ public partial class ValueChangeEvent
 {
     public IValueChangeEvent runtimeEvent;
 
-    [SerializeField] private ValueChangeEventID ID;
-    [SerializeField] private ValueChangeEventID[] mastersID;
+    [SerializeField] private ValueChangeEvent[] masters;
 
-    public string Name { get => ID.name; }
-    public Component Component { get => ID.component; }
-
-    public int MasterCount { get => mastersID == null ? 0 : mastersID.Length; }
+    public string Name { get; private set; }
+    public int MasterCount { get => masters == null ? 0 : masters.Length; }
     public int RuntimeMasterCount { get => runtimeEvent == null ? 0 : runtimeEvent.GetMasterCount(); }
-    public Type ValueType { get => runtimeEvent == null ? (Type)Type.Missing : runtimeEvent.GetValueType(); }
-
-
+    public Type ValueType { get => runtimeEvent == null ? null : runtimeEvent.GetValueType(); }
+    
     private ValueChangeEvent() { }
 
-    public static ValueChangeEvent New<T>()
+    public void SetID(string name, Component component, int index)
+    {
+        Name = name;
+    }
+
+    public static ValueChangeEvent New<T>(string name = "NO NAME")
     {
         ValueChangeEvent vce = new ValueChangeEvent();
         vce.runtimeEvent = new RuntimeValueChangeEvent<T>();
+        vce.Name = name;
         return vce;
     }
 
     public void ResetRuntimeEvent<T>()
     {
         runtimeEvent = new RuntimeValueChangeEvent<T>();
-    }
-
-    public void SetID(string name, Component component, int indexInComponent)
-    {
-        ID.name = name;
-        ID.component = component;
-        ID.indexInComponent = indexInComponent;
     }
 
     public void Invoke()
@@ -101,48 +96,45 @@ public partial class ValueChangeEvent
 
     public void Enslave(bool enslave)
     {
+        if (masters == null) return;
+
         if(runtimeEvent == null)
         {
             Debug.LogWarning("RuntimeEvent is null.");
             return;
         }
 
-        for (int i = 0; i < MasterCount; i++)
+        foreach(ValueChangeEvent master in masters)
         {
-            bool removeMasterId = ValueChangeEventID.GetValueChangeEvent(mastersID[i], out ValueChangeEvent master);
-
-            if (removeMasterId == true)
+            if (master == null)
             {
-                if (enslave)
-                    runtimeEvent.EnslaveTo(ref master.runtimeEvent, out removeMasterId);
-                else
-                    runtimeEvent.FreeFrom(master.runtimeEvent, out removeMasterId);
+                Debug.LogWarning("Master is null");
+                continue;
             }
 
-            if (removeMasterId == true)
-            {
-                Debug.LogWarning("Removed master " + mastersID[i].ToString());
-                RemoveMasterAt(i);
-            }
+            bool typeMismatch;
+            if (enslave)
+                runtimeEvent.EnslaveTo(ref master.runtimeEvent, out typeMismatch);
+            else
+                runtimeEvent.FreeFrom(master.runtimeEvent, out typeMismatch);
+
+            if (typeMismatch) Debug.LogWarning("Master/slave type mismatch");
         }
     }
 
     public ValueChangeEvent GetMaster(int index)
     {
-        if (mastersID == null || index < 0 || index > mastersID.Length)
+        if (masters == null || index < 0 || index > masters.Length)
             return null;
         else
-        {
-            ValueChangeEventID.GetValueChangeEvent(mastersID[index], out ValueChangeEvent mastervce);
-            return mastervce;
-        }
+            return masters[index];
     }
 
     public int FindMasterIndex(ValueChangeEvent other)
     {
-        if (mastersID != null && other != null)
+        if (masters != null && other != null)
             for (int i = 0; i < MasterCount; i++)
-                if (ValueChangeEventID.GetValueChangeEvent(mastersID[i], out ValueChangeEvent mastervce) && mastervce == other)
+                if (masters[i] == other)
                     return i;
 
         return -1;
@@ -155,8 +147,8 @@ public partial class ValueChangeEvent
             if(runtimeEvent != null)
                 runtimeEvent.EnslaveTo(ref newMaster.runtimeEvent, out bool typeMismatch);
             
-            Array.Resize(ref mastersID, MasterCount + 1);
-            mastersID[MasterCount-1] = newMaster.ID;
+            Array.Resize(ref masters, MasterCount + 1);
+            masters[MasterCount-1] = newMaster;
         }
     }
 
@@ -171,20 +163,20 @@ public partial class ValueChangeEvent
     {
         if (masterIndex >= 0 && masterIndex < MasterCount)
         {
-            if (runtimeEvent != null && ValueChangeEventID.GetValueChangeEvent(mastersID[masterIndex], out ValueChangeEvent mastervce))
-                runtimeEvent.FreeFrom(mastervce.runtimeEvent, out bool typeMismatch);
+            if (runtimeEvent != null && masters[masterIndex] != null)
+                runtimeEvent.FreeFrom(masters[masterIndex].runtimeEvent, out bool typeMismatch);
 
             for (int i = masterIndex; i < MasterCount - 1; i++)
-                mastersID[i] = mastersID[i + 1];
-            Array.Resize(ref mastersID, MasterCount-1);
+                masters[i] = masters[i + 1];
+            Array.Resize(ref masters, MasterCount-1);
         }
     }
 
     public override string ToString()
     {
         if (ValueType == null)
-            return ID.name + " (trigger)";
+            return Name + " (trigger)";
         else
-            return ID.name + " (" + ValueType.Name + ")";
+            return Name + " (" + ValueType.Name + ")";
     }
 }

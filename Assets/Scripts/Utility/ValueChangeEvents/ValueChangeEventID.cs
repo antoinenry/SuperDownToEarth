@@ -1,23 +1,36 @@
 ﻿using System;
+using System.Collections.Generic;
+
 using UnityEngine;
 
 [Serializable]
 public struct ValueChangeEventID
 {
     public string name;
-    public Component component;
+    public string componentTypeName;
+    public int componentIndex;
     public int indexInComponent;
 
-    public static bool GetValueChangeEvent(ValueChangeEventID id, out ValueChangeEvent vce)
+    public Type ComponentType
     {
-        return GetValueChangeEvent(id.component, id.indexInComponent, out vce);
+        get => Type.GetType(componentTypeName);
+        set => componentTypeName = value.AssemblyQualifiedName;
     }
 
-    public static bool GetValueChangeEvent(Component component, int indexInComponent, out ValueChangeEvent vce)
+    public bool GetValueChangeEvent(GameObject inGameObject, out ValueChangeEvent vce)
     {
-        if (component != null && component is IValueChangeEventsComponent)
+        vce = null;
+        if (inGameObject == null)
         {
-            (component as IValueChangeEventsComponent).GetValueChangeEvents(out ValueChangeEvent[] vces);
+            Debug.LogError("Missing object reference");
+            return false;
+        }
+
+        Component inComponent = GetComponent(inGameObject);
+
+        if (inComponent != null && inComponent is IValueChangeEventsComponent)
+        {
+            (inComponent as IValueChangeEventsComponent).GetValueChangeEvents(out ValueChangeEvent[] vces);
             if (indexInComponent >= 0 && indexInComponent < vces.Length)
             {
                 vce = vces[indexInComponent];
@@ -27,6 +40,23 @@ public struct ValueChangeEventID
 
         vce = null;
         return false;
+    }
+
+    public Component GetComponent(GameObject inGameObject)
+    {
+        if (indexInComponent < 0) return null;
+
+        IValueChangeEventsComponent[] allComponents = inGameObject.GetComponents<IValueChangeEventsComponent>();
+        List<IValueChangeEventsComponent> matchingTypeComponents = new List<IValueChangeEventsComponent>();
+        foreach (IValueChangeEventsComponent component in allComponents)
+        {
+            if (component.GetType() == ComponentType) matchingTypeComponents.Add(component);
+        }
+
+        if (componentIndex < matchingTypeComponents.Count)
+            return matchingTypeComponents[componentIndex] as Component;
+        else
+            return null;
     }
 
     public static void SetAll(GameObject gameObject)
@@ -41,6 +71,6 @@ public struct ValueChangeEventID
 
     public override string ToString()
     {
-        return "ID (" + component + "/" + name + "(" + indexInComponent + ")";
+        return "ID (" + componentTypeName + "[" + componentIndex + "]." + name + "(" + indexInComponent + ")";
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-public class Swimmer : BodyPart, IValueChangeEventsComponent
+public class Swimmer : BodyPart //, IValueChangeEventsComponent
 {
     public LayerMask floatLayer;
 

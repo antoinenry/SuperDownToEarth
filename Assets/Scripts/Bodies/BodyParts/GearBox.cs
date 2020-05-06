@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GearBox : BodyPart, IValueChangeEventsComponent
+public class GearBox : BodyPart //, IValueChangeEventsComponent
 {
     public float[] speed;
     [Min(0f)] public float switchDelay;

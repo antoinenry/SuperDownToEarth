@@ -59,15 +59,9 @@ public class ValueChangeEventEditor
             return;
         }
 
-        if (valueChangeEvent.Component == null)
-        {
-            EditorGUILayout.HelpBox("Event's ID is corrupted.", MessageType.Warning);
-            return;
-        }
-
         string label ;
         if (detailedLabel)
-            label = valueChangeEvent.Component.ToString() + "." + valueChangeEvent.Name;
+            label = valueChangeEvent.ToString() + "." + valueChangeEvent.Name;
         else
             label = valueChangeEvent.Name;
 
@@ -166,7 +160,7 @@ public class ValueChangeEventEditor
         else if (vceTarget.IsValueType<Vector2>()) Vector2EventGUI(rect, vceTarget);
         else if (vceTarget.IsValueType<GameObject>()) GameObjectEventGUI(rect, vceTarget);
 
-        else EditorGUILayout.HelpBox("Inspector for ValueChangeEvent<" + vceTarget.ValueType.Name + "> is not implemented", MessageType.Warning);
+        else EditorGUILayout.HelpBox("Inspector for ValueChangeEvent<" + vceTarget.ValueType + "> is not implemented", MessageType.Warning);
     }
 
     private static void TriggerEventGUI(Rect rect, ValueChangeEvent vce)

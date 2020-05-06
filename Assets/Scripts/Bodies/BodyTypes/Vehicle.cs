@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-public class Vehicle : PhysicalBody, IValueChangeEventsComponent
+public class Vehicle : PhysicalBody //, IValueChangeEventsComponent
 {
     [Header("Vehicle")]
     public Transform seat;

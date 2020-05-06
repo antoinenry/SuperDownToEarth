@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-public class SimpleTrigger2D : MonoBehaviour, IValueChangeEventsComponent
+public class SimpleTrigger2D : MonoBehaviour //, IValueChangeEventsComponent
 {
     public ValueChangeEvent IsTriggered = ValueChangeEvent.New<bool>();
     public int TriggeredCounter { get; private set; }

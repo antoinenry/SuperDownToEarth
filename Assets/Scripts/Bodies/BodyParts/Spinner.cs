@@ -11,20 +11,8 @@ public class Spinner : BodyPart
     
     public Feet Feet { get; private set; }
     
-    public ValueChangeEvent spinDirection = ValueChangeEvent.New<int>();
+    public ValueChangeEvent spinDirection = ValueChangeEvent.New<int>("spinDirection");
     
-    public override int GetValueChangeEvents(out ValueChangeEvent[] vces)
-    {
-        vces = new ValueChangeEvent[] { spinDirection };
-        return 1;
-    }
-
-    public override int SetValueChangeEventsID()
-    {
-        spinDirection.SetID("spinDirection", this, 0);
-        return 1;
-    }
-
     private void Awake()
     {
         AttachedBody = GetComponent<Body>();

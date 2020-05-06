@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteAlways]
-public class Lever : MonoBehaviour, IValueChangeEventsComponent
+public class Lever : MonoBehaviour //, IValueChangeEventsComponent
 {
     [Min(2f)] public int numPositions = 2;
     [Min(0f)] public float angleRange = 45f;

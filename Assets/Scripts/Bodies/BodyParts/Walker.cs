@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Walker : BodyPart, IValueChangeEventsComponent
+public class Walker : BodyPart //, IValueChangeEventsComponent
 {
     public float walkSpeed;   
     

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Pilot : MonoBehaviour, IValueChangeEventsComponent
+public class Pilot : MonoBehaviour //, IValueChangeEventsComponent
 {
     public Body body;
     [HideInInspector] public BodyPart[] transferPartsToVehicle;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeroControls : MonoBehaviour, IValueChangeEventsComponent
+public class HeroControls : MonoBehaviour //, IValueChangeEventsComponent
 {
     public string heroTag = "Player";
     public bool useButtonControls;

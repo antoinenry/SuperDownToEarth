@@ -550,11 +550,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!58 &53667280
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -608,11 +604,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useCheckPointTransform: 0
   IsDead:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   rb2d: {fileID: 54008003}
   render: {fileID: 955425433}
   isFree: 0
@@ -632,11 +624,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 9
   IsWalking:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &54007998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -686,11 +674,7 @@ MonoBehaviour:
   startVelocityDamping: 3
   showGizmo: 1
   jump:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &54007999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -723,17 +707,9 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 1500
   IsOnGround:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   IsTumbling:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &54008000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1586,11 +1562,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useCheckPointTransform: 0
   IsDead:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   rb2d: {fileID: 169461412}
   render: {fileID: 1944147116}
   isFree: 0
@@ -1601,11 +1573,7 @@ MonoBehaviour:
   exitForce: 50
   exitAnimationDelay: 0.2
   IsFull:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &169461408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1618,15 +1586,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b85bf4ff019c74409e8b55e9d73bf0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  invertDirection: 1
   spinVelocity: 100
   spinInertia: 0.0001
   tumbleRecuperation: 100
   spinDirection:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &169461409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1676,11 +1641,7 @@ MonoBehaviour:
   startVelocityDamping: 4
   showGizmo: 0
   jump:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &169461410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1722,17 +1683,9 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 180
   IsOnGround:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   IsTumbling:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!50 &169461412
 Rigidbody2D:
   serializedVersion: 4
@@ -1789,11 +1742,7 @@ MonoBehaviour:
   gravityForce: 28
   angleOffset: 100
   IsFalling:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!1 &171543708
 GameObject:
   m_ObjectHideFlags: 0
@@ -2062,11 +2011,7 @@ MonoBehaviour:
   backUp: {fileID: 0}
   backDown: {fileID: 668580601}
   GroundFlatness:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!1 &265853621
 GameObject:
   m_ObjectHideFlags: 0
@@ -2102,11 +2047,7 @@ MonoBehaviour:
   body: {fileID: 1279257987}
   transferPartsToVehicle: []
   IsPilotingVehicle:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &265853623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2476,11 +2417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!58 &341959689
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2716,11 +2653,7 @@ MonoBehaviour:
   transferPartsToVehicle:
   - {fileID: 1187898418}
   IsPilotingVehicle:
-    ID:
-      name: IsPilotingVehicle
-      component: {fileID: 433034813}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &433034816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2770,11 +2703,7 @@ MonoBehaviour:
   body: {fileID: 1305308460}
   transferPartsToVehicle: []
   IsPilotingVehicle:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &454957931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2890,11 +2819,7 @@ MonoBehaviour:
   backUp: {fileID: 0}
   backDown: {fileID: 891816435}
   GroundFlatness:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!4 &456418129
 Transform:
   m_ObjectHideFlags: 0
@@ -3113,11 +3038,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useCheckPointTransform: 0
   IsDead:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   rb2d: {fileID: 512554179}
   render: {fileID: 1509083792}
   isFree: 0
@@ -3128,11 +3049,7 @@ MonoBehaviour:
   exitForce: 50
   exitAnimationDelay: 0.2
   IsFull:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &512554175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3145,15 +3062,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b85bf4ff019c74409e8b55e9d73bf0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  invertDirection: 1
   spinVelocity: 1080
   spinInertia: 0.002
   tumbleRecuperation: 100
   spinDirection:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &512554176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3194,11 +3108,7 @@ MonoBehaviour:
   startVelocityDamping: 4
   showGizmo: 0
   jump:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!58 &512554178
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -3321,17 +3231,9 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 180
   IsOnGround:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   IsTumbling:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!1 &512565684
 GameObject:
   m_ObjectHideFlags: 0
@@ -4419,11 +4321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!58 &639276641
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4841,11 +4739,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!58 &668580602
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5273,11 +5167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!58 &761300783
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5346,11 +5236,7 @@ MonoBehaviour:
   stepByStep: 1
   mirror: 1
   Step:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!50 &827959863
 Rigidbody2D:
   serializedVersion: 4
@@ -5572,11 +5458,7 @@ MonoBehaviour:
   backUp: {fileID: 53667279}
   backDown: {fileID: 967458414}
   GroundFlatness:
-    ID:
-      name: GroundFlatness
-      component: {fileID: 851103340}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!1 &854031067
 GameObject:
   m_ObjectHideFlags: 0
@@ -5622,11 +5504,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!58 &854031070
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -6252,11 +6130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!58 &891816436
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -6821,11 +6695,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useCheckPointTransform: 0
   IsDead:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   rb2d: {fileID: 948060738}
   render: {fileID: 1202195631}
   isFree: 0
@@ -6836,11 +6706,7 @@ MonoBehaviour:
   exitForce: 50
   exitAnimationDelay: 0.2
   IsFull:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &948060732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6859,23 +6725,11 @@ MonoBehaviour:
   - 10
   switchDelay: 0
   CurrentGear:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   OnGearUp:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   OnGearDown:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &948060734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6890,11 +6744,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 0
   IsWalking:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &948060735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6910,11 +6760,7 @@ MonoBehaviour:
   gravityForce: 24
   angleOffset: 0
   IsFalling:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &948060736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6956,17 +6802,9 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 180
   IsOnGround:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   IsTumbling:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!58 &948060737
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -7107,58 +6945,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TriggerParameters:
-  - ID:
-      name: onJump
-      component: {fileID: 954675470}
-      indexInComponent: 0
-    mastersID:
-    - name: jump
-      component: {fileID: 1187898416}
-      indexInComponent: 0
+  - masters: []
   BootParameters:
-  - ID:
-      name: isLeaning
-      component: {fileID: 954675470}
-      indexInComponent: 1
-    mastersID: []
-  - ID:
-      name: isOnGround
-      component: {fileID: 954675470}
-      indexInComponent: 2
-    mastersID:
-    - name: IsOnGround
-      component: {fileID: 1187898419}
-      indexInComponent: 0
-  - ID:
-      name: isInFluid
-      component: {fileID: 954675470}
-      indexInComponent: 3
-    mastersID: []
-  - ID:
-      name: isFalling
-      component: {fileID: 954675470}
-      indexInComponent: 4
-    mastersID:
-    - name: isFalling
-      component: {fileID: 1187898418}
-      indexInComponent: 0
-  - ID:
-      name: isPilotingVehicle
-      component: {fileID: 954675470}
-      indexInComponent: 5
-    mastersID:
-    - name: IsPilotingVehicle
-      component: {fileID: 433034813}
-      indexInComponent: 0
+  - masters: []
+  - masters: []
+  - masters: []
+  - masters: []
+  - masters: []
   IntParameters:
-  - ID:
-      name: groundFlatness
-      component: {fileID: 954675470}
-      indexInComponent: 6
-    mastersID:
-    - name: GroundFlatness
-      component: {fileID: 851103340}
-      indexInComponent: 0
+  - masters: []
   FloatParameters: []
   triggerParameterNames:
   - onJump
@@ -7611,11 +7406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!58 &967458415
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -8163,11 +7954,7 @@ MonoBehaviour:
   stepByStep: 0
   mirror: 0
   Step:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!50 &988279582
 Rigidbody2D:
   serializedVersion: 4
@@ -8225,23 +8012,11 @@ MonoBehaviour:
   jumpButtonName: Jump
   actionButtonName: Fire1
   AxisInput:
-    ID:
-      name: Axis1Input
-      component: {fileID: 1031615103}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   Action1Input:
-    ID:
-      name: Action1Input
-      component: {fileID: 1031615103}
-      indexInComponent: 1
-    mastersID: []
+    masters: []
   Action2Input:
-    ID:
-      name: Action2Input
-      component: {fileID: 1031615103}
-      indexInComponent: 2
-    mastersID: []
+    masters: []
 --- !u!114 &1031615104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8468,11 +8243,7 @@ MonoBehaviour:
   body: {fileID: 54007996}
   transferPartsToVehicle: []
   IsPilotingVehicle:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &1067459106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8766,18 +8537,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TriggerParameters:
-  - ID:
-      name: OnLeverMove
-      component: {fileID: 1106560697}
-      indexInComponent: 0
-    mastersID: []
+  - masters: []
   BootParameters: []
   IntParameters:
-  - ID:
-      name: LeverActionDirection
-      component: {fileID: 1106560697}
-      indexInComponent: 1
-    mastersID: []
+  - masters: []
   FloatParameters: []
   triggerParameterNames:
   - OnLeverMove
@@ -9071,11 +8834,7 @@ MonoBehaviour:
   body: {fileID: 1169577023}
   transferPartsToVehicle: []
   IsPilotingVehicle:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &1137402711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9318,11 +9077,7 @@ MonoBehaviour:
   stepByStep: 0
   mirror: 0
   Step:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!50 &1162988626
 Rigidbody2D:
   serializedVersion: 4
@@ -9381,11 +9136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useCheckPointTransform: 0
   IsDead:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   rb2d: {fileID: 1169577032}
   render: {fileID: 985299722}
   isFree: 0
@@ -9405,11 +9156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 9
   IsWalking:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &1169577026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9459,11 +9206,7 @@ MonoBehaviour:
   startVelocityDamping: 3
   showGizmo: 1
   jump:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &1169577028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9509,17 +9252,9 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 1500
   IsOnGround:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   IsTumbling:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!58 &1169577031
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -9612,11 +9347,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useCheckPointTransform: 0
   IsDead:
-    ID:
-      name: IsDead
-      component: {fileID: 1187898413}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   rb2d: {fileID: 1187898421}
   render: {fileID: 954675469}
   isFree: 0
@@ -9638,11 +9369,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16
   IsInFluid:
-    ID:
-      name: IsInFluid
-      component: {fileID: 1187898414}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &1187898415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9714,11 +9441,7 @@ MonoBehaviour:
   startVelocityDamping: 3
   showGizmo: 1
   jump:
-    ID:
-      name: jump
-      component: {fileID: 1187898416}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &1187898417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9731,15 +9454,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b85bf4ff019c74409e8b55e9d73bf0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  invertDirection: 1
   spinVelocity: 240
   spinInertia: 0
   tumbleRecuperation: 100
   spinDirection:
-    ID:
-      name: spinDirection
-      component: {fileID: 1187898417}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &1187898418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9755,11 +9475,7 @@ MonoBehaviour:
   gravityForce: 6
   angleOffset: 0
   IsFalling:
-    ID:
-      name: isFalling
-      component: {fileID: 1187898418}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &1187898419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9801,17 +9517,9 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 1500
   IsOnGround:
-    ID:
-      name: IsOnGround
-      component: {fileID: 1187898419}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   IsTumbling:
-    ID:
-      name: IsTumbling
-      component: {fileID: 1187898419}
-      indexInComponent: 1
-    mastersID: []
+    masters: []
 --- !u!58 &1187898420
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -10323,11 +10031,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!1 &1253587758
 GameObject:
   m_ObjectHideFlags: 0
@@ -10513,11 +10217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useCheckPointTransform: 0
   IsDead:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   rb2d: {fileID: 1279257994}
   render: {fileID: 2124687243}
   isFree: 0
@@ -10537,11 +10237,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 9
   IsWalking:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &1279257989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10591,11 +10287,7 @@ MonoBehaviour:
   startVelocityDamping: 3
   showGizmo: 1
   jump:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &1279257990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10628,17 +10320,9 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 1500
   IsOnGround:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   IsTumbling:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &1279257991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10904,11 +10588,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useCheckPointTransform: 0
   IsDead:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   rb2d: {fileID: 1305308467}
   render: {fileID: 2069116034}
   isFree: 0
@@ -10928,11 +10608,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 9
   IsWalking:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &1305308462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10982,11 +10658,7 @@ MonoBehaviour:
   startVelocityDamping: 3
   showGizmo: 1
   jump:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &1305308463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11019,17 +10691,9 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 1500
   IsOnGround:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   IsTumbling:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &1305308464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11404,11 +11068,7 @@ MonoBehaviour:
   stepByStep: 0
   mirror: 0
   Step:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!50 &1387272704
 Rigidbody2D:
   serializedVersion: 4
@@ -12112,17 +11772,9 @@ MonoBehaviour:
   reactionDelay: 1
   rotationSpeed: 200
   LeverPosition:
-    ID:
-      name: LeverPosition
-      component: {fileID: 1547857612}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   LeverActionDirection:
-    ID:
-      name: LeverActionDirection
-      component: {fileID: 1547857612}
-      indexInComponent: 1
-    mastersID: []
+    masters: []
 --- !u!1 &1566605778
 GameObject:
   m_ObjectHideFlags: 0
@@ -12360,11 +12012,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!58 &1603238457
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -15498,11 +15146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!1 &1996710241
 GameObject:
   m_ObjectHideFlags: 0
@@ -17783,11 +17427,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 0
   IsWalking:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &8251557782544366448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17800,15 +17440,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b85bf4ff019c74409e8b55e9d73bf0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  invertDirection: 1
   spinVelocity: 200
   spinInertia: 0
   tumbleRecuperation: 100
   spinDirection:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!50 &8251557782544366449
 Rigidbody2D:
   serializedVersion: 4
@@ -17897,17 +17534,9 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 180
   IsOnGround:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   IsTumbling:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &8251557782544366453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17957,11 +17586,7 @@ MonoBehaviour:
   startVelocityDamping: 4
   showGizmo: 0
   jump:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!4 &8251557782544366454
 Transform:
   m_ObjectHideFlags: 0
@@ -17996,11 +17621,7 @@ MonoBehaviour:
   gravityForce: 0
   angleOffset: 0
   IsFalling:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &8251557782544366456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18015,11 +17636,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useCheckPointTransform: 0
   IsDead:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   rb2d: {fileID: 8251557782544366449}
   render: {fileID: 8251557783088937104}
   isFree: 0
@@ -18030,11 +17647,7 @@ MonoBehaviour:
   exitForce: 50
   exitAnimationDelay: 0.2
   IsFull:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!114 &8251557782544366458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18052,23 +17665,11 @@ MonoBehaviour:
   - 9
   switchDelay: 0
   CurrentGear:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   OnGearUp:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
   OnGearDown:
-    ID:
-      name: 
-      component: {fileID: 0}
-      indexInComponent: 0
-    mastersID: []
+    masters: []
 --- !u!70 &8251557782544366459
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

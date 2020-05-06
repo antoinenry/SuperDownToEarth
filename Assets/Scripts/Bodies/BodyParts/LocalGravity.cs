@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class LocalGravity : BodyPart, IValueChangeEventsComponent
+public class LocalGravity : BodyPart //, IValueChangeEventsComponent
 {
     public float gravityForce;
     public float angleOffset;

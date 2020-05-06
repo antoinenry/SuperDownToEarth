@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Muncher : MonoBehaviour, IValueChangeEventsComponent
+public class Muncher : MonoBehaviour //, IValueChangeEventsComponent
 {
     public List<string> eatableTags;
     [Min(0f)] public float munchDelay;
