@@ -11,8 +11,8 @@ public class Spinner : BodyPart
     
     public Feet Feet { get; private set; }
     
-    public ValueChangeEvent spinDirection = ValueChangeEvent.New<int>("spinDirection");
-    
+    public ValueChangeEvent spinDirection = ValueChangeEvent.New<int>();
+
     private void Awake()
     {
         AttachedBody = GetComponent<Body>();

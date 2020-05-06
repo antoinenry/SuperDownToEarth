@@ -20,23 +20,6 @@ public class CircuitBody : MonoBehaviour //, IValueChangeEventsComponent
 
     public ValueChangeEvent Step = ValueChangeEvent.New<int>();
 
-    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
-    {
-        vces = new ValueChangeEvent[] { Step };
-        return vces.Length;
-    }
-
-    public int SetValueChangeEventsID()
-    {
-        Step.SetID("Step", this, 0);
-        return 1;
-    }
-
-    public void EnslaveValueChangeEvents(bool enslave)
-    {
-        Step.Enslave(enslave);
-    }
-
     public void OnDrawGizmosSelected()
     {
         if (circuit != null) circuit.OnDrawGizmosSelected();

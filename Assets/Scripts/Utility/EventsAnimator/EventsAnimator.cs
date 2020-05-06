@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 [ExecuteAlways]
 [RequireComponent(typeof(Animator))]
-public class EventsAnimator : MonoBehaviour //, IValueChangeEventsComponent
+public class EventsAnimator : MonoBehaviour, IValueChangeEventsComponent
 {    
     [SerializeField] private ValueChangeEvent[] TriggerParameters = new ValueChangeEvent[0];
     [SerializeField] private ValueChangeEvent[] BootParameters = new ValueChangeEvent[0];
@@ -38,6 +38,17 @@ public class EventsAnimator : MonoBehaviour //, IValueChangeEventsComponent
         FloatParameters.CopyTo(vces, TriggerCount + BooleanCount + IntegerCount);
 
         return TotalEventsCount;
+    }
+
+    public ValueChangeEvent GetValueChangeEventByName(string vceName)
+    {
+
+        return null;
+    }
+
+    public string[] GetValueChangeEventsNames()
+    {
+        return null;
     }
 
     public int SetValueChangeEventsID()
@@ -127,9 +138,10 @@ public class EventsAnimator : MonoBehaviour //, IValueChangeEventsComponent
 
     private void SetValueChangeEventsID(ref ValueChangeEvent[] vceArray, string[] namesArray, int indexInComponentOffset)
     {
+        /*
         if (vceArray != null && namesArray != null)
             for (int i = 0, imax = namesArray.Length; i < imax; i++)
-                vceArray[i].SetID(namesArray[i], this, i + indexInComponentOffset);
+                vceArray[i].SetID(namesArray[i], this, i + indexInComponentOffset);*/
     }
 
     private void UpdateEvents()
@@ -142,6 +154,7 @@ public class EventsAnimator : MonoBehaviour //, IValueChangeEventsComponent
 
     private void UpdateValueChangeEvents<T>(ref ValueChangeEvent[] vceArray, string[] parameterNames)
     {
+        /*
         int parameterCount = parameterNames.Length;
 
         List<ValueChangeEvent> current = new List<ValueChangeEvent>(vceArray);
@@ -152,7 +165,7 @@ public class EventsAnimator : MonoBehaviour //, IValueChangeEventsComponent
             ValueChangeEvent match = current.Find(vce => vce.Name == parameterNames[i]);
 
             if (match == null)
-                updated[i] = ValueChangeEvent.New<T>();
+                updated[i] = ValueChangeEvent.New<T>(parameterNames[i]);
             else
             {
                 if (match.runtimeEvent == null) match.ResetRuntimeEvent<T>();
@@ -161,6 +174,7 @@ public class EventsAnimator : MonoBehaviour //, IValueChangeEventsComponent
         }
 
         vceArray = updated;
+        */
     }
 
     private void UpdateActions()

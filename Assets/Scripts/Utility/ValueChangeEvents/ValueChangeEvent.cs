@@ -8,31 +8,29 @@ public partial class ValueChangeEvent
 {
     public IValueChangeEvent runtimeEvent;
 
-    [SerializeField] private ValueChangeEvent[] masters;
-
-    public string Name { get; private set; }
-    public int MasterCount { get => masters == null ? 0 : masters.Length; }
+    [SerializeField] private string valueType;
+    [SerializeField] private ValueChangeEventID[] masterIDs;
+    
+    public int MasterCount { get => masterIDs == null ? 0 : masterIDs.Length; }
     public int RuntimeMasterCount { get => runtimeEvent == null ? 0 : runtimeEvent.GetMasterCount(); }
-    public Type ValueType { get => runtimeEvent == null ? null : runtimeEvent.GetValueType(); }
+    public Type ValueType { get => Type.GetType(valueType); }
     
     private ValueChangeEvent() { }
 
-    public void SetID(string name, Component component, int index)
-    {
-        Name = name;
-    }
-
-    public static ValueChangeEvent New<T>(string name = "NO NAME")
+    public static ValueChangeEvent New<T>()
     {
         ValueChangeEvent vce = new ValueChangeEvent();
         vce.runtimeEvent = new RuntimeValueChangeEvent<T>();
-        vce.Name = name;
+        vce.valueType = typeof(T).AssemblyQualifiedName;
         return vce;
     }
 
     public void ResetRuntimeEvent<T>()
     {
-        runtimeEvent = new RuntimeValueChangeEvent<T>();
+        if (typeof(T) == ValueType)
+            runtimeEvent = new RuntimeValueChangeEvent<T>();
+        else
+            Debug.LogWarning("Type mismatch: " + typeof(T).Name + "/" + ValueType.Name);
     }
 
     public void Invoke()
@@ -94,9 +92,28 @@ public partial class ValueChangeEvent
         else Debug.LogError("ValueChangeEvent type mismatch.");
     }
 
+    public void RemoveMastersIDs(Predicate<ValueChangeEventID> filter)
+    {
+        for (int i = 0; i < MasterCount; i++)
+        {
+            if (filter(masterIDs[i])) RemoveMasterIDAt(i);
+        }
+    }
+
+    public void RemoveMasterIDAt(int index)
+    {
+        if (index < 0) return;
+
+        int count = MasterCount;
+        for (int i = index; i < count - 1; i++)
+            masterIDs[i] = masterIDs[i + 1];
+
+        Array.Resize(ref masterIDs, count - 1);
+    }
+
     public void Enslave(bool enslave)
     {
-        if (masters == null) return;
+        if (masterIDs == null) return;
 
         if(runtimeEvent == null)
         {
@@ -104,13 +121,10 @@ public partial class ValueChangeEvent
             return;
         }
 
-        foreach(ValueChangeEvent master in masters)
+        RemoveMastersIDs(id => id.GetValueChangeEvent() == null);
+        foreach(ValueChangeEventID masterID in masterIDs)
         {
-            if (master == null)
-            {
-                Debug.LogWarning("Master is null");
-                continue;
-            }
+            ValueChangeEvent master = masterID.GetValueChangeEvent();
 
             bool typeMismatch;
             if (enslave)
@@ -122,34 +136,50 @@ public partial class ValueChangeEvent
         }
     }
 
-    public ValueChangeEvent GetMaster(int index)
+    public ValueChangeEventID GetMasterID(int index)
     {
-        if (masters == null || index < 0 || index > masters.Length)
+        if (index < 0 || index > MasterCount)
+            return ValueChangeEventID.NoID;
+        else
+            return masterIDs[index];
+    }
+
+    public ValueChangeEvent GetMaster(int index)
+    {        
+        if (index < 0 || index > MasterCount)
             return null;
         else
-            return masters[index];
+            return masterIDs[index].GetValueChangeEvent();
     }
 
     public int FindMasterIndex(ValueChangeEvent other)
     {
-        if (masters != null && other != null)
+        if (other != null)
             for (int i = 0; i < MasterCount; i++)
-                if (masters[i] == other)
+                if (masterIDs[i].GetValueChangeEvent() == other)
                     return i;
 
         return -1;
     }
 
-    public void AddMaster(ValueChangeEvent newMaster)
+    public void AddMaster(ValueChangeEventID newMasterID)
     {
-        if(newMaster != null && newMaster != this && FindMasterIndex(newMaster) == -1)
+        ValueChangeEvent newMaster = newMasterID.GetValueChangeEvent();
+        if (newMaster != null)
         {
-            if(runtimeEvent != null)
-                runtimeEvent.EnslaveTo(ref newMaster.runtimeEvent, out bool typeMismatch);
-            
-            Array.Resize(ref masters, MasterCount + 1);
-            masters[MasterCount-1] = newMaster;
+            if (newMaster == this) Debug.LogWarning("Trying to add own ID as master. Master won't be added. " + newMasterID.ToString());
+            else if (FindMasterIndex(newMaster) != -1) Debug.LogWarning("Trying to add ID as master but it's already registered. Master won't be added again." + newMasterID.ToString());
+            else
+            {
+                if (runtimeEvent != null)
+                    runtimeEvent.EnslaveTo(ref newMaster.runtimeEvent, out bool typeMismatch);
+
+                Array.Resize(ref masterIDs, MasterCount + 1);
+                masterIDs[MasterCount - 1] = newMasterID;
+            }
         }
+        else Debug.LogWarning("Trying to add a master ID but no vce found. Master won't be added. " + newMasterID.ToString());
+        
     }
 
     public void RemoveMaster(ValueChangeEvent oldMaster)
@@ -163,20 +193,10 @@ public partial class ValueChangeEvent
     {
         if (masterIndex >= 0 && masterIndex < MasterCount)
         {
-            if (runtimeEvent != null && masters[masterIndex] != null)
-                runtimeEvent.FreeFrom(masters[masterIndex].runtimeEvent, out bool typeMismatch);
+            if (runtimeEvent != null && masterIDs[masterIndex].GetValueChangeEvent() != null)
+                runtimeEvent.FreeFrom(masterIDs[masterIndex].GetValueChangeEvent().runtimeEvent, out bool typeMismatch);
 
-            for (int i = masterIndex; i < MasterCount - 1; i++)
-                masters[i] = masters[i + 1];
-            Array.Resize(ref masters, MasterCount-1);
+            RemoveMasterIDAt(masterIndex);
         }
-    }
-
-    public override string ToString()
-    {
-        if (ValueType == null)
-            return Name + " (trigger)";
-        else
-            return Name + " (" + ValueType.Name + ")";
     }
 }

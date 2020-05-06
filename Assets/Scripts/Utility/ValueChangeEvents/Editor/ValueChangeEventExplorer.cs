@@ -6,21 +6,21 @@ using UnityEditor;
 
 public class ValueChangeEventExplorer
 {
-    public Predicate<ValueChangeEvent> filter;
+    public Predicate<ValueChangeEventID> filter;
     public GameObject selectedGameObject;
 
-    public ValueChangeEvent SelectedVce { get => vceOptions == null ? null : vceOptions[selectedVceIndex]; }
+    public ValueChangeEventID SelectedVceID { get => vceIDOptions == null ? new ValueChangeEventID() : vceIDOptions[selectedVceIndex]; }
     public Component SelectedComponent { get => componentOptions == null ? null : componentOptions[selectedComponentIndex]; }
     
     private List<Component> componentOptions;
     private List<string> componentOptionNames;
     private int selectedComponentIndex;
 
-    private ValueChangeEvent[] vceOptions;
+    private ValueChangeEventID[] vceIDOptions;
     private List<string> vceOptionNames;
     private int selectedVceIndex;
 
-    public ValueChangeEventExplorer(Predicate<ValueChangeEvent> filter = null)
+    public ValueChangeEventExplorer(Predicate<ValueChangeEventID> filter = null)
     {
         Debug.Log("New ValueChangeExplorer");
         this.filter = filter;
@@ -65,29 +65,30 @@ public class ValueChangeEventExplorer
     {
         if (SelectedComponent == null)
         {
-            vceOptions = null;
+            vceIDOptions = null;
             vceOptionNames = new List<string> { "(no component selected)" };
             selectedVceIndex = 0;
         }
         else
         {
             IValueChangeEventsComponent selectedComponent = SelectedComponent as IValueChangeEventsComponent;
-            selectedComponent.SetValueChangeEventsID();
             selectedComponent.GetValueChangeEvents(out ValueChangeEvent[] vces);
+            List<string> vceNames = new List<string>(selectedComponent.GetValueChangeEventsNames());
+            List<ValueChangeEventID> vceIDs = vceNames.ConvertAll(name => new ValueChangeEventID(SelectedComponent, name));
 
             if(filter == null)
-                vceOptions = vces;
+                vceIDOptions = vceIDs.ToArray();
             else
-                vceOptions = new List<ValueChangeEvent>(vces).FindAll(filter).ToArray();
+                vceIDOptions = vceIDs.FindAll(filter).ToArray();
 
-            if (vceOptions.Length == 0)
+            if (vceIDOptions.Length == 0)
             {
-                vceOptions = null;
+                vceIDOptions = null;
                 vceOptionNames = new List<string> { "(no type match)" };
             }
             else
             {
-                vceOptionNames = new List<ValueChangeEvent>(vceOptions).ConvertAll(vce => vce.ToString());
+                vceOptionNames = new List<ValueChangeEventID>(vceIDOptions).ConvertAll(id => id.name);
             }
         }
 

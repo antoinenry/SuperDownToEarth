@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Body : SaveComponent //, IValueChangeEventsComponent
+public class Body : ValueChangeEventsBehaviour
 {
     [Header("Body")]
     public ValueChangeEvent IsDead = ValueChangeEvent.New<bool>();
@@ -19,23 +19,6 @@ public class Body : SaveComponent //, IValueChangeEventsComponent
     {
         get => null;
         protected set { }
-    }
-
-    public virtual int GetValueChangeEvents(out ValueChangeEvent[] vces)
-    {
-        vces = new ValueChangeEvent[] { IsDead };
-        return vces.Length;
-    }
-
-    public virtual int SetValueChangeEventsID()
-    {
-        IsDead.SetID("IsDead", this, 0);
-        return 1;
-    }
-
-    public virtual void EnslaveValueChangeEvents(bool enslave)
-    {
-        IsDead.Enslave(enslave);
     }
 
     private void Awake()
@@ -63,6 +46,8 @@ public class Body : SaveComponent //, IValueChangeEventsComponent
         foreach (BodyPart part in parts)
             part.enabled = true;
     }
+
+    /*
     public override void OnCheckPointSave(Transform checkPoint)
     {
         //Debug.Log("CheckPoint save " + name);
@@ -89,4 +74,6 @@ public class Body : SaveComponent //, IValueChangeEventsComponent
         yield return new WaitForFixedUpdate();
         Respawn();
     }
+
+    */
 }

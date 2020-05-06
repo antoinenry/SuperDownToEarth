@@ -15,8 +15,10 @@ public class Stomper : BodyPart
         stompCollider = GetComponent<Collider2D>();
     }    
 
-    private void OnEnable()
+    public override void OnEnable()
     {
+        base.OnEnable();
+
         if (gravity != null)
         {
             gravity.IsFalling.AddListener<bool>(OnFall);
@@ -24,8 +26,10 @@ public class Stomper : BodyPart
         }
     }
 
-    private void OnDisable()
+    public override void OnDisable()
     {
+        base.OnDisable();
+
         if (gravity != null)
             gravity.IsFalling.RemoveListener<bool>(OnFall);
     }

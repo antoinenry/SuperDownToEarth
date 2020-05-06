@@ -32,7 +32,7 @@ public class ValueChangeEventEditorWindow : EditorWindow
     private void OnGUI()
     {
         UpdateComponents();
-
+        
         if (inspectedComponents.Length == 0)
         {
             EditorGUILayout.HelpBox("No ValueChangeEvents in selection. ", MessageType.None);

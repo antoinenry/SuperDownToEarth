@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlatGroundProbe : BodyPart //, IValueChangeEventsComponent
+public class FlatGroundProbe : BodyPart
 {
     public enum Flatness { Flat, Hole, Point, BackDrop, FrontDrop, NoGround, Other}    
 
@@ -20,23 +20,6 @@ public class FlatGroundProbe : BodyPart //, IValueChangeEventsComponent
     public bool BackUpCollision { get => backUp != null && backUp.IsTriggered.Get<bool>(); }
 
     public ValueChangeEvent GroundFlatness = ValueChangeEvent.New<int>();
-
-    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
-    {
-        vces = new ValueChangeEvent[] { GroundFlatness };
-        return vces.Length;
-    }
-
-    public int SetValueChangeEventsID()
-    {
-        GroundFlatness.SetID("GroundFlatness", this, 0);
-        return 1;
-    }
-
-    public void EnslaveValueChangeEvents(bool enslave)
-    {
-        GroundFlatness.Enslave(enslave);
-    }
 
     private void Start()
     {

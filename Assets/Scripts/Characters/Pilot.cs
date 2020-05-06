@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Pilot : MonoBehaviour //, IValueChangeEventsComponent
+public class Pilot : ValueChangeEventsBehaviour
 {
     public Body body;
     [HideInInspector] public BodyPart[] transferPartsToVehicle;
@@ -14,23 +14,6 @@ public class Pilot : MonoBehaviour //, IValueChangeEventsComponent
     public Body PilotedBody { get => IsPilotingVehicle.Get<bool>() ? CurrentVehicle : body; }
     
     public ValueChangeEvent IsPilotingVehicle = ValueChangeEvent.New<bool>();
-
-    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
-    {
-        vces = new ValueChangeEvent[] { IsPilotingVehicle };
-        return vces.Length;
-    }
-
-    public int SetValueChangeEventsID()
-    {
-        IsPilotingVehicle.SetID("IsPilotingVehicle", this, 0);
-        return 1;
-    }
-
-    public void EnslaveValueChangeEvents(bool enslave)
-    {
-        IsPilotingVehicle.Enslave(enslave);
-    }
 
     private void Start()
     {

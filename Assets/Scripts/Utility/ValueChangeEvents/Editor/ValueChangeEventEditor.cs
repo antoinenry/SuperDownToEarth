@@ -4,15 +4,20 @@ using UnityEditor;
 public class ValueChangeEventEditor
 {
     public bool hasSlaveEditor;
-    public bool detailedLabel;
     public bool showMasters;
+    public bool detailedLabel;
 
     public ValueChangeEvent valueChangeEvent;
-    public ValueChangeEventExplorer vceExplorer;
+    public ValueChangeEventID valueChangeEventID;
 
-    public ValueChangeEventEditor(ValueChangeEvent vce)
+    private ValueChangeEventExplorer vceExplorer;
+
+    private ValueChangeEventEditor() { }
+
+    public ValueChangeEventEditor(ValueChangeEvent vce, ValueChangeEventID vceID)
     {
         valueChangeEvent = vce;
+        valueChangeEventID = vceID;
         showMasters = false;
         vceExplorer = null;
     }
@@ -59,11 +64,9 @@ public class ValueChangeEventEditor
             return;
         }
 
-        string label ;
-        if (detailedLabel)
-            label = valueChangeEvent.ToString() + "." + valueChangeEvent.Name;
-        else
-            label = valueChangeEvent.Name;
+        string label = detailedLabel ?
+            valueChangeEventID.component.ToString() + "." + valueChangeEventID.name + " (" + valueChangeEvent.ValueType.Name + ")" :
+            valueChangeEventID.name + " (" + valueChangeEvent.ValueType.Name + ")";
 
         Rect labelRect = rect;
         labelRect.width *= .6f;
@@ -74,15 +77,16 @@ public class ValueChangeEventEditor
         masterCountRect.x += labelRect.width + vceRect.width;
         masterCountRect.width *= .2f;
 
-        EditorGUI.LabelField(labelRect, label);
+        if (valueChangeEvent.runtimeEvent == null)
+            EditorGUI.LabelField(labelRect, label);
+        else
+            EditorGUI.LabelField(labelRect, label, EditorStyles.boldLabel);
 
-        ValueChangeEventGUI(vceRect, valueChangeEvent);        
+        ValueChangeEventGUI(vceRect, valueChangeEvent);
 
         int masterCount = valueChangeEvent.MasterCount;
-        if (valueChangeEvent.RuntimeMasterCount != masterCount)
-            EditorGUI.HelpBox(masterCountRect, valueChangeEvent.RuntimeMasterCount + "/" + masterCount + " master runtime count mismatch", MessageType.Error);
-        else if (masterCount > 0)
-            EditorGUI.LabelField(masterCountRect, " (" + masterCount + " masters)");
+        if (masterCount > 0)
+            EditorGUI.LabelField(masterCountRect, masterCount + "/" + valueChangeEvent.RuntimeMasterCount + " masters");
         else
             EditorGUI.LabelField(masterCountRect, " ");
     }
@@ -98,7 +102,7 @@ public class ValueChangeEventEditor
             EditorGUILayout.LabelField("is slave to: ");
             if (vceExplorer == null && GUILayout.Button("+", GUILayout.Width(25f)))
             {
-                vceExplorer = new ValueChangeEventExplorer(vce => vce.ValueType == valueChangeEvent.ValueType && vce != valueChangeEvent);
+                vceExplorer = new ValueChangeEventExplorer(vceID => vceID.GetValueType() == valueChangeEvent.ValueType && vceID.GetValueChangeEvent() != valueChangeEvent);
             }
             else if (vceExplorer != null && GUILayout.Button("Cancel"))
                 vceExplorer = null;
@@ -113,7 +117,8 @@ public class ValueChangeEventEditor
                 for (int i = 0; i < masterCount; i++)
                 {
                     EditorGUILayout.BeginHorizontal();
-                    ValueChangeEventEditor slaveEditor = new ValueChangeEventEditor(valueChangeEvent.GetMaster(i)) { detailedLabel = true };
+                    ValueChangeEventEditor slaveEditor = new ValueChangeEventEditor(valueChangeEvent.GetMaster(i), valueChangeEvent.GetMasterID(i));
+                    slaveEditor.detailedLabel = true;
                     slaveEditor.OnEditorGUILayout();
                     if (GUILayout.Button("X", GUILayout.Width(25f)))
                         valueChangeEvent.RemoveMasterAt(i);
@@ -126,11 +131,11 @@ public class ValueChangeEventEditor
                 EditorGUILayout.BeginHorizontal();
 
                 vceExplorer.EditorGUI();
-                GUI.enabled = (vceExplorer.SelectedVce != null);
+                GUI.enabled = (vceExplorer.SelectedVceID.GetValueChangeEvent() != null);
 
                 if (GUILayout.Button("Confirm"))
                 {
-                    valueChangeEvent.AddMaster(vceExplorer.SelectedVce);
+                    valueChangeEvent.AddMaster(vceExplorer.SelectedVceID);
                     vceExplorer = null;
                 }
 
@@ -160,7 +165,7 @@ public class ValueChangeEventEditor
         else if (vceTarget.IsValueType<Vector2>()) Vector2EventGUI(rect, vceTarget);
         else if (vceTarget.IsValueType<GameObject>()) GameObjectEventGUI(rect, vceTarget);
 
-        else EditorGUILayout.HelpBox("Inspector for ValueChangeEvent<" + vceTarget.ValueType + "> is not implemented", MessageType.Warning);
+        else EditorGUI.HelpBox(rect, "Inspector for ValueChangeEvent<" + vceTarget.ValueType + "> is not implemented", MessageType.Warning);
     }
 
     private static void TriggerEventGUI(Rect rect, ValueChangeEvent vce)

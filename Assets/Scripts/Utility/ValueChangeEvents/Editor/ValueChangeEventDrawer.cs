@@ -40,7 +40,6 @@ public class ValueChangeEventDrawer : PropertyDrawer
 
     public static void Draw(Rect position, ValueChangeEvent valueChangeEvent, GUIContent label)
     {
-
         Rect rect = position;
         rect.width = position.width * .75f;
         ValueChangeEventEditor.ValueChangeEventGUI(rect, valueChangeEvent);

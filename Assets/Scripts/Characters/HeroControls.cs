@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeroControls : MonoBehaviour //, IValueChangeEventsComponent
+public class HeroControls : ValueChangeEventsBehaviour
 {
     public string heroTag = "Player";
     public bool useButtonControls;
@@ -17,27 +17,6 @@ public class HeroControls : MonoBehaviour //, IValueChangeEventsComponent
     public ValueChangeEvent AxisInput = ValueChangeEvent.New<int>();
     public ValueChangeEvent Action1Input = ValueChangeEvent.New<trigger>();
     public ValueChangeEvent Action2Input = ValueChangeEvent.New<trigger>();
-
-    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
-    {
-        vces = new ValueChangeEvent[] { AxisInput, Action1Input, Action2Input };
-        return vces.Length;
-    }
-
-    public int SetValueChangeEventsID()
-    {
-        AxisInput.SetID("Axis1Input", this, 0);
-        Action1Input.SetID("Action1Input", this, 1);
-        Action2Input.SetID("Action2Input", this, 2);
-        return 3;
-    }
-
-    public void EnslaveValueChangeEvents(bool enslave)
-    {
-        AxisInput.Enslave(enslave);
-        Action1Input.Enslave(enslave);
-        Action2Input.Enslave(enslave);
-    }
 
     private void Awake()
     {

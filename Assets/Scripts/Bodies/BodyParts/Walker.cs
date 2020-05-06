@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Walker : BodyPart //, IValueChangeEventsComponent
+public class Walker : BodyPart
 {
     public float walkSpeed;   
     
@@ -19,23 +19,6 @@ public class Walker : BodyPart //, IValueChangeEventsComponent
 
     public ValueChangeEvent IsWalking = ValueChangeEvent.New<bool>();
 
-    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
-    {
-        vces = new ValueChangeEvent[] { IsWalking };
-        return vces.Length;
-    }
-
-    public int SetValueChangeEventsID()
-    {
-        IsWalking.SetID("IsWalking", this, 0);
-        return 1;
-    }
-
-    public void EnslaveValueChangeEvents(bool enslave)
-    {
-        IsWalking.Enslave(enslave);
-    }
-
     private void Awake()
     {
         AttachedBody = GetComponent<Body>();
@@ -43,8 +26,10 @@ public class Walker : BodyPart //, IValueChangeEventsComponent
         gearBox = GetComponent<GearBox>();
     }
 
-    private void OnEnable()
+    public override void OnEnable()
     {
+        base.OnEnable();
+
         if (gearBox != null)
         {
             gearBox.CurrentGear.AddListener<int>(OnSwitchGear);
@@ -52,8 +37,10 @@ public class Walker : BodyPart //, IValueChangeEventsComponent
         }
     }
 
-    private void OnDisable()
+    public override void OnDisable()
     {
+        base.OnDisable();
+
         StopAllCoroutines();
         if (gearBox != null) gearBox.CurrentGear.RemoveListener<int>(OnSwitchGear);
     }

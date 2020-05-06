@@ -10,19 +10,19 @@ public struct ValueChangeEventComponentEditor
     {
         if (comp is IValueChangeEventsComponent)
         {
-            (comp as IValueChangeEventsComponent).SetValueChangeEventsID();
             component = comp;
             vceEditors = null;
 
             if (component != null)
             {
-                (component as IValueChangeEventsComponent).GetValueChangeEvents(out ValueChangeEvent[] vces);
+                int vceCount = (component as IValueChangeEventsComponent).GetValueChangeEvents(out ValueChangeEvent[] vces);
+                string[] vceNames = (component as IValueChangeEventsComponent).GetValueChangeEventsNames();
+
                 if (vces != null)
                 {
-                    int vceCount = vces.Length;
                     vceEditors = new ValueChangeEventEditor[vceCount];
                     for (int i = 0; i < vceCount; i++)
-                        vceEditors[i] = new ValueChangeEventEditor(vces[i]) { hasSlaveEditor = true };
+                        vceEditors[i] = new ValueChangeEventEditor(vces[i], new ValueChangeEventID(component, vceNames[i])) { hasSlaveEditor = true };
                 }
             }
         }

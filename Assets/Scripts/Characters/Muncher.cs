@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Muncher : MonoBehaviour //, IValueChangeEventsComponent
+public class Muncher : ValueChangeEventsBehaviour
 {
     public List<string> eatableTags;
     [Min(0f)] public float munchDelay;
@@ -20,23 +20,6 @@ public class Muncher : MonoBehaviour //, IValueChangeEventsComponent
     private List<GameObject> preys;
     private float munchTimer;
     private Collider2D trigger;
-
-    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
-    {
-        vces = new ValueChangeEvent[] { IsFull };
-        return 1;
-    }
-
-    public int SetValueChangeEventsID()
-    {
-        IsFull.SetID("IsFull", this, 0);
-        return 1;
-    }
-
-    public void EnslaveValueChangeEvents(bool enslave)
-    {
-        IsFull.Enslave(enslave);
-    }
 
     private void Awake()
     {

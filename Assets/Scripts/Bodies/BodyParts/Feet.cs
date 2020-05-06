@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Feet : BodyPart // //, IValueChangeEventsComponent
+public class Feet : BodyPart
 {
     [Range(0f,180f)] public float balanceAngle = 180f;
     public AnimationCurve tumbleBounceCurve;
@@ -27,25 +27,6 @@ public class Feet : BodyPart // //, IValueChangeEventsComponent
     public Vector2 GroundVelocity { get => groundRigidbody == null ? Vector2.zero : groundRigidbody.GetPointVelocity(this.transform.position); }
     public float GroundAngularVelocity { get => groundRigidbody == null ? 0f : groundRigidbody.angularVelocity; }
     
-    public int SetValueChangeEventsID()
-    {
-        IsOnGround.SetID("IsOnGround", this, 0);
-        IsTumbling.SetID("IsTumbling", this, 1);
-        return 2;
-    }
-
-    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
-    {
-        vces = new ValueChangeEvent[] { IsOnGround, IsTumbling };
-        return vces.Length;
-    }
-
-    public void EnslaveValueChangeEvents(bool enslave)
-    {
-        IsOnGround.Enslave(enslave);
-        IsTumbling.Enslave(enslave);
-    }
-
     void Awake()
     {
         //_IsOnGround = new ValueChangeEvent<bool>();
@@ -113,8 +94,9 @@ public class Feet : BodyPart // //, IValueChangeEventsComponent
         groundContacts.AddRange(collision.contacts);
     }
     
-    private void OnDisable()
+    public override void OnDisable()
     {
+        base.OnDisable();
         groundRigidbody = null;
     }
     

@@ -5,31 +5,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class LocalGravity : BodyPart //, IValueChangeEventsComponent
+public class LocalGravity : BodyPart
 {
     public float gravityForce;
     public float angleOffset;
 
     public ValueChangeEvent IsFalling = ValueChangeEvent.New<bool>();
-    
+
     public float FallSpeed { get; private set; }
-
-    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
-    {
-        vces = new ValueChangeEvent[] { IsFalling };
-        return vces.Length;
-    }
-
-    public int SetValueChangeEventsID()
-    {
-        IsFalling.SetID("isFalling", this, 0);
-        return 1;
-    }
-
-    public void EnslaveValueChangeEvents(bool enslave)
-    {
-        IsFalling.Enslave(enslave);
-    }
 
     private void Awake()
     {

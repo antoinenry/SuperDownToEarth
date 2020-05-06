@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GearBox : BodyPart //, IValueChangeEventsComponent
+public class GearBox : BodyPart
 {
     public float[] speed;
     [Min(0f)] public float switchDelay;
@@ -13,27 +13,6 @@ public class GearBox : BodyPart //, IValueChangeEventsComponent
     public ValueChangeEvent OnGearDown = ValueChangeEvent.New<trigger>();
 
     private float timeSinceLastSwitch;
-    
-    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
-    {
-        vces = new ValueChangeEvent[] { CurrentGear, OnGearUp, OnGearDown };
-        return vces.Length;
-    }
-
-    public int SetValueChangeEventsID()
-    {
-        CurrentGear.SetID("CurrentGear", this, 0);
-        OnGearUp.SetID("OnGearUp", this, 1);
-        OnGearDown.SetID("OnGearDown", this, 2);
-        return 3;
-    }
-
-    public void EnslaveValueChangeEvents(bool enslave)
-    {
-        CurrentGear.Enslave(enslave);
-        OnGearUp.Enslave(enslave);
-        OnGearDown.Enslave(enslave);
-    }
 
     public float GetCurrentSpeed()
     {  

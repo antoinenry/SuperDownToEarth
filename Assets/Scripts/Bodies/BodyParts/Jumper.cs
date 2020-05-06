@@ -12,7 +12,7 @@ public class Jumper : BodyPart
     public bool showGizmo;
         
     public ValueChangeEvent jump = ValueChangeEvent.New<trigger>();
-    
+
     public Feet Feet { get; private set; }    
 
     private void OnDrawGizmos()
@@ -35,8 +35,6 @@ public class Jumper : BodyPart
 
     private void Awake()
     {
-        //OnJump = new TriggerEvent();
-
         AttachedBody = GetComponent<Body>();
         Feet = GetComponent<Feet>();
     }

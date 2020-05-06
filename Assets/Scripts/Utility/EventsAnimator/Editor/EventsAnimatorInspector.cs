@@ -11,7 +11,7 @@ public class EventsAnimatorInspector : Editor
         foreach(ValueChangeEvent vce in vces)
         {
             Rect position = EditorGUILayout.GetControlRect();
-            GUIContent labelContent = new GUIContent(vce.Name);
+            GUIContent labelContent = new GUIContent(vce.ToString());
             ValueChangeEventDrawer.Draw(position, vce, labelContent);
         }
 

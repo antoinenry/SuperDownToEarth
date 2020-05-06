@@ -16,24 +16,11 @@ public class Lever : MonoBehaviour //, IValueChangeEventsComponent
 
     public ValueChangeEvent LeverPosition = ValueChangeEvent.New<int>();
     public ValueChangeEvent LeverActionDirection = ValueChangeEvent.New<int>();
-    
+
     public int GetValueChangeEvents(out ValueChangeEvent[] vces)
     {
         vces = new ValueChangeEvent[] { LeverPosition, LeverActionDirection };
         return vces.Length;
-    }
-
-    public int SetValueChangeEventsID()
-    {
-        LeverPosition.SetID("LeverPosition", this, 0);
-        LeverActionDirection.SetID("LeverActionDirection", this, 1);
-        return 2;
-    }
-
-    public void EnslaveValueChangeEvents(bool enslave)
-    {
-        LeverPosition.Enslave(enslave);
-        LeverActionDirection.Enslave(enslave);
     }
 
     private void Awake()
