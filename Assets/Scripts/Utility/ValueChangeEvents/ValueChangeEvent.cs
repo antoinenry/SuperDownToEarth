@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 using UnityEngine;
 using UnityEngine.Events;
@@ -20,17 +21,24 @@ public partial class ValueChangeEvent
     public static ValueChangeEvent New<T>()
     {
         ValueChangeEvent vce = new ValueChangeEvent();
-        vce.runtimeEvent = new RuntimeValueChangeEvent<T>();
+        //vce.runtimeEvent = new RuntimeValueChangeEvent<T>();
         vce.valueType = typeof(T).AssemblyQualifiedName;
         return vce;
     }
 
-    public void ResetRuntimeEvent<T>()
+    public void SetRuntimeEvent<T>()
     {
         if (typeof(T) == ValueType)
             runtimeEvent = new RuntimeValueChangeEvent<T>();
         else
             Debug.LogWarning("Type mismatch: " + typeof(T).Name + "/" + ValueType.Name);
+    }
+
+    public void ResetRuntimeEvent()
+    {
+        MethodInfo resetMethod = typeof(ValueChangeEvent).GetMethod("SetRuntimeEvent", BindingFlags.Public | BindingFlags.Instance);
+        resetMethod = resetMethod.MakeGenericMethod(ValueType);
+        resetMethod.Invoke(this, null);
     }
 
     public void Invoke()
@@ -66,17 +74,23 @@ public partial class ValueChangeEvent
     public void AddListener(UnityAction listener)
     {
         if (runtimeEvent != null) runtimeEvent.AddListener(listener);
-        else Debug.LogError("Runtime event is null.");
+        else Debug.LogError("Runtime event is null. Try specifying type when adding listener.");
+    }
+
+    public void AddListener<T>(UnityAction listener)
+    {
+        if (runtimeEvent == null) SetRuntimeEvent<T>();
+        runtimeEvent.AddListener(listener);
     }
 
     public void AddListener<T>(UnityAction<T> listener)
     {
-        if (runtimeEvent != null)
+        if (runtimeEvent == null) SetRuntimeEvent<T>();
+        if (runtimeEvent is RuntimeValueChangeEvent<T>)
         {
-            if (runtimeEvent is RuntimeValueChangeEvent<T>) (runtimeEvent as RuntimeValueChangeEvent<T>).AddListener(listener);
-            else Debug.LogError("ValueChangeEvent type mismatch.");
+            (runtimeEvent as RuntimeValueChangeEvent<T>).AddListener(listener);
         }
-        else Debug.LogError("Runtime event is null.");
+        else Debug.LogError("ValueChangeEvent type mismatch.");
     }
 
     public void RemoveListener(UnityAction listener)
@@ -134,6 +148,13 @@ public partial class ValueChangeEvent
 
             if (typeMismatch) Debug.LogWarning("Master/slave type mismatch");
         }
+    }
+
+    public void Enslave<T>(bool enslave)
+    {
+        if (masterIDs == null) return;
+        if (runtimeEvent == null) SetRuntimeEvent<T>();
+        Enslave(enslave);
     }
 
     public ValueChangeEventID GetMasterID(int index)

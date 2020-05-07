@@ -1301,7 +1301,9 @@ MonoBehaviour:
   showGizmo: 1
   jump:
     valueType: trigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs: []
+    masterIDs:
+    - component: {fileID: 565386542}
+      name: Action1Input
 --- !u!114 &117486840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14174,6 +14176,7 @@ GameObject:
   - component: {fileID: 1865477730}
   - component: {fileID: 1865477732}
   - component: {fileID: 1865477731}
+  - component: {fileID: 1865477734}
   m_Layer: 0
   m_Name: BlobRenderer
   m_TagString: Untagged
@@ -14284,6 +14287,57 @@ Transform:
   m_Father: {fileID: 117486846}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1865477734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865477729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b46d442577b0d784ba3a81ded2157fc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TriggerParameters:
+  - valueType: trigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    masterIDs:
+    - component: {fileID: 117486839}
+      name: jump
+  BoolParameters:
+  - valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    masterIDs: []
+  - valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    masterIDs:
+    - component: {fileID: 117486843}
+      name: IsOnGround
+  - valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    masterIDs: []
+  - valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    masterIDs:
+    - component: {fileID: 117486841}
+      name: IsFalling
+  - valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    masterIDs:
+    - component: {fileID: 1765695131}
+      name: IsPilotingVehicle
+  IntParameters:
+  - valueType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    masterIDs:
+    - component: {fileID: 1295823234}
+      name: GroundFlatness
+  FloatParameters: []
+  triggerParameterNames:
+  - onJump
+  boolParameterNames:
+  - isLeaning
+  - isOnGround
+  - isInFluid
+  - isFalling
+  - isPilotingVehicle
+  intParameterNames:
+  - groundFlatness
+  floatParameterNames: []
 --- !u!1 &1898896886
 GameObject:
   m_ObjectHideFlags: 0

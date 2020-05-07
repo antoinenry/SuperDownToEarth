@@ -23,16 +23,6 @@ public class HeroControls : ValueChangeEventsBehaviour
         touchInput = GetComponent<TouchScreen>();
     }
 
-    private void Start()
-    {
-        Action1Input.AddListener(OnAction1Input);
-    }
-
-    private void OnAction1Input()
-    {
-        Debug.Log("Action 1");
-    }
-
     private void Update()
     {
         if (useButtonControls)

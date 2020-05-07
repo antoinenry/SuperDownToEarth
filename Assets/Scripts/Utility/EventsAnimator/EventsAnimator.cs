@@ -4,12 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[ExecuteAlways]
 [RequireComponent(typeof(Animator))]
-public class EventsAnimator : MonoBehaviour, IValueChangeEventsComponent
+public class EventsAnimator : ValueChangeEventsBehaviour
 {    
     [SerializeField] private ValueChangeEvent[] TriggerParameters = new ValueChangeEvent[0];
-    [SerializeField] private ValueChangeEvent[] BootParameters = new ValueChangeEvent[0];
+    [SerializeField] private ValueChangeEvent[] BoolParameters = new ValueChangeEvent[0];
     [SerializeField] private ValueChangeEvent[] IntParameters = new ValueChangeEvent[0];
     [SerializeField] private ValueChangeEvent[] FloatParameters = new ValueChangeEvent[0];
 
@@ -24,92 +23,63 @@ public class EventsAnimator : MonoBehaviour, IValueChangeEventsComponent
     private UnityAction<float>[] SetFloatActions = new UnityAction<float>[0];
     
     public int TriggerCount { get => triggerParameterNames == null ? 0 : triggerParameterNames.Length; }
-    public int BooleanCount { get => boolParameterNames == null ? 0 : boolParameterNames.Length; }
-    public int IntegerCount { get => intParameterNames == null ? 0 : intParameterNames.Length; }
+    public int BoolCount { get => boolParameterNames == null ? 0 : boolParameterNames.Length; }
+    public int IntCount { get => intParameterNames == null ? 0 : intParameterNames.Length; }
     public int FloatCount { get => floatParameterNames == null ? 0 : floatParameterNames.Length; }
-    public int TotalEventsCount { get => TriggerCount + BooleanCount + IntegerCount + FloatCount; }
+    public int TotalEventsCount { get => TriggerCount + BoolCount + IntCount + FloatCount; }
 
-    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
+    public override void Awake()
     {
-        vces = new ValueChangeEvent[TotalEventsCount];
-        TriggerParameters.CopyTo(vces, 0);
-        BootParameters.CopyTo(vces, TriggerCount);
-        IntParameters.CopyTo(vces, TriggerCount + BooleanCount);
-        FloatParameters.CopyTo(vces, TriggerCount + BooleanCount + IntegerCount);
-
-        return TotalEventsCount;
+        base.Awake();
+        SetAnimatorActions();
     }
 
-    public ValueChangeEvent GetValueChangeEventByName(string vceName)
+    public override void OnEnable()
     {
-
-        return null;
-    }
-
-    public string[] GetValueChangeEventsNames()
-    {
-        return null;
-    }
-
-    public int SetValueChangeEventsID()
-    {
-        FetchAnimatorParameterNames();
-        UpdateEvents();
-
-        SetValueChangeEventsID(ref TriggerParameters, triggerParameterNames, 0);
-        SetValueChangeEventsID(ref BootParameters, boolParameterNames, TriggerCount);
-        SetValueChangeEventsID(ref IntParameters, intParameterNames, TriggerCount + BooleanCount);
-        SetValueChangeEventsID(ref FloatParameters, floatParameterNames, TriggerCount + BooleanCount + IntegerCount);
-
-        return TotalEventsCount;
-    }
-
-    public void EnslaveValueChangeEvents(bool enslave)
-    {
-        foreach (ValueChangeEvent vce in TriggerParameters) vce.Enslave(enslave);
-        foreach (ValueChangeEvent vce in BootParameters) vce.Enslave(enslave);
-        foreach (ValueChangeEvent vce in IntParameters) vce.Enslave(enslave);
-        foreach (ValueChangeEvent vce in FloatParameters)   vce.Enslave(enslave);
-    }
-
-    private void Awake()
-    {
-        SetValueChangeEventsID();
-    }
-
-    private void OnEnable()
-    {
-        UpdateEvents();
-        UpdateActions();
-        EnslaveValueChangeEvents(true);
+        base.OnEnable();
         AddAnimatorListeners();
     }
 
-    private void OnDisable()
+    public override void OnDisable()
     {
-        EnslaveValueChangeEvents(false);
+        base.OnDisable();
         RemoveAnimatorListeners();
-    }      
-
-    private void AddAnimatorListeners()
-    {
-        for (int i = 0, imax = TriggerParameters.Length; i < imax; i++) TriggerParameters[i].AddListener(SetTriggerActions[i]);
-        for (int i = 0, imax = BootParameters.Length; i < imax; i++) BootParameters[i].AddListener(SetBoolActions[i]);
-        for (int i = 0, imax = IntParameters.Length; i < imax; i++) IntParameters[i].AddListener(SetIntActions[i]);
-        for (int i = 0, imax = FloatParameters.Length; i < imax; i++) FloatParameters[i].AddListener(SetFloatActions[i]);
     }
 
-    private void RemoveAnimatorListeners()
+    public override int GetValueChangeEvents(out ValueChangeEvent[] vces)
     {
-        for (int i = 0, imax = TriggerParameters.Length; i < imax; i++) TriggerParameters[i].RemoveListener(SetTriggerActions[i]);
-        for (int i = 0, imax = BootParameters.Length; i < imax; i++) BootParameters[i].RemoveListener(SetBoolActions[i]);
-        for (int i = 0, imax = IntParameters.Length; i < imax; i++) IntParameters[i].RemoveListener(SetIntActions[i]);
-        for (int i = 0, imax = FloatParameters.Length; i < imax; i++) FloatParameters[i].RemoveListener(SetFloatActions[i]);
+        vces = new ValueChangeEvent[TotalEventsCount];
+        TriggerParameters.CopyTo(vces, 0);
+        BoolParameters.CopyTo(vces, TriggerCount);
+        IntParameters.CopyTo(vces, TriggerCount + BoolCount);
+        FloatParameters.CopyTo(vces, TriggerCount + BoolCount + IntCount);
+
+        return TotalEventsCount;
     }
 
-    private void FetchAnimatorParameterNames()
+    public override ValueChangeEvent GetValueChangeEventByName(string vceName)
     {
-        Animator animator = GetComponent<Animator>();
+        for (int i = 0; i < TriggerCount; i++)  if (triggerParameterNames[i] == vceName)    return i < TriggerParameters.Length ? TriggerParameters[i] : null;
+        for (int i = 0; i < BoolCount; i++)     if (boolParameterNames[i] == vceName)       return i < BoolParameters.Length ? BoolParameters[i] : null;
+        for (int i = 0; i < IntCount; i++)      if (intParameterNames[i] == vceName)        return i < IntParameters.Length ? IntParameters[i] : null;
+        for (int i = 0; i < FloatCount; i++)    if (floatParameterNames[i] == vceName)      return i < FloatParameters.Length ? FloatParameters[i] : null;
+
+        return null;
+    }
+
+    public override string[] GetValueChangeEventsNames()
+    {
+        string[] vceNames = new string[TotalEventsCount];
+        triggerParameterNames.CopyTo(vceNames, 0);
+        boolParameterNames.CopyTo(vceNames, TriggerCount);
+        intParameterNames.CopyTo(vceNames, TriggerCount + BoolCount);
+        floatParameterNames.CopyTo(vceNames, TriggerCount + BoolCount + IntCount);
+
+        return vceNames;
+    }
+
+    public void SetValueChangeEventsFromAnimator(Animator animator)
+    {
         List<string> triggerNames = new List<string>();
         List<string> booleanNames = new List<string>();
         List<string> integerNames = new List<string>();
@@ -134,50 +104,53 @@ public class EventsAnimator : MonoBehaviour, IValueChangeEventsComponent
         boolParameterNames = booleanNames.ToArray();
         intParameterNames = integerNames.ToArray();
         floatParameterNames = floatNames.ToArray();
-    }    
 
-    private void SetValueChangeEventsID(ref ValueChangeEvent[] vceArray, string[] namesArray, int indexInComponentOffset)
-    {
-        /*
-        if (vceArray != null && namesArray != null)
-            for (int i = 0, imax = namesArray.Length; i < imax; i++)
-                vceArray[i].SetID(namesArray[i], this, i + indexInComponentOffset);*/
-    }
-
-    private void UpdateEvents()
-    {
         UpdateValueChangeEvents<trigger>(ref TriggerParameters, triggerParameterNames);
-        UpdateValueChangeEvents<bool>(ref BootParameters, boolParameterNames);
+        UpdateValueChangeEvents<bool>(ref BoolParameters, boolParameterNames);
         UpdateValueChangeEvents<int>(ref IntParameters, intParameterNames);
         UpdateValueChangeEvents<float>(ref FloatParameters, floatParameterNames);
     }
 
+    private void AddAnimatorListeners()
+    {
+        for (int i = 0, imax = TriggerParameters.Length; i < imax; i++) TriggerParameters[i].AddListener(SetTriggerActions[i]);
+        for (int i = 0, imax = BoolParameters.Length; i < imax; i++) BoolParameters[i].AddListener(SetBoolActions[i]);
+        for (int i = 0, imax = IntParameters.Length; i < imax; i++) IntParameters[i].AddListener(SetIntActions[i]);
+        for (int i = 0, imax = FloatParameters.Length; i < imax; i++) FloatParameters[i].AddListener(SetFloatActions[i]);
+    }
+
+    private void RemoveAnimatorListeners()
+    {
+        for (int i = 0, imax = TriggerParameters.Length; i < imax; i++) TriggerParameters[i].RemoveListener(SetTriggerActions[i]);
+        for (int i = 0, imax = BoolParameters.Length; i < imax; i++) BoolParameters[i].RemoveListener(SetBoolActions[i]);
+        for (int i = 0, imax = IntParameters.Length; i < imax; i++) IntParameters[i].RemoveListener(SetIntActions[i]);
+        for (int i = 0, imax = FloatParameters.Length; i < imax; i++) FloatParameters[i].RemoveListener(SetFloatActions[i]);
+    }
+
     private void UpdateValueChangeEvents<T>(ref ValueChangeEvent[] vceArray, string[] parameterNames)
     {
-        /*
         int parameterCount = parameterNames.Length;
 
         List<ValueChangeEvent> current = new List<ValueChangeEvent>(vceArray);
         ValueChangeEvent[] updated = new ValueChangeEvent[parameterCount];
 
         for (int i = 0; i < parameterCount; i++)
-        {
-            ValueChangeEvent match = current.Find(vce => vce.Name == parameterNames[i]);
+        {            
+            ValueChangeEvent match = GetValueChangeEventByName(parameterNames[i]);
 
             if (match == null)
-                updated[i] = ValueChangeEvent.New<T>(parameterNames[i]);
+                updated[i] = ValueChangeEvent.New<T>();
             else
             {
-                if (match.runtimeEvent == null) match.ResetRuntimeEvent<T>();
+                if (match.runtimeEvent == null) match.SetRuntimeEvent<T>();
                 if (updated[i] != match) updated[i] = match;
             }
         }
 
         vceArray = updated;
-        */
     }
 
-    private void UpdateActions()
+    private void SetAnimatorActions()
     {
         Animator animator = GetComponent<Animator>();
 
@@ -188,15 +161,15 @@ public class EventsAnimator : MonoBehaviour, IValueChangeEventsComponent
             SetTriggerActions[i] = new UnityAction(() => animator.SetTrigger(triggerParameterNames[index]));
         }
 
-        SetBoolActions = new UnityAction<bool>[BooleanCount];
-        for (int i = 0; i < BooleanCount; i++)
+        SetBoolActions = new UnityAction<bool>[BoolCount];
+        for (int i = 0; i < BoolCount; i++)
         {
             int index = i;
             SetBoolActions[i] = new UnityAction<bool>(value => animator.SetBool(boolParameterNames[index], value));
         }
 
-        SetIntActions = new UnityAction<int>[IntegerCount];
-        for (int i = 0; i < IntegerCount; i++)
+        SetIntActions = new UnityAction<int>[IntCount];
+        for (int i = 0; i < IntCount; i++)
         {
             int index = i;
             SetIntActions[i] = new UnityAction<int>(value => animator.SetInteger(intParameterNames[index], value));

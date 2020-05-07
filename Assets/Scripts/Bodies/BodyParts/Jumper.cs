@@ -33,15 +33,17 @@ public class Jumper : BodyPart
         }
     }
 
-    private void Awake()
+    public override void Awake()
     {
         AttachedBody = GetComponent<Body>();
         Feet = GetComponent<Feet>();
+        base.Awake();
     }
 
-    private void Start()
+    public override void OnEnable()
     {
-        jump.AddListener(OnJump);
+        jump.AddListener<trigger>(OnJump);
+        base.OnEnable();
     }
 
     public override void OnDisable()

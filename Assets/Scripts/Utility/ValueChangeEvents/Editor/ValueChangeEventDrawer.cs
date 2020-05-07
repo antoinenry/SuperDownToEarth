@@ -38,7 +38,7 @@ public class ValueChangeEventDrawer : PropertyDrawer
         EditorGUI.EndProperty();       
     }
 
-    public static void Draw(Rect position, ValueChangeEvent valueChangeEvent, GUIContent label)
+    private static void Draw(Rect position, ValueChangeEvent valueChangeEvent, GUIContent label)
     {
         Rect rect = position;
         rect.width = position.width * .75f;

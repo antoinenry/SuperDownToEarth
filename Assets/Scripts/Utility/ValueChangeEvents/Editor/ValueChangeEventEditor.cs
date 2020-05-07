@@ -30,7 +30,7 @@ public class ValueChangeEventEditor
     public void OnEditorGUI(Rect rect)
     {
         Rect foldOutRect = rect;
-        foldOutRect.width = 20f;
+        foldOutRect.width = hasSlaveEditor ? 20f : 0f;
 
         Rect headerRect = rect;
         headerRect.x += foldOutRect.width;
@@ -86,7 +86,7 @@ public class ValueChangeEventEditor
 
         int masterCount = valueChangeEvent.MasterCount;
         if (masterCount > 0)
-            EditorGUI.LabelField(masterCountRect, masterCount + "/" + valueChangeEvent.RuntimeMasterCount + " masters");
+            EditorGUI.LabelField(masterCountRect, "(" + masterCount + " masters)");
         else
             EditorGUI.LabelField(masterCountRect, " ");
     }

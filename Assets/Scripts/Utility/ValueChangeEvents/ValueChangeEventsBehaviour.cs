@@ -8,27 +8,21 @@ public abstract class ValueChangeEventsBehaviour : MonoBehaviour, IValueChangeEv
 {
     private ValueChangeEvent[] valueChangeEvents;
 
-    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
+    public virtual int GetValueChangeEvents(out ValueChangeEvent[] vces)
     {
         if (valueChangeEvents == null)
         {
-            //Debug.Log("AutoSet VCE events in " + ToString());
             Type componentType = GetType();
             FieldInfo[] componentFields = componentType.GetFields();
 
             List<ValueChangeEvent> vceList = new List<ValueChangeEvent>();
             if (componentFields != null)
-            {
                 foreach (FieldInfo field in componentFields)
-                {
                     if (field.FieldType == typeof(ValueChangeEvent))
                     {
                         ValueChangeEvent vce = field.GetValue(this) as ValueChangeEvent;
-                        //Debug.Log("-" + vce.ToString());
                         vceList.Add(vce);
                     }
-                }
-            }
 
             valueChangeEvents = vceList.ToArray();
         }
@@ -38,7 +32,7 @@ public abstract class ValueChangeEventsBehaviour : MonoBehaviour, IValueChangeEv
         return valueChangeEvents.Length;
     }
 
-    public ValueChangeEvent GetValueChangeEventByName(string vceName)
+    public virtual ValueChangeEvent GetValueChangeEventByName(string vceName)
     {
         Type componentType = GetType();
         FieldInfo vceField = componentType.GetField(vceName);
@@ -49,31 +43,37 @@ public abstract class ValueChangeEventsBehaviour : MonoBehaviour, IValueChangeEv
             return null;
     }
 
-    public string[] GetValueChangeEventsNames()
+    public virtual string[] GetValueChangeEventsNames()
     {
         Type componentType = GetType();
         FieldInfo[] componentFields = componentType.GetFields();
         List<string> nameList = new List<string>();
 
         if (componentFields != null)
-        {
             foreach (FieldInfo field in componentFields)
-            {
                 if (field.FieldType == typeof(ValueChangeEvent))
-                {
                     nameList.Add(field.Name);
-                }
-            }
-        }
 
         return nameList.ToArray();
     }
 
-    public void EnslaveValueChangeEvents(bool enslave)
+    public virtual void ResetRuntimeValueChangeEvents()
+    {
+        GetValueChangeEvents(out ValueChangeEvent[] vces);
+        foreach (ValueChangeEvent vce in vces)
+            vce.ResetRuntimeEvent();
+    }
+
+    public virtual void EnslaveValueChangeEvents(bool enslave)
     {
         GetValueChangeEvents(out ValueChangeEvent[] vces);
         foreach (ValueChangeEvent vce in vces)
             vce.Enslave(enslave);
+    }
+
+    public virtual void Awake()
+    {
+        ResetRuntimeValueChangeEvents();
     }
 
     public virtual void OnEnable()
