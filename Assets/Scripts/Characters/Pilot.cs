@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-
+﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class Pilot : ValueChangeEventsBehaviour
+public class Pilot : MonoBehaviour
 {
     public Body body;
     [HideInInspector] public BodyPart[] transferPartsToVehicle;
-        
-    public Vehicle CurrentVehicle { get; private set; }
-    public Body PilotedBody { get => IsPilotingVehicle.Get<bool>() ? CurrentVehicle : body; }
-    
-    public ValueChangeEvent IsPilotingVehicle = ValueChangeEvent.New<bool>();
+
+    public ObjectChangeEvent PilotedBody;    
 
     private void Start()
     {
         if (body != null)
-            body.IsDead.AddListener<bool>(OnDeath);
+        {
+            body.IsDead.AddValueListener<bool>(OnDeath);
+            PilotedBody.Value = body;
+        }
 
         if (transform.parent != null)
         {
@@ -29,11 +25,20 @@ public class Pilot : ValueChangeEventsBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (IsPilotingVehicle.Get<bool>() == false)
+        if (GetCurrentVehicle() == null)
         {
             Vehicle vehicle = collision.gameObject.GetComponent<Vehicle>();
             if (vehicle != null) EnterVehicle(vehicle);
         }
+    }
+
+    public Vehicle GetCurrentVehicle()
+    {
+        Body pilotedBody = PilotedBody.Value as Body;
+        if (pilotedBody != null && pilotedBody != body && pilotedBody is Vehicle)
+            return pilotedBody as Vehicle;
+        else
+            return null;
     }
 
     public void EnterVehicle (Vehicle vehicle)
@@ -57,14 +62,13 @@ public class Pilot : ValueChangeEventsBehaviour
         }
 
         vehicle.SetBodyInside(body);
-        vehicle.IsFull.AddListener<bool>(OnVehicleIsFullChange);
-        vehicle.IsDead.AddListener<bool>(OnVehicleDestruction);
+        vehicle.IsFull.AddValueListener<bool>(OnVehicleIsFullChange);
+        vehicle.IsDead.AddValueListener<bool>(OnVehicleDestruction);
 
         foreach (BodyPart part in transferPartsToVehicle)
             part.AttachedBody = vehicle;
 
-        CurrentVehicle = vehicle;
-        IsPilotingVehicle.Set(true);
+        PilotedBody.Value = vehicle;
     }
 
     public void ExitCurrentVehicle()
@@ -79,12 +83,14 @@ public class Pilot : ValueChangeEventsBehaviour
 
     private IEnumerator ExitVehicleCoroutine(bool immediate)
     {
-        if (IsPilotingVehicle.Get<bool>() == true && CurrentVehicle != null)
+        Vehicle currentVehicle = GetCurrentVehicle();
+
+        if (GetCurrentVehicle() != null)
         {
             //exitingVehicle.Stop();
 
             if (immediate == false)
-                yield return new WaitForSeconds(CurrentVehicle.exitAnimationDelay);
+                yield return new WaitForSeconds(currentVehicle.exitAnimationDelay);
 
             if (body != null)
             {
@@ -96,22 +102,21 @@ public class Pilot : ValueChangeEventsBehaviour
                 }
 
                 this.transform.SetParent(body.transform);
-                body.transform.SetParent(CurrentVehicle.transform.parent);
-                body.transform.position = CurrentVehicle.exit.position;
+                body.transform.SetParent(currentVehicle.transform.parent);
+                body.transform.position = currentVehicle.exit.position;
 
                 if (body.AttachedRigidBody != null)
-                    body.AttachedRigidBody.AddForce(CurrentVehicle.exitForce * CurrentVehicle.exit.up);
+                    body.AttachedRigidBody.AddForce(currentVehicle.exitForce * currentVehicle.exit.up);
             }
 
-            CurrentVehicle.IsFull.RemoveListener<bool>(OnVehicleIsFullChange);
-            CurrentVehicle.IsDead.RemoveListener<bool>(OnVehicleDestruction);
-            CurrentVehicle.SetBodyInside(null);
+            currentVehicle.IsFull.RemoveValueListener<bool>(OnVehicleIsFullChange);
+            currentVehicle.IsDead.RemoveValueListener<bool>(OnVehicleDestruction);
+            currentVehicle.SetBodyInside(null);
 
             foreach (BodyPart part in transferPartsToVehicle)
                 part.AttachedBody = body;
-
-            CurrentVehicle = null;
-            IsPilotingVehicle.Set(false);
+            
+            PilotedBody.Value = body;
         }
     }
 
@@ -137,15 +142,16 @@ public class Pilot : ValueChangeEventsBehaviour
 
     private void Die()
     {
-        if (IsPilotingVehicle.Get<bool>() == true && CurrentVehicle != null)
+        Vehicle currentVehicle = GetCurrentVehicle();
+
+        if (currentVehicle != null)
         {
             //current.Stop();
             if (body != null)
-                body.transform.SetParent(CurrentVehicle.transform.parent);
+                body.transform.SetParent(currentVehicle.transform.parent);
 
-            CurrentVehicle.SetBodyInside(null);
-            CurrentVehicle = null;
-            IsPilotingVehicle.Set(false);
+            currentVehicle.SetBodyInside(null);
+            PilotedBody.Value = body;
         }
     }
 }

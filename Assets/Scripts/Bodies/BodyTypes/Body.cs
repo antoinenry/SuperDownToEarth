@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Body : ValueChangeEventsBehaviour
+public class Body : MonoBehaviour
 {
     [Header("Body")]
-    public ValueChangeEvent IsDead = ValueChangeEvent.New<bool>();
+    public BoolChangeEvent IsDead;
 
     public BodyPart[] parts { get; private set; }
 
@@ -23,30 +23,23 @@ public class Body : ValueChangeEventsBehaviour
 
     private void Awake()
     {
-        Init();
-    }
-
-    protected virtual void Init()
-    {
-        SaveSystem.InitSaveSystem();
-
         parts = GetComponentsInChildren<BodyPart>(true);
     }
 
     public virtual void Kill()
     {
-        IsDead.Set(true);
+        IsDead.Value = true;
         foreach (BodyPart part in parts)
             part.enabled = false;
     }
 
     public virtual void Respawn()
     {
-        IsDead.Set(false);
+        IsDead.Value = false;
         foreach (BodyPart part in parts)
             part.enabled = true;
     }
-
+    
     /*
     public override void OnCheckPointSave(Transform checkPoint)
     {
@@ -74,6 +67,5 @@ public class Body : ValueChangeEventsBehaviour
         yield return new WaitForFixedUpdate();
         Respawn();
     }
-
     */
 }

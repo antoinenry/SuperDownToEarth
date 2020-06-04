@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Muncher : ValueChangeEventsBehaviour
+public class Muncher : MonoBehaviour
 {
     public List<string> eatableTags;
     [Min(0f)] public float munchDelay;
@@ -14,7 +14,7 @@ public class Muncher : ValueChangeEventsBehaviour
     public float spitForce;
 
     [HideInInspector] public UnityEvent OnMunch;
-    public ValueChangeEvent IsFull = ValueChangeEvent.New<bool>();
+    public BoolChangeEvent IsFull;
 
     private bool isClosed;
     private List<GameObject> preys;
@@ -42,7 +42,7 @@ public class Muncher : ValueChangeEventsBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         preys.Add(collision.gameObject);
-        IsFull.Set(true);
+        IsFull.Value = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -52,7 +52,7 @@ public class Muncher : ValueChangeEventsBehaviour
         preys.Remove(collision.gameObject);
         if (preys.Count == 0)
         {
-            IsFull.Set(false);
+            IsFull.Value = false;
             munchTimer = 0f;
         }
     }
@@ -78,7 +78,7 @@ public class Muncher : ValueChangeEventsBehaviour
                 Digest(preys[i]);
         }
         
-        IsFull.Set(false);
+        IsFull.Value = false;
         yield return new WaitForSeconds(spitDelay);
 
         foreach (GameObject caughtPrey in preys)

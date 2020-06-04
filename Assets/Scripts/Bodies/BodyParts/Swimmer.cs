@@ -7,7 +7,7 @@ public class Swimmer : BodyPart
 {
     public LayerMask floatLayer;
 
-    public ValueChangeEvent IsInFluid = ValueChangeEvent.New<bool>();
+    public BoolChangeEvent IsInFluid;
 
     private int fluidCount;
 
@@ -19,7 +19,7 @@ public class Swimmer : BodyPart
 
     private void FixedUpdate()
     {
-        IsInFluid.Set(fluidCount > 0);
+        IsInFluid.Value = (fluidCount > 0);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

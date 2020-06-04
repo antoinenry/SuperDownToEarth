@@ -13,45 +13,45 @@ public class FlatGroundProbe : BodyPart
     public SimpleTrigger2D backUp;
     public SimpleTrigger2D backDown;
 
-    public bool CenterCollision { get => center != null && center.IsTriggered.Get<bool>(); }
-    public bool FrontDownCollision { get => frontDown != null && frontDown.IsTriggered.Get<bool>(); }
-    public bool FrontUpCollision { get => frontUp != null && frontUp.IsTriggered.Get<bool>(); }
-    public bool BackDownCollision { get => backDown != null && backDown.IsTriggered.Get<bool>(); }
-    public bool BackUpCollision { get => backUp != null && backUp.IsTriggered.Get<bool>(); }
+    public bool CenterCollision { get => center != null && (bool)center.IsTriggered.Value; }
+    public bool FrontDownCollision { get => frontDown != null && (bool)frontDown.IsTriggered.Value; }
+    public bool FrontUpCollision { get => frontUp != null && (bool)frontUp.IsTriggered.Value; }
+    public bool BackDownCollision { get => backDown != null && (bool)backDown.IsTriggered.Value; }
+    public bool BackUpCollision { get => backUp != null && (bool)backUp.IsTriggered.Value; }
 
-    public ValueChangeEvent GroundFlatness = ValueChangeEvent.New<int>();
+    public IntChangeEvent GroundFlatness;
 
     private void Start()
     {
-        OnTriggerEvent();
+        OnTrigger2DEvent();
 
-        if (center != null) center.IsTriggered.AddListener<bool>(OnTriggerEvent);
-        if (frontUp != null) frontUp.IsTriggered.AddListener<bool>(OnTriggerEvent);
-        if (frontDown != null) frontDown.IsTriggered.AddListener<bool>(OnTriggerEvent);
-        if (backUp != null) backUp.IsTriggered.AddListener<bool>(OnTriggerEvent);
-        if (backDown != null) backDown.IsTriggered.AddListener<bool>(OnTriggerEvent);
+        if (center != null) center.IsTriggered.AddValueListener<bool>(OnTrigger2DEvent);
+        if (frontUp != null) frontUp.IsTriggered.AddValueListener<bool>(OnTrigger2DEvent);
+        if (frontDown != null) frontDown.IsTriggered.AddValueListener<bool>(OnTrigger2DEvent);
+        if (backUp != null) backUp.IsTriggered.AddValueListener<bool>(OnTrigger2DEvent);
+        if (backDown != null) backDown.IsTriggered.AddValueListener<bool>(OnTrigger2DEvent);
     }
 
-    private void OnTriggerEvent(bool triggered = false)
+    private void OnTrigger2DEvent(bool triggered = false)
     {
         if (!CenterCollision)// && !FrontUpCollision && !BackDownCollision)
-            GroundFlatness.Set((int)Flatness.NoGround);
+            GroundFlatness.Value = ((int)Flatness.NoGround);
 
         else if (FrontUpCollision || BackUpCollision)
-            GroundFlatness.Set((int)Flatness.Hole);
+            GroundFlatness.Value = ((int)Flatness.Hole);
 
         else if (FrontDownCollision && BackDownCollision)
-            GroundFlatness.Set((int)Flatness.Flat);
+            GroundFlatness.Value = ((int)Flatness.Flat);
 
         else if (!FrontDownCollision && !BackDownCollision)
-            GroundFlatness.Set((int)Flatness.Point);
+            GroundFlatness.Value = ((int)Flatness.Point);
 
         else if (FrontDownCollision && !BackDownCollision)
-            GroundFlatness.Set((int)Flatness.BackDrop);
+            GroundFlatness.Value = ((int)Flatness.BackDrop);
 
         else if (!FrontDownCollision && BackDownCollision)
-            GroundFlatness.Set((int)Flatness.FrontDrop);
+            GroundFlatness.Value = ((int)Flatness.FrontDrop);
 
-        else GroundFlatness.Set((int)Flatness.Other);
+        else GroundFlatness.Value = ((int)Flatness.Other);
     }
 }

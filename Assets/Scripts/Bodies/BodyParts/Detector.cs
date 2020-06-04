@@ -26,7 +26,7 @@ public class Detector : BodyPart
 
     private void Awake()
     {
-        inTrigger = new List<GameObject>();    
+        inTrigger = new List<GameObject>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

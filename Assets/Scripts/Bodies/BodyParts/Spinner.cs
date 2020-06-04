@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Spinner : BodyPart
 {
@@ -10,8 +8,9 @@ public class Spinner : BodyPart
     public float tumbleRecuperation;
     
     public Feet Feet { get; private set; }
-    
-    public ValueChangeEvent spinDirection = ValueChangeEvent.New<int>();
+
+    public BoolChangeEvent cantSpin;
+    public IntChangeEvent spinDirection;
 
     private void Awake()
     {
@@ -21,12 +20,13 @@ public class Spinner : BodyPart
 
     private void FixedUpdate()
     {
-        SetBodyVelocity((invertDirection ? -1f : 1f) * spinVelocity * spinDirection.Get<int>());
+        if ((bool)cantSpin.Value == false)
+            SetBodyVelocity((invertDirection ? -1f : 1f) * spinVelocity * (int)spinDirection.Value);
     }
 
     public void Spin(int intDirection)
     {
-        spinDirection.Set(intDirection);
+            spinDirection.Value = intDirection;
     }
     
     private void SetBodyVelocity(float sv)

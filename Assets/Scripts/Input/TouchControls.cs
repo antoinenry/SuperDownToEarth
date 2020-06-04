@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TouchScreen : MonoBehaviour
+public class TouchControls : MonoBehaviour
 {
     public int maxTouch = 2;
     public float tapDuration = .1f;

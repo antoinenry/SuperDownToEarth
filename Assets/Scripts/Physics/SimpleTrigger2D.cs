@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-public class SimpleTrigger2D : ValueChangeEventsBehaviour
+public class SimpleTrigger2D : MonoBehaviour
 {
-    public ValueChangeEvent IsTriggered = ValueChangeEvent.New<bool>();
+    public BoolChangeEvent IsTriggered;
     public int TriggeredCounter { get; private set; }
     
     public int GettriggeredCounter()
@@ -21,12 +21,12 @@ public class SimpleTrigger2D : ValueChangeEventsBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         TriggeredCounter++;
-        IsTriggered.Set(true);
+        IsTriggered.Value = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         TriggeredCounter--;
-        if (GettriggeredCounter() == 0) IsTriggered.Set(false);
+        if (GettriggeredCounter() == 0) IsTriggered.Value = false;
     }
 }

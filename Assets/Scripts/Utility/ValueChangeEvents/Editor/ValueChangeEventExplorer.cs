@@ -4,94 +4,134 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class ValueChangeEventExplorer
+namespace VCE
 {
-    public Predicate<ValueChangeEventID> filter;
-    public GameObject selectedGameObject;
-
-    public ValueChangeEventID SelectedVceID { get => vceIDOptions == null ? new ValueChangeEventID() : vceIDOptions[selectedVceIndex]; }
-    public Component SelectedComponent { get => componentOptions == null ? null : componentOptions[selectedComponentIndex]; }
-    
-    private List<Component> componentOptions;
-    private List<string> componentOptionNames;
-    private int selectedComponentIndex;
-
-    private ValueChangeEventID[] vceIDOptions;
-    private List<string> vceOptionNames;
-    private int selectedVceIndex;
-
-    public ValueChangeEventExplorer(Predicate<ValueChangeEventID> filter = null)
+    public class ValueChangeEventExplorer
     {
-        Debug.Log("New ValueChangeExplorer");
-        this.filter = filter;
-    }
-
-    public void EditorGUI()
-    {
-        EditorGUILayout.BeginHorizontal();
-        SelectGameObjectGUI();
-        SelectComponentGUI();
-        SelectEventGUI();
-        EditorGUILayout.EndHorizontal();
-    }
-
-    private void SelectGameObjectGUI()
-    {
-        selectedGameObject = EditorGUILayout.ObjectField(selectedGameObject, typeof(GameObject), true) as GameObject;
-    }
-
-    private void SelectComponentGUI()
-    {
-        if (selectedGameObject == null)
+        public struct ValueChangeComponent
         {
-            componentOptions = null;
-            componentOptionNames = new List<string> { "(no gameobject selected)" };
-            selectedComponentIndex = 0;
+            public Component component;
+            public ValueChangeEventID[] vceIDs;
         }
-        else
-        {
-            componentOptions = new List<Component>(selectedGameObject.GetComponents<Component>()).FindAll(c => c is IValueChangeEventsComponent);
 
-            if (componentOptions.Count == 0)
-                componentOptionNames = new List<string> { "(no event in gameobject" };
+        public Predicate<ValueChangeEventID> filter;
+        public GameObject selectedGameObject;
+
+        public bool HasSelection { get => (vceIDOptions != null && selectedComponentIndex >= 0 && selectedComponentIndex < vceIDOptions.Count); }
+        public ValueChangeEventID SelectedVceID { get => HasSelection ? vceIDOptions[selectedVceIndex] : ValueChangeEventID.None; }
+        public Component SelectedComponent { get => (componentOptions != null && selectedComponentIndex >= 0 && selectedComponentIndex < componentOptions.Count) ? componentOptions[selectedComponentIndex].component : null; }
+
+        private List<ValueChangeComponent> componentOptions;
+        private List<string> componentOptionNames;
+        private int selectedComponentIndex;
+
+        private List<ValueChangeEventID> vceIDOptions;
+        private List<string> vceOptionNames;
+        private int selectedVceIndex;
+
+        public void SetSelection(ValueChangeEventID selectionID)
+        {
+            if (selectionID.Component != null)
+            {
+                selectedGameObject = selectionID.Component.gameObject;
+
+                GetComponentOptions();
+                selectedComponentIndex = componentOptions.FindIndex(c => c.component == selectionID.Component);
+
+                GetVCEOptions();
+                selectedVceIndex = vceIDOptions.IndexOf(selectionID);
+            }
+        }
+
+        public void ExplorerGUI(Rect position, out bool dirty)
+        {
+            dirty = false;
+
+            position.width /= 3f;
+            GameObject go = EditorGUI.ObjectField(position, selectedGameObject, typeof(GameObject), true) as GameObject;
+            if (go != selectedGameObject)
+            {
+                selectedGameObject = go;
+                dirty = true;
+            }
+
+            position.x += position.width;
+            if (GetComponentOptions())
+            {
+                int componentIndex = EditorGUI.Popup(position, selectedComponentIndex, componentOptionNames.ToArray());
+                if (componentIndex != selectedComponentIndex)
+                {
+                    selectedComponentIndex = componentIndex;
+                    dirty = true;
+                }
+            }
+
+            position.x += position.width;
+            if (GetVCEOptions())
+            {
+                int vceIndex = EditorGUI.Popup(position, selectedVceIndex, vceOptionNames.ToArray());
+                if (vceIndex != selectedVceIndex)
+                {
+                    selectedVceIndex = vceIndex;
+                    dirty = true;
+                }
+            }
+        }
+
+        private bool GetComponentOptions()
+        {
+            if (selectedGameObject == null)
+            {
+                componentOptions = null;
+                componentOptionNames = null;
+                selectedComponentIndex = 0;
+                return false;
+            }
             else
-                componentOptionNames = new List<Component>(componentOptions).ConvertAll(c => c.ToString());
+            {
+                componentOptions = new List<ValueChangeComponent>();
+
+                Component[] componentsInSelection = selectedGameObject.GetComponents<Component>();
+                foreach (Component c in componentsInSelection)
+                {
+                    List<ValueChangeEventID> vcesIDsInComponent;
+                    if (filter == null) vcesIDsInComponent = new List<ValueChangeEventID>(ValueChangeEventID.FindValueChangeEventsIDs(c));
+                    else vcesIDsInComponent = new List<ValueChangeEventID>(ValueChangeEventID.FindValueChangeEventsIDs(c)).FindAll(filter);
+
+                    if (vcesIDsInComponent.Count > 0)
+                        componentOptions.Add(new ValueChangeComponent() { component = c, vceIDs = vcesIDsInComponent.ToArray() });
+                }
+
+                if (componentOptions.Count == 0)
+                {
+                    componentOptions = null;
+                    componentOptionNames = null;
+                }
+                else
+                    componentOptionNames = componentOptions.ConvertAll(option => option.component.GetType().ToString());
+            }
+
+            return componentOptions != null;
         }
 
-        selectedComponentIndex = EditorGUILayout.Popup(selectedComponentIndex, componentOptionNames.ToArray());
-    }
-
-    private void SelectEventGUI()
-    {
-        if (SelectedComponent == null)
+        private bool GetVCEOptions()
         {
-            vceIDOptions = null;
-            vceOptionNames = new List<string> { "(no component selected)" };
-            selectedVceIndex = 0;
-        }
-        else
-        {
-            IValueChangeEventsComponent selectedComponent = SelectedComponent as IValueChangeEventsComponent;
-            selectedComponent.GetValueChangeEvents(out ValueChangeEvent[] vces);
-            List<string> vceNames = new List<string>(selectedComponent.GetValueChangeEventsNames());
-            List<ValueChangeEventID> vceIDs = vceNames.ConvertAll(name => new ValueChangeEventID(SelectedComponent, name));
-
-            if(filter == null)
-                vceIDOptions = vceIDs.ToArray();
-            else
-                vceIDOptions = vceIDs.FindAll(filter).ToArray();
-
-            if (vceIDOptions.Length == 0)
+            if (SelectedComponent == null)
             {
                 vceIDOptions = null;
-                vceOptionNames = new List<string> { "(no type match)" };
+                vceOptionNames = null;
+                selectedVceIndex = 0;
             }
             else
             {
-                vceOptionNames = new List<ValueChangeEventID>(vceIDOptions).ConvertAll(id => id.name);
+                vceIDOptions = new List<ValueChangeEventID>(componentOptions[selectedComponentIndex].vceIDs);
+                if (vceIDOptions.Count == 0)
+                    vceOptionNames = null;
+                else
+                    vceOptionNames = new List<ValueChangeEventID>(vceIDOptions).ConvertAll(id => id.Name);
             }
-        }
 
-        selectedVceIndex = EditorGUILayout.Popup(selectedVceIndex, vceOptionNames.ToArray());
+            return vceIDOptions != null;
+        }
     }
 }

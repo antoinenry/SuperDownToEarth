@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Jumper : BodyPart
 {
@@ -11,7 +9,7 @@ public class Jumper : BodyPart
     public float startVelocityDamping;
     public bool showGizmo;
         
-    public ValueChangeEvent jump = ValueChangeEvent.New<trigger>();
+    public Trigger jump;
 
     public Feet Feet { get; private set; }    
 
@@ -33,33 +31,31 @@ public class Jumper : BodyPart
         }
     }
 
-    public override void Awake()
+    private void Awake()
     {
         AttachedBody = GetComponent<Body>();
         Feet = GetComponent<Feet>();
-        base.Awake();
     }
 
-    public override void OnEnable()
+    private void OnEnable()
     {
-        jump.AddListener<trigger>(OnJump);
-        base.OnEnable();
+        jump.AddTriggerListener(OnJump);
     }
 
-    public override void OnDisable()
+    private void OnDisable()
     {
-        base.OnDisable();
         StopAllCoroutines();
+        jump.RemoveTriggerListener(OnJump);
     }
 
     public void Jump()
     {
-        jump.Invoke();
+        jump.Trigger();
     }
 
     private void OnJump()
     {
-        if ((airJump || Feet.IsOnGround.Get<bool>() == true) && Feet.IsTumbling.Get<bool>() == false)
+        if ((airJump || (bool)Feet.IsOnGround.Value == true) && (bool)Feet.IsTumbling.Value == false)
         {
             StartCoroutine(JumpCoroutine());
         }
@@ -96,15 +92,15 @@ public class Jumper : BodyPart
 
             yield return new WaitForFixedUpdate();
 
-            if (Feet.IsTumbling.Get<bool>() == true) break;
+            if ((bool)Feet.IsTumbling.Value == true) break;
 
             if (onGround)
             {
-                if (Feet.IsOnGround.Get<bool>() == false) onGround = false;
+                if ((bool)Feet.IsOnGround.Value == false) onGround = false;
             }
             else
             {
-                if (Feet.IsOnGround.Get<bool>() == true) break;
+                if ((bool)Feet.IsOnGround.Value == true) break;
             }
         }
     }

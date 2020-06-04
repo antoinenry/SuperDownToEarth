@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteAlways]
-public class Lever : MonoBehaviour //, IValueChangeEventsComponent
+public class Lever : MonoBehaviour
 {
     [Min(2f)] public int numPositions = 2;
     [Min(0f)] public float angleRange = 45f;
@@ -14,14 +14,8 @@ public class Lever : MonoBehaviour //, IValueChangeEventsComponent
     private Rigidbody2D rb2D;
     private float leverActionTimer;
 
-    public ValueChangeEvent LeverPosition = ValueChangeEvent.New<int>();
-    public ValueChangeEvent LeverActionDirection = ValueChangeEvent.New<int>();
-
-    public int GetValueChangeEvents(out ValueChangeEvent[] vces)
-    {
-        vces = new ValueChangeEvent[] { LeverPosition, LeverActionDirection };
-        return vces.Length;
-    }
+    public IntChangeEvent LeverPosition;
+    public IntChangeEvent LeverActionDirection;
 
     private void Awake()
     {
@@ -30,9 +24,9 @@ public class Lever : MonoBehaviour //, IValueChangeEventsComponent
 
     private void FixedUpdate()
     {
-        int leverAction = LeverActionDirection.Get<int>();
+        int leverAction = (int)LeverActionDirection.Value;
 
-        if ((leverAction > 0 && LeverPosition.Get<int>() < numPositions - 1) || (leverAction < 0 && LeverPosition.Get<int>() > 0))
+        if ((leverAction > 0 && (int)LeverPosition.Value < numPositions - 1) || (leverAction < 0 && (int)LeverPosition.Value > 0))
         {
             leverActionTimer += Time.fixedDeltaTime;
             if (leverActionTimer > reactionDelay)
@@ -46,22 +40,22 @@ public class Lever : MonoBehaviour //, IValueChangeEventsComponent
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (Vector2.Dot(transform.right, collision.GetContact(0).normal) < 0f)
-            LeverActionDirection.Set(1);
+            LeverActionDirection.Value = 1;
         else
-            LeverActionDirection.Set(-1);
+            LeverActionDirection.Value = -1;
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        LeverActionDirection.Set(0);
+        LeverActionDirection.Value = 0;
         leverActionTimer = 0f;
     }
 
     private IEnumerator RotateLeverCoroutine(int direction)
     {
-        LeverPosition.Set(LeverPosition.Get<int>() + direction);
+        LeverPosition.Value = (int)LeverPosition.Value + direction;
 
-        float wantedRotation = ((float)LeverPosition.Get<int>() / (numPositions - 1) - .5f) * angleRange + transform.parent.rotation.eulerAngles.z;
+        float wantedRotation = ((float)LeverPosition.Value / (numPositions - 1) - .5f) * angleRange + transform.parent.rotation.eulerAngles.z;
 
         if (direction > 0)
         {

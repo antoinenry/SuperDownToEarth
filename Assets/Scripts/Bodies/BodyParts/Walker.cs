@@ -17,7 +17,7 @@ public class Walker : BodyPart
     private GearBox gearBox;
     private bool switchingGears;
 
-    public ValueChangeEvent IsWalking = ValueChangeEvent.New<bool>();
+    public BoolChangeEvent IsWalking;
 
     private void Awake()
     {
@@ -26,28 +26,24 @@ public class Walker : BodyPart
         gearBox = GetComponent<GearBox>();
     }
 
-    public override void OnEnable()
+    private void OnEnable()
     {
-        base.OnEnable();
-
         if (gearBox != null)
         {
-            gearBox.CurrentGear.AddListener<int>(OnSwitchGear);
-            OnSwitchGear(gearBox.CurrentGear.Get<int>());
+            gearBox.CurrentGear.AddValueListener<int>(OnSwitchGear);
+            OnSwitchGear((int)gearBox.CurrentGear.Value);
         }
     }
 
-    public override void OnDisable()
+    private void OnDisable()
     {
-        base.OnDisable();
-
         StopAllCoroutines();
-        if (gearBox != null) gearBox.CurrentGear.RemoveListener<int>(OnSwitchGear);
+        if (gearBox != null) gearBox.CurrentGear.RemoveValueListener<int>(OnSwitchGear);
     }
 
     private void FixedUpdate()
     {
-        if (Feet.IsOnGround.Get<bool>() == true)
+        if ((bool)Feet.IsOnGround.Value == true)
             AttachedRigidbody.velocity = Feet.GroundVelocity + currentWalkVelocity;
     }
 
@@ -76,15 +72,15 @@ public class Walker : BodyPart
 
     public void Walk(Direction walkDirection)
     {
-        if (Feet.IsOnGround.Get<bool>() == false || walkDirection == Direction.IDLE)
+        if ((bool)Feet.IsOnGround.Value == false || walkDirection == Direction.IDLE)
         {
-            IsWalking.Set(false);
+            IsWalking.Value = false;
             currentWalkVelocity = Vector2.zero;
             CurrentDirection = Direction.IDLE;
-            if (gearBox != null) gearBox.CurrentGear.Set(0);
+            if (gearBox != null) gearBox.CurrentGear.Value = 0;
         }
         else
-            IsWalking.Set(true);        
+            IsWalking.Value = true;        
 
         if (CurrentDirection != walkDirection)
         {
@@ -96,13 +92,13 @@ public class Walker : BodyPart
 
     private IEnumerator WalkCoroutine()
     {
-        if (IsWalking.Get<bool>() == true)
+        if ((bool)IsWalking.Value == true)
         {
             if (CurrentDirection == Direction.RIGHT)
             {
                 AttachedRigidbody.transform.localScale = Vector3.one;
 
-                while (CurrentDirection == Direction.RIGHT && Feet.IsTumbling.Get<bool>() == false && AttachedRigidbody.simulated == true)
+                while (CurrentDirection == Direction.RIGHT && (bool)Feet.IsTumbling.Value== false && AttachedRigidbody.simulated == true)
                 {
                     currentWalkVelocity = Quaternion.Euler(0f, 0f, AttachedRigidbody.rotation) * Vector2.right * walkSpeed;
                     yield return new WaitForFixedUpdate();
@@ -112,7 +108,7 @@ public class Walker : BodyPart
             {
                 AttachedRigidbody.transform.localScale = new Vector3(-1f, 1f, 1f);
 
-                while (CurrentDirection == Direction.LEFT && Feet.IsTumbling.Get<bool>() == false && AttachedRigidbody.simulated == true)
+                while (CurrentDirection == Direction.LEFT && (bool)Feet.IsTumbling.Value == false && AttachedRigidbody.simulated == true)
                 {
                     currentWalkVelocity = Quaternion.Euler(0f, 0f, AttachedRigidbody.rotation) * Vector2.left * walkSpeed;
                     yield return new WaitForFixedUpdate();
@@ -124,12 +120,12 @@ public class Walker : BodyPart
             }
         }
 
-        if (Feet.IsOnGround.Get<bool>() == false)
+        if ((bool)Feet.IsOnGround.Value == false)
         {
             CurrentDirection = Direction.IDLE;
             currentWalkVelocity = Vector2.zero;
-            IsWalking.Set(false);
-            if (gearBox != null) gearBox.CurrentGear.Set(0);
+            IsWalking.Value = false;
+            if (gearBox != null) gearBox.CurrentGear.Value = 0;
         }
     }
 

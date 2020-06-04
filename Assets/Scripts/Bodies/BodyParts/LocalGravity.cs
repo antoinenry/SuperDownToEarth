@@ -10,7 +10,7 @@ public class LocalGravity : BodyPart
     public float gravityForce;
     public float angleOffset;
 
-    public ValueChangeEvent IsFalling = ValueChangeEvent.New<bool>();
+    public BoolChangeEvent IsFalling;
 
     public float FallSpeed { get; private set; }
 
@@ -25,6 +25,6 @@ public class LocalGravity : BodyPart
         AttachedRigidbody.AddForce(localDown * gravityForce);
 
         FallSpeed = Vector2.Dot(AttachedRigidbody.velocity, localDown);
-        IsFalling.Set(FallSpeed > 0f);
+        IsFalling.Value = (FallSpeed > 0f);
     }
 }

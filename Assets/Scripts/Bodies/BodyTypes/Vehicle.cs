@@ -11,13 +11,12 @@ public class Vehicle : PhysicalBody
     public Transform exit;
     public float exitForce;
     public float exitAnimationDelay;
-    
-    public ValueChangeEvent IsFull = ValueChangeEvent.New<bool>();
+
+    public BoolChangeEvent IsFull;
     public Body BodyInside { get; private set; }
 
-    protected override void Init()
+    private void Awake()
     {
-        base.Init();
         SetBodyInside(BodyInside);
     }
 
@@ -32,12 +31,12 @@ public class Vehicle : PhysicalBody
 
         if (body == null)
         {
-            IsFull.Set(false);
+            IsFull.Value = false;
             isFree = true;
         }
         else
         {
-            IsFull.Set(true);
+            IsFull.Value = true;
             isFree = false;
         }
     }

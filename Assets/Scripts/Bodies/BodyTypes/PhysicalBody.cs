@@ -88,15 +88,13 @@ public class PhysicalBody : Body
         }
     }
 
-    public override void OnEnable()
+    private void OnEnable()
     {
-        base.OnEnable();
         SetAllFlags(true);
     }
 
-    public override void OnDisable()
+    private void OnDisable()
     {
-        base.OnDisable();
         SetAllFlags(false);
     }
 

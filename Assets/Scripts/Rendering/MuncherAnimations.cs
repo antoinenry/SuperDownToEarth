@@ -29,8 +29,8 @@ public class MuncherAnimations : MonoBehaviour
         if (muncher != null)
         {
             muncher.OnMunch.AddListener(munchAnimation);
-            muncher.IsFull.AddListener(fullAnimation);
-            FullAnimation(muncher.IsFull.Get<bool>());
+            muncher.IsFull.AddValueListener(fullAnimation);
+            FullAnimation((bool)muncher.IsFull.Value);
         }
     }
 

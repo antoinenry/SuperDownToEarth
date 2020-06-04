@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Feet : BodyPart
 {
@@ -13,8 +12,8 @@ public class Feet : BodyPart
     public float cornerAngleAdjustmentSpeed = 180f;
 
     [Header("Events")]
-    public ValueChangeEvent IsOnGround = ValueChangeEvent.New<bool>();
-    public ValueChangeEvent IsTumbling = ValueChangeEvent.New<bool>();
+    public BoolChangeEvent IsOnGround;
+    public BoolChangeEvent IsTumbling;
 
     private FlatGroundProbe groundProbe;
     //private Joint2D groundJoint;
@@ -27,7 +26,7 @@ public class Feet : BodyPart
     public Vector2 GroundVelocity { get => groundRigidbody == null ? Vector2.zero : groundRigidbody.GetPointVelocity(this.transform.position); }
     public float GroundAngularVelocity { get => groundRigidbody == null ? 0f : groundRigidbody.angularVelocity; }
     
-    void Awake()
+    private void Awake()
     {
         //_IsOnGround = new ValueChangeEvent<bool>();
         //_IsTumbling = new ValueChangeEvent<bool>();
@@ -45,23 +44,23 @@ public class Feet : BodyPart
         CheckGround();
         groundContacts.Clear();
 
-        if (groundCount > 0 && IsTumbling.Get<bool>() == false)
+        if (groundCount > 0 && (bool)IsTumbling.Value == false)
         {
             AttachedRigidbody.velocity = GroundVelocity;
             AttachedRigidbody.angularVelocity = GroundAngularVelocity;
             AttachedRigidbody.rotation = groundAngle;            
 
-            if (IsOnGround.Get<bool>() == true)
+            if ((bool)IsOnGround.Value == true)
             {
                 //if (groundProbe != null) AdjustRotationOnCorner();
             }
             else
-                IsOnGround.Set(true);
+                IsOnGround.Value = true;
         }
-        else if (groundProbe == null || groundProbe.GroundFlatness.Get<int>() == (int)FlatGroundProbe.Flatness.NoGround)
+        else if (groundProbe == null || (int)groundProbe.GroundFlatness.Value == (int)FlatGroundProbe.Flatness.NoGround)
         {
             AttachedRigidbody.constraints &= ~RigidbodyConstraints2D.FreezeRotation;
-            IsOnGround.Set(false);
+            IsOnGround.Value = false;
         }
     }
 
@@ -94,9 +93,8 @@ public class Feet : BodyPart
         groundContacts.AddRange(collision.contacts);
     }
     
-    public override void OnDisable()
+    private void OnDisable()
     {
-        base.OnDisable();
         groundRigidbody = null;
     }
     
@@ -123,7 +121,7 @@ public class Feet : BodyPart
             tumbleDirection += contact.normal;
         }
 
-        IsTumbling.Set(!balanced);
+        IsTumbling.Value = !balanced;
         if (balanced == false) StartCoroutine(TumbleCoroutine(tumbleDirection.normalized));
     }
 
@@ -138,7 +136,7 @@ public class Feet : BodyPart
         //bool clockwiseSpin = Vector2.SignedAngle(rb.velocity, direction) > 0f;
         AttachedRigidbody.velocity = Vector2.zero;
 
-        while (IsTumbling.Get<bool>() ==true && currentTime < tumbleDuration)
+        while ((bool)IsTumbling.Value ==true && currentTime < tumbleDuration)
         {
             lastHeight = currentHeight;
             currentHeight = tumbleBounceCurve.Evaluate(currentTime);
@@ -151,12 +149,12 @@ public class Feet : BodyPart
         }
 
         AttachedRigidbody.velocity = direction * (currentHeight - lastHeight)/Time.fixedDeltaTime;
-        IsTumbling.Set(false);
+        IsTumbling.Value = false;
     }
 
     private void AdjustRotationOnCorner()
     {
-        if (groundProbe.GroundFlatness.Get<int>() ==(int)FlatGroundProbe.Flatness.Hole)
+        if ((int)groundProbe.GroundFlatness.Value ==(int)FlatGroundProbe.Flatness.Hole)
         {
             float facing = groundProbe.transform.lossyScale.x > 0 ? 1f : -1f;
 

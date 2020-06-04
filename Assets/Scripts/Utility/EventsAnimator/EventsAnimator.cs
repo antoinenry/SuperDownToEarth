@@ -5,8 +5,9 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(Animator))]
-public class EventsAnimator : ValueChangeEventsBehaviour
+public class EventsAnimator : MonoBehaviour
 {    
+    /*
     [SerializeField] private ValueChangeEvent[] TriggerParameters = new ValueChangeEvent[0];
     [SerializeField] private ValueChangeEvent[] BoolParameters = new ValueChangeEvent[0];
     [SerializeField] private ValueChangeEvent[] IntParameters = new ValueChangeEvent[0];
@@ -142,7 +143,7 @@ public class EventsAnimator : ValueChangeEventsBehaviour
                 updated[i] = ValueChangeEvent.New<T>();
             else
             {
-                if (match.runtimeEvent == null) match.SetRuntimeEvent<T>();
+                //if (match.runtimeEvent == null) match.SetRuntimeEvent<T>();
                 if (updated[i] != match) updated[i] = match;
             }
         }
@@ -182,4 +183,5 @@ public class EventsAnimator : ValueChangeEventsBehaviour
             SetFloatActions[i] = new UnityAction<float>(value => animator.SetFloat(floatParameterNames[index], value));
         }
     }
+    */
 }
