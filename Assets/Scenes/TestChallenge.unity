@@ -541,8 +541,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDead:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   rb2d: {fileID: 54008003}
   render: {fileID: 955425433}
   isFree: 0
@@ -562,8 +563,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 9
   IsWalking:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &54007998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -613,8 +615,8 @@ MonoBehaviour:
   startVelocityDamping: 3
   showGizmo: 1
   jump:
-    valueType: trigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
 --- !u!114 &54007999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -647,11 +649,13 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 1500
   IsOnGround:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   IsTumbling:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &54008000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1191,9 +1195,9 @@ MonoBehaviour:
   body: {fileID: 414403195}
   transferPartsToVehicle: []
   PilotedBody:
-    valueType: UnityEngine.Object, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: {fileID: 0}
 --- !u!114 &94323237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1645,8 +1649,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDead:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   rb2d: {fileID: 169461412}
   render: {fileID: 1944147116}
   isFree: 0
@@ -1657,8 +1662,9 @@ MonoBehaviour:
   exitForce: 50
   exitAnimationDelay: 0.2
   IsFull:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &169461408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1676,11 +1682,13 @@ MonoBehaviour:
   spinInertia: 0.0001
   tumbleRecuperation: 100
   cantSpin:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   spinDirection:
-    valueType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &169461409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1730,8 +1738,8 @@ MonoBehaviour:
   startVelocityDamping: 4
   showGizmo: 0
   jump:
-    valueType: trigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
 --- !u!114 &169461410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1773,11 +1781,13 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 180
   IsOnGround:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   IsTumbling:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!50 &169461412
 Rigidbody2D:
   serializedVersion: 4
@@ -1834,8 +1844,9 @@ MonoBehaviour:
   gravityForce: 28
   angleOffset: 100
   IsFalling:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!1 &171543708
 GameObject:
   m_ObjectHideFlags: 0
@@ -2104,8 +2115,9 @@ MonoBehaviour:
   backUp: {fileID: 0}
   backDown: {fileID: 668580601}
   GroundFlatness:
-    valueType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!1 &265853621
 GameObject:
   m_ObjectHideFlags: 0
@@ -2141,8 +2153,9 @@ MonoBehaviour:
   body: {fileID: 1279257987}
   transferPartsToVehicle: []
   PilotedBody:
-    valueType: Body, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: {fileID: 0}
 --- !u!114 &265853623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2512,8 +2525,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!58 &341959689
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2729,8 +2743,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!1 &414403193
 GameObject:
   m_ObjectHideFlags: 0
@@ -2770,14 +2785,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   axisInput:
-    valueType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   action1Input:
-    valueType: trigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
   action2Input:
-    valueType: trigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
 --- !u!114 &414403195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2791,8 +2807,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDead:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   rb2d: {fileID: 414403203}
   render: {fileID: 973394051}
   isFree: 0
@@ -2814,8 +2831,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16
   IsInFluid:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &414403197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2874,10 +2892,11 @@ MonoBehaviour:
   startVelocityDamping: 3
   showGizmo: 1
   jump:
-    valueType: trigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs:
-    - component: {fileID: 414403194}
-      name: action1Input
+    inspectorUnfold: 0
+    masters:
+    - name: action1Input
+      component: {fileID: 414403194}
+      indexInComponent: 1
 --- !u!114 &414403198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2895,15 +2914,19 @@ MonoBehaviour:
   spinInertia: 0
   tumbleRecuperation: 100
   cantSpin:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs:
-    - component: {fileID: 414403201}
-      name: IsOnGround
+    inspectorUnfold: 0
+    masters:
+    - name: IsOnGround
+      component: {fileID: 414403201}
+      indexInComponent: 0
+    value: 0
   spinDirection:
-    valueType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs:
-    - component: {fileID: 414403194}
-      name: axisInput
+    inspectorUnfold: 0
+    masters:
+    - name: axisInput
+      component: {fileID: 414403194}
+      indexInComponent: 0
+    value: 0
 --- !u!114 &414403199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2919,8 +2942,9 @@ MonoBehaviour:
   gravityForce: 6
   angleOffset: 0
   IsFalling:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &414403200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2975,11 +2999,13 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 1500
   IsOnGround:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   IsTumbling:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!58 &414403202
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -3069,8 +3095,9 @@ MonoBehaviour:
   body: {fileID: 1305308460}
   transferPartsToVehicle: []
   PilotedBody:
-    valueType: Body, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: {fileID: 0}
 --- !u!114 &454957931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3186,8 +3213,9 @@ MonoBehaviour:
   backUp: {fileID: 0}
   backDown: {fileID: 891816435}
   GroundFlatness:
-    valueType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!4 &456418129
 Transform:
   m_ObjectHideFlags: 0
@@ -3405,8 +3433,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDead:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   rb2d: {fileID: 512554179}
   render: {fileID: 1509083792}
   isFree: 0
@@ -3417,8 +3446,9 @@ MonoBehaviour:
   exitForce: 50
   exitAnimationDelay: 0.2
   IsFull:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &512554175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3436,11 +3466,13 @@ MonoBehaviour:
   spinInertia: 0.002
   tumbleRecuperation: 100
   cantSpin:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   spinDirection:
-    valueType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &512554176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3481,8 +3513,8 @@ MonoBehaviour:
   startVelocityDamping: 4
   showGizmo: 0
   jump:
-    valueType: trigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
 --- !u!58 &512554178
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -3605,11 +3637,13 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 180
   IsOnGround:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   IsTumbling:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!1 &512565684
 GameObject:
   m_ObjectHideFlags: 0
@@ -5053,8 +5087,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!58 &668580602
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5482,8 +5517,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!58 &761300783
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5551,11 +5587,13 @@ MonoBehaviour:
   stepByStep: 0
   mirror: 1
   enableMovement:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   step:
-    valueType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   _enableMovement: 0
   _step: 0
 --- !u!50 &827959863
@@ -6334,8 +6372,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!58 &891816436
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -6899,8 +6938,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDead:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   rb2d: {fileID: 948060738}
   render: {fileID: 1202195631}
   isFree: 0
@@ -6911,8 +6951,9 @@ MonoBehaviour:
   exitForce: 50
   exitAnimationDelay: 0.2
   IsFull:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &948060732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6931,14 +6972,15 @@ MonoBehaviour:
   - 10
   switchDelay: 0
   CurrentGear:
-    valueType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   OnGearUp:
-    valueType: trigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
   OnGearDown:
-    valueType: trigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
 --- !u!114 &948060734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6953,8 +6995,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 0
   IsWalking:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &948060735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6970,8 +7013,9 @@ MonoBehaviour:
   gravityForce: 24
   angleOffset: 0
   IsFalling:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &948060736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7013,11 +7057,13 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 180
   IsOnGround:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   IsTumbling:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!58 &948060737
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -7518,45 +7564,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b46d442577b0d784ba3a81ded2157fc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TriggerParameters:
-  - valueType: trigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs:
-    - component: {fileID: 414403197}
-      name: jump
-  BoolParameters:
-  - valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
-  - valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs:
-    - component: {fileID: 414403201}
-      name: IsOnGround
-  - valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
-  - valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs:
-    - component: {fileID: 414403199}
-      name: IsFalling
-  - valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs:
-    - component: {fileID: 0}
-      name: IsPilotingVehicle
-  IntParameters:
-  - valueType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs:
-    - component: {fileID: 1545279172}
-      name: GroundFlatness
-  FloatParameters: []
-  triggerParameterNames:
-  - onJump
-  boolParameterNames:
-  - isLeaning
-  - isOnGround
-  - isInFluid
-  - isFalling
-  - isPilotingVehicle
-  intParameterNames:
-  - groundFlatness
-  floatParameterNames: []
+  animatorTriggers:
+  - name: onJump
+    vce:
+      inspectorUnfold: 0
+      masters:
+      - name: jump
+        component: {fileID: 414403197}
+        indexInComponent: 0
+  animatorBools:
+  - name: isLeaning
+    vce:
+      inspectorUnfold: 0
+      masters: []
+      value: 0
+  - name: isOnGround
+    vce:
+      inspectorUnfold: 0
+      masters:
+      - name: IsOnGround
+        component: {fileID: 414403201}
+        indexInComponent: 0
+      value: 0
+  - name: isInFluid
+    vce:
+      inspectorUnfold: 0
+      masters: []
+      value: 0
+  - name: isFalling
+    vce:
+      inspectorUnfold: 0
+      masters:
+      - name: IsFalling
+        component: {fileID: 414403199}
+        indexInComponent: 0
+      value: 0
+  - name: isPilotingVehicle
+    vce:
+      inspectorUnfold: 0
+      masters: []
+      value: 0
+  animatorInts:
+  - name: groundFlatness
+    vce:
+      inspectorUnfold: 0
+      masters:
+      - name: GroundFlatness
+        component: {fileID: 1545279172}
+        indexInComponent: 0
+      value: 0
+  animatorFloats: []
 --- !u!114 &973394053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8139,11 +8196,13 @@ MonoBehaviour:
   stepByStep: 0
   mirror: 0
   enableMovement:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   step:
-    valueType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   _enableMovement: 1
   _step: 0
 --- !u!50 &988279582
@@ -8365,8 +8424,9 @@ MonoBehaviour:
   body: {fileID: 54007996}
   transferPartsToVehicle: []
   PilotedBody:
-    valueType: Body, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: {fileID: 0}
 --- !u!114 &1067459106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8659,24 +8719,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b46d442577b0d784ba3a81ded2157fc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TriggerParameters:
-  - valueType: trigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs:
-    - component: {fileID: 1547857612}
-      name: LeverPosition
-  BoolParameters: []
-  IntParameters:
-  - valueType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs:
-    - component: {fileID: 1547857612}
-      name: LeverActionDirection
-  FloatParameters: []
-  triggerParameterNames:
-  - OnLeverMove
-  boolParameterNames: []
-  intParameterNames:
-  - LeverActionDirection
-  floatParameterNames: []
+  animatorTriggers: []
+  animatorBools: []
+  animatorInts: []
+  animatorFloats: []
 --- !u!95 &1106560701
 Animator:
   serializedVersion: 3
@@ -8963,8 +9009,9 @@ MonoBehaviour:
   body: {fileID: 1169577023}
   transferPartsToVehicle: []
   PilotedBody:
-    valueType: Body, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: {fileID: 0}
 --- !u!114 &1137402711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9206,11 +9253,13 @@ MonoBehaviour:
   stepByStep: 0
   mirror: 0
   enableMovement:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   step:
-    valueType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   _enableMovement: 1
   _step: 0
 --- !u!50 &1162988626
@@ -9270,8 +9319,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDead:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   rb2d: {fileID: 1169577032}
   render: {fileID: 985299722}
   isFree: 0
@@ -9291,8 +9341,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 9
   IsWalking:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &1169577026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9342,8 +9393,8 @@ MonoBehaviour:
   startVelocityDamping: 3
   showGizmo: 1
   jump:
-    valueType: trigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
 --- !u!114 &1169577028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9389,11 +9440,13 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 1500
   IsOnGround:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   IsTumbling:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!58 &1169577031
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -9904,8 +9957,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!1 &1253587758
 GameObject:
   m_ObjectHideFlags: 0
@@ -10090,8 +10144,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDead:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   rb2d: {fileID: 1279257994}
   render: {fileID: 2124687243}
   isFree: 0
@@ -10111,8 +10166,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 9
   IsWalking:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &1279257989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10162,8 +10218,8 @@ MonoBehaviour:
   startVelocityDamping: 3
   showGizmo: 1
   jump:
-    valueType: trigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
 --- !u!114 &1279257990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10196,11 +10252,13 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 1500
   IsOnGround:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   IsTumbling:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &1279257991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10465,8 +10523,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDead:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   rb2d: {fileID: 1305308467}
   render: {fileID: 2069116034}
   isFree: 0
@@ -10486,8 +10545,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 9
   IsWalking:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &1305308462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10537,8 +10597,8 @@ MonoBehaviour:
   startVelocityDamping: 3
   showGizmo: 1
   jump:
-    valueType: trigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
 --- !u!114 &1305308463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10571,11 +10631,13 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 1500
   IsOnGround:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   IsTumbling:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &1305308464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10832,8 +10894,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!58 &1342157564
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -11012,11 +11075,13 @@ MonoBehaviour:
   stepByStep: 0
   mirror: 0
   enableMovement:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   step:
-    valueType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   _enableMovement: 1
   _step: 0
 --- !u!50 &1387272704
@@ -11659,8 +11724,9 @@ MonoBehaviour:
   backUp: {fileID: 2009801886}
   backDown: {fileID: 1342157563}
   GroundFlatness:
-    valueType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!4 &1545279173
 Transform:
   m_ObjectHideFlags: 0
@@ -11778,11 +11844,13 @@ MonoBehaviour:
   reactionDelay: 1
   rotationSpeed: 200
   LeverPosition:
-    valueType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   LeverActionDirection:
-    valueType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!1 &1566605778
 GameObject:
   m_ObjectHideFlags: 0
@@ -12752,8 +12820,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!1 &1724827149
 GameObject:
   m_ObjectHideFlags: 0
@@ -15237,8 +15306,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!1 &1996710241
 GameObject:
   m_ObjectHideFlags: 0
@@ -15588,8 +15658,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!1 &2023151780
 GameObject:
   m_ObjectHideFlags: 0
@@ -16008,8 +16079,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!1 &2069116033
 GameObject:
   m_ObjectHideFlags: 0
@@ -17516,8 +17588,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 0
   IsWalking:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &8251557782544366448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17535,11 +17608,13 @@ MonoBehaviour:
   spinInertia: 0
   tumbleRecuperation: 100
   cantSpin:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   spinDirection:
-    valueType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!50 &8251557782544366449
 Rigidbody2D:
   serializedVersion: 4
@@ -17628,11 +17703,13 @@ MonoBehaviour:
   cantStandOnTag: Unwalkable
   cornerAngleAdjustmentSpeed: 180
   IsOnGround:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   IsTumbling:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &8251557782544366453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17682,8 +17759,8 @@ MonoBehaviour:
   startVelocityDamping: 4
   showGizmo: 0
   jump:
-    valueType: trigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
 --- !u!4 &8251557782544366454
 Transform:
   m_ObjectHideFlags: 0
@@ -17718,8 +17795,9 @@ MonoBehaviour:
   gravityForce: 0
   angleOffset: 0
   IsFalling:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &8251557782544366456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17733,8 +17811,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDead:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   rb2d: {fileID: 8251557782544366449}
   render: {fileID: 8251557783088937104}
   isFree: 0
@@ -17745,8 +17824,9 @@ MonoBehaviour:
   exitForce: 50
   exitAnimationDelay: 0.2
   IsFull:
-    valueType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
 --- !u!114 &8251557782544366458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17764,14 +17844,15 @@ MonoBehaviour:
   - 9
   switchDelay: 0
   CurrentGear:
-    valueType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
+    value: 0
   OnGearUp:
-    valueType: trigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
   OnGearDown:
-    valueType: trigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    masterIDs: []
+    inspectorUnfold: 0
+    masters: []
 --- !u!70 &8251557782544366459
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

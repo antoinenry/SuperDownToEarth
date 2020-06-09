@@ -8,7 +8,7 @@ public class Jumper : BodyPart
     public bool airJump;
     public float startVelocityDamping;
     public bool showGizmo;
-        
+
     public Trigger jump;
 
     public Feet Feet { get; private set; }    

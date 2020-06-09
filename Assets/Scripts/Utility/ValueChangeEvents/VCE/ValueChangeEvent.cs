@@ -10,8 +10,8 @@ namespace VCE
     [Serializable]
     public class ValueChangeEvent
     {
-        public bool inspectorShowMasters;
         [NonSerialized] public bool inspectorHighlight;
+        public bool inspectorUnfold;
 
         public readonly Type ValueType;
 

@@ -17,7 +17,7 @@ namespace VCE
         public Predicate<ValueChangeEventID> filter;
         public GameObject selectedGameObject;
 
-        public bool HasSelection { get => (vceIDOptions != null && selectedComponentIndex >= 0 && selectedComponentIndex < vceIDOptions.Count); }
+        public bool HasSelection { get => (vceIDOptions != null && selectedComponentIndex >= 0 /*&& selectedComponentIndex < vceIDOptions.Count*/); }
         public ValueChangeEventID SelectedVceID { get => HasSelection ? vceIDOptions[selectedVceIndex] : ValueChangeEventID.None; }
         public Component SelectedComponent { get => (componentOptions != null && selectedComponentIndex >= 0 && selectedComponentIndex < componentOptions.Count) ? componentOptions[selectedComponentIndex].component : null; }
 
