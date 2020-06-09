@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using UnityEngine;
-using UnityEngine.Events;
+﻿using UnityEngine;
 
 public class LocalGravity : BodyPart
 {
     public float gravityForce;
     public float angleOffset;
 
-    public BoolChangeEvent IsFalling;
+    public BoolChangeEvent isFalling;
 
     public float FallSpeed { get; private set; }
 
@@ -22,9 +17,10 @@ public class LocalGravity : BodyPart
     private void FixedUpdate ()
     {
         Vector2 localDown = Quaternion.Euler(0f, 0f, angleOffset) * transform.rotation * Vector2.down;
+
         AttachedRigidbody.AddForce(localDown * gravityForce);
 
         FallSpeed = Vector2.Dot(AttachedRigidbody.velocity, localDown);
-        IsFalling.Value = (FallSpeed > 0f);
+        isFalling.Value = (FallSpeed > 0f);
     }
 }

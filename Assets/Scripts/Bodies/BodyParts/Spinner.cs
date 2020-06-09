@@ -21,7 +21,7 @@ public class Spinner : BodyPart
     private void FixedUpdate()
     {
         if (cantSpin == false)
-            SetBodyVelocity((invertDirection ? -1f : 1f) * spinVelocity * (int)spinDirection.Value);
+            SetBodyVelocity((invertDirection ? -1f : 1f) * spinVelocity * spinDirection);
     }
 
     public void Spin(int intDirection)

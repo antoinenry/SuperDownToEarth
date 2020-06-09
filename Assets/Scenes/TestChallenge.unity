@@ -562,7 +562,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 9
-  IsWalking:
+  currentWalkDirection:
     inspectorUnfold: 0
     masters: []
     value: 0
@@ -720,7 +720,7 @@ Transform:
   - {fileID: 955425436}
   - {fileID: 1067459109}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &69449974
 GameObject:
@@ -1193,8 +1193,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   body: {fileID: 414403195}
-  transferPartsToVehicle: []
-  PilotedBody:
+  transferPartsToVehicle:
+  - {fileID: 414403199}
+  isPilotingVehicle:
+    inspectorUnfold: 0
+    masters: []
+    value: 0
+  currentVehicle:
     inspectorUnfold: 0
     masters: []
     value: {fileID: 0}
@@ -1211,8 +1216,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   directionAxisName: Horizontal
-  jumpButtonName: Jump
-  actionButtonName: Fire1
+  action1ButtonName: Action1
+  action2ButtonName: Action2
 --- !u!58 &94323238
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1661,6 +1666,9 @@ MonoBehaviour:
   exit: {fileID: 1301738414}
   exitForce: 50
   exitAnimationDelay: 0.2
+  eject:
+    inspectorUnfold: 0
+    masters: []
   IsFull:
     inspectorUnfold: 0
     masters: []
@@ -1827,7 +1835,7 @@ Transform:
   - {fileID: 456418129}
   - {fileID: 1509909299}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.68}
 --- !u!114 &169461414
 MonoBehaviour:
@@ -1843,7 +1851,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravityForce: 28
   angleOffset: 100
-  IsFalling:
+  isFalling:
     inspectorUnfold: 0
     masters: []
     value: 0
@@ -2152,7 +2160,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   body: {fileID: 1279257987}
   transferPartsToVehicle: []
-  PilotedBody:
+  isPilotingVehicle:
+    inspectorUnfold: 0
+    masters: []
+    value: 0
+  currentVehicle:
     inspectorUnfold: 0
     masters: []
     value: {fileID: 0}
@@ -2941,7 +2953,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravityForce: 6
   angleOffset: 0
-  IsFalling:
+  isFalling:
     inspectorUnfold: 0
     masters: []
     value: 0
@@ -3051,14 +3063,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 414403193}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -36.9, y: 42.48, z: 0}
+  m_LocalPosition: {x: -22, y: -4.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 94323232}
   - {fileID: 973394055}
   - {fileID: 1545279173}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &454957929
 GameObject:
@@ -3094,7 +3106,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   body: {fileID: 1305308460}
   transferPartsToVehicle: []
-  PilotedBody:
+  isPilotingVehicle:
+    inspectorUnfold: 0
+    masters: []
+    value: 0
+  currentVehicle:
     inspectorUnfold: 0
     masters: []
     value: {fileID: 0}
@@ -3311,7 +3327,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 458903502}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -28.35, y: 41.22, z: -10}
+  m_LocalPosition: {x: -16.3, y: 0.3, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3445,6 +3461,9 @@ MonoBehaviour:
   exit: {fileID: 1205126156}
   exitForce: 50
   exitAnimationDelay: 0.2
+  eject:
+    inspectorUnfold: 0
+    masters: []
   IsFull:
     inspectorUnfold: 0
     masters: []
@@ -3568,7 +3587,7 @@ Transform:
   - {fileID: 1297714637}
   - {fileID: 1205126156}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.68}
 --- !u!61 &512554181
 BoxCollider2D:
@@ -6950,6 +6969,9 @@ MonoBehaviour:
   exit: {fileID: 193538504}
   exitForce: 50
   exitAnimationDelay: 0.2
+  eject:
+    inspectorUnfold: 0
+    masters: []
   IsFull:
     inspectorUnfold: 0
     masters: []
@@ -6994,7 +7016,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 0
-  IsWalking:
+  currentWalkDirection:
     inspectorUnfold: 0
     masters: []
     value: 0
@@ -7012,7 +7034,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravityForce: 24
   angleOffset: 0
-  IsFalling:
+  isFalling:
     inspectorUnfold: 0
     masters: []
     value: 0
@@ -8423,7 +8445,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   body: {fileID: 54007996}
   transferPartsToVehicle: []
-  PilotedBody:
+  isPilotingVehicle:
+    inspectorUnfold: 0
+    masters: []
+    value: 0
+  currentVehicle:
     inspectorUnfold: 0
     masters: []
     value: {fileID: 0}
@@ -8705,7 +8731,7 @@ Transform:
   - {fileID: 1547857608}
   - {fileID: 2142686425}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -179.11601}
 --- !u!114 &1106560697
 MonoBehaviour:
@@ -9008,7 +9034,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   body: {fileID: 1169577023}
   transferPartsToVehicle: []
-  PilotedBody:
+  isPilotingVehicle:
+    inspectorUnfold: 0
+    masters: []
+    value: 0
+  currentVehicle:
     inspectorUnfold: 0
     masters: []
     value: {fileID: 0}
@@ -9340,7 +9370,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 9
-  IsWalking:
+  currentWalkDirection:
     inspectorUnfold: 0
     masters: []
     value: 0
@@ -9498,7 +9528,7 @@ Transform:
   - {fileID: 985299726}
   - {fileID: 1137402717}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1194799168
 GameObject:
@@ -10106,7 +10136,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1279257986
 GameObject:
@@ -10165,7 +10195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 9
-  IsWalking:
+  currentWalkDirection:
     inspectorUnfold: 0
     masters: []
     value: 0
@@ -10323,7 +10353,7 @@ Transform:
   - {fileID: 2124687246}
   - {fileID: 265853626}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1295556243
 GameObject:
@@ -10376,7 +10406,7 @@ Transform:
   m_Children:
   - {fileID: 827959861}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1297714636
 GameObject:
@@ -10544,7 +10574,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 9
-  IsWalking:
+  currentWalkDirection:
     inspectorUnfold: 0
     masters: []
     value: 0
@@ -10702,7 +10732,7 @@ Transform:
   - {fileID: 2069116037}
   - {fileID: 454957934}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1307941818
 GameObject:
@@ -17586,10 +17616,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57ad6a309812ed740aabf4647c1421fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 0
-  IsWalking:
-    inspectorUnfold: 0
-    masters: []
+  walkSpeed: 5
+  currentWalkDirection:
+    inspectorUnfold: 1
+    masters:
+    - name: axisInput
+      component: {fileID: 8251557782544366457}
+      indexInComponent: 0
     value: 0
 --- !u!114 &8251557782544366448
 MonoBehaviour:
@@ -17609,11 +17642,17 @@ MonoBehaviour:
   tumbleRecuperation: 100
   cantSpin:
     inspectorUnfold: 0
-    masters: []
+    masters:
+    - name: IsOnGround
+      component: {fileID: 8251557782544366452}
+      indexInComponent: 0
     value: 0
   spinDirection:
-    inspectorUnfold: 0
-    masters: []
+    inspectorUnfold: 1
+    masters:
+    - name: axisInput
+      component: {fileID: 8251557782544366457}
+      indexInComponent: 0
     value: 0
 --- !u!50 &8251557782544366449
 Rigidbody2D:
@@ -17655,6 +17694,7 @@ GameObject:
   - component: {fileID: 8251557782544366453}
   - component: {fileID: 8251557782544366448}
   - component: {fileID: 8251557782544366456}
+  - component: {fileID: 8251557782544366457}
   m_Layer: 16
   m_Name: Bot
   m_TagString: Untagged
@@ -17759,8 +17799,11 @@ MonoBehaviour:
   startVelocityDamping: 4
   showGizmo: 0
   jump:
-    inspectorUnfold: 0
-    masters: []
+    inspectorUnfold: 1
+    masters:
+    - name: action1Input
+      component: {fileID: 8251557782544366457}
+      indexInComponent: 1
 --- !u!4 &8251557782544366454
 Transform:
   m_ObjectHideFlags: 0
@@ -17778,7 +17821,7 @@ Transform:
   - {fileID: 1438955612}
   - {fileID: 1225588143}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -100.11301}
 --- !u!114 &8251557782544366455
 MonoBehaviour:
@@ -17794,7 +17837,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravityForce: 0
   angleOffset: 0
-  IsFalling:
+  isFalling:
     inspectorUnfold: 0
     masters: []
     value: 0
@@ -17823,10 +17866,38 @@ MonoBehaviour:
   exit: {fileID: 1438955612}
   exitForce: 50
   exitAnimationDelay: 0.2
+  eject:
+    inspectorUnfold: 1
+    masters:
+    - name: action2Input
+      component: {fileID: 8251557782544366457}
+      indexInComponent: 2
   IsFull:
     inspectorUnfold: 0
     masters: []
     value: 0
+--- !u!114 &8251557782544366457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8251557782544366451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc3534ce83f582349ab34e362be48165, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  axisInput:
+    inspectorUnfold: 0
+    masters: []
+    value: 0
+  action1Input:
+    inspectorUnfold: 0
+    masters: []
+  action2Input:
+    inspectorUnfold: 0
+    masters: []
 --- !u!114 &8251557782544366458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17958,6 +18029,7 @@ GameObject:
   - component: {fileID: 8251557783088937105}
   - component: {fileID: 8251557783088937104}
   - component: {fileID: 8251557783088937110}
+  - component: {fileID: 8251557783088937108}
   m_Layer: 0
   m_Name: BotRenderer
   m_TagString: Untagged
@@ -17965,6 +18037,82 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8251557783088937108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8251557783088937107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b46d442577b0d784ba3a81ded2157fc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animatorTriggers:
+  - name: onJump
+    vce:
+      inspectorUnfold: 0
+      masters:
+      - name: jump
+        component: {fileID: 8251557782544366453}
+        indexInComponent: 0
+  animatorBools:
+  - name: isOnGround
+    vce:
+      inspectorUnfold: 0
+      masters:
+      - name: IsOnGround
+        component: {fileID: 8251557782544366452}
+        indexInComponent: 0
+      value: 0
+  - name: isFalling
+    vce:
+      inspectorUnfold: 0
+      masters:
+      - name: IsFalling
+        component: {fileID: 8251557782544366455}
+        indexInComponent: 0
+      value: 0
+  - name: isInFluid
+    vce:
+      inspectorUnfold: 0
+      masters: []
+      value: 0
+  - name: isTumbling
+    vce:
+      inspectorUnfold: 0
+      masters:
+      - name: IsTumbling
+        component: {fileID: 8251557782544366452}
+        indexInComponent: 1
+      value: 0
+  - name: isFull
+    vce:
+      inspectorUnfold: 0
+      masters:
+      - name: IsFull
+        component: {fileID: 8251557782544366456}
+        indexInComponent: 0
+      value: 0
+  animatorInts:
+  - name: walkingPace
+    vce:
+      inspectorUnfold: 0
+      masters:
+      - name: CurrentGear
+        component: {fileID: 8251557782544366458}
+        indexInComponent: 0
+      value: 0
+  - name: walkingDirection
+    vce:
+      inspectorUnfold: 0
+      masters:
+      - name: currentWalkDirection
+        component: {fileID: 8251557782544366442}
+        indexInComponent: 0
+      value: 0
+  animatorFloats: []
 --- !u!95 &8251557783088937110
 Animator:
   serializedVersion: 3

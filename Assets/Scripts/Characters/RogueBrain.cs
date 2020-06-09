@@ -72,7 +72,7 @@ public class RogueBrain : MonoBehaviour
 
         while (currentState == BrainState.Thinking)
         {
-            walker.Walk(Walker.Direction.IDLE);
+            walker.Walk(0);
 
             yield return new WaitForFixedUpdate();
 
@@ -93,17 +93,17 @@ public class RogueBrain : MonoBehaviour
 
                 if (horizontalToTarget > detectionWidth / 2f && CheckRight() != DetectionResult.Avoid)
                 {
-                    if (walker.CurrentDirection == Walker.Direction.LEFT)
+                    if (walker.currentWalkDirection == -1)
                         currentState = BrainState.Thinking;
                     else
-                        walker.Walk(Walker.Direction.RIGHT);
+                        walker.Walk(1);
                 }
                 else if (horizontalToTarget < -detectionWidth / 2f && CheckLeft() != DetectionResult.Avoid)
                 {
-                    if (walker.CurrentDirection == Walker.Direction.RIGHT)
+                    if (walker.currentWalkDirection == 1)
                         currentState = BrainState.Thinking;
                     else
-                        walker.Walk(Walker.Direction.LEFT);
+                        walker.Walk(-1);
                 }
                 else
                 {

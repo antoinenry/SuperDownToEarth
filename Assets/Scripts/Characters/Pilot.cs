@@ -6,14 +6,16 @@ public class Pilot : MonoBehaviour
     public Body body;
     [HideInInspector] public BodyPart[] transferPartsToVehicle;
 
-    public UnityObjectChangeEvent PilotedBody;    
+    public BoolChangeEvent isPilotingVehicle;
+    public UnityObjectChangeEvent currentVehicle;
 
     private void Start()
     {
         if (body != null)
         {
             body.IsDead.AddValueListener<bool>(OnDeath);
-            PilotedBody.Value = body;
+            currentVehicle.Value = body;
+            isPilotingVehicle.Value = false;
         }
 
         if (transform.parent != null)
@@ -25,20 +27,11 @@ public class Pilot : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (GetCurrentVehicle() == null)
+        if (isPilotingVehicle == false)
         {
             Vehicle vehicle = collision.gameObject.GetComponent<Vehicle>();
             if (vehicle != null) EnterVehicle(vehicle);
         }
-    }
-
-    public Vehicle GetCurrentVehicle()
-    {
-        Body pilotedBody = PilotedBody.Value as Body;
-        if (pilotedBody != null && pilotedBody != body && pilotedBody is Vehicle)
-            return pilotedBody as Vehicle;
-        else
-            return null;
     }
 
     public void EnterVehicle (Vehicle vehicle)
@@ -68,7 +61,8 @@ public class Pilot : MonoBehaviour
         foreach (BodyPart part in transferPartsToVehicle)
             part.AttachedBody = vehicle;
 
-        PilotedBody.Value = vehicle;
+        currentVehicle.Value = vehicle;
+        isPilotingVehicle.Value = true;
     }
 
     public void ExitCurrentVehicle()
@@ -76,21 +70,15 @@ public class Pilot : MonoBehaviour
         StartCoroutine(ExitVehicleCoroutine(false));
     }
 
-    public void ExitCurrentVehicleImmediate()
-    {
-        StartCoroutine(ExitVehicleCoroutine(true));
-    }
-
     private IEnumerator ExitVehicleCoroutine(bool immediate)
     {
-        Vehicle currentVehicle = GetCurrentVehicle();
-
-        if (GetCurrentVehicle() != null)
+        if (isPilotingVehicle == true)
         {
             //exitingVehicle.Stop();
 
+            Vehicle exitVehicle = currentVehicle.Value as Vehicle;
             if (immediate == false)
-                yield return new WaitForSeconds(currentVehicle.exitAnimationDelay);
+                yield return new WaitForSeconds(exitVehicle.exitAnimationDelay);
 
             if (body != null)
             {
@@ -102,21 +90,22 @@ public class Pilot : MonoBehaviour
                 }
 
                 this.transform.SetParent(body.transform);
-                body.transform.SetParent(currentVehicle.transform.parent);
-                body.transform.position = currentVehicle.exit.position;
+                body.transform.SetParent(exitVehicle.transform.parent);
+                body.transform.position = exitVehicle.exit.position;
 
                 if (body.AttachedRigidBody != null)
-                    body.AttachedRigidBody.AddForce(currentVehicle.exitForce * currentVehicle.exit.up);
+                    body.AttachedRigidBody.AddForce(exitVehicle.exitForce * exitVehicle.exit.up);
             }
 
-            currentVehicle.IsFull.RemoveValueListener<bool>(OnVehicleIsFullChange);
-            currentVehicle.IsDead.RemoveValueListener<bool>(OnVehicleDestruction);
-            currentVehicle.SetBodyInside(null);
+            exitVehicle.IsFull.RemoveValueListener<bool>(OnVehicleIsFullChange);
+            exitVehicle.IsDead.RemoveValueListener<bool>(OnVehicleDestruction);
+            exitVehicle.SetBodyInside(null);
 
             foreach (BodyPart part in transferPartsToVehicle)
                 part.AttachedBody = body;
             
-            PilotedBody.Value = body;
+            currentVehicle.Value = body;
+            isPilotingVehicle.Value = false;
         }
     }
 
@@ -129,7 +118,7 @@ public class Pilot : MonoBehaviour
     {
         if(vehicleIsDestroyed)
         {
-            ExitCurrentVehicleImmediate();
+            StartCoroutine(ExitVehicleCoroutine(true));
             DamageStatus status = GetComponent<DamageStatus>();
             if (status != null) status.GetDamaged();
         }
@@ -142,16 +131,17 @@ public class Pilot : MonoBehaviour
 
     private void Die()
     {
-        Vehicle currentVehicle = GetCurrentVehicle();
+        Vehicle vehicle = currentVehicle.Value as Vehicle;
 
-        if (currentVehicle != null)
+        if (vehicle != null)
         {
             //current.Stop();
             if (body != null)
-                body.transform.SetParent(currentVehicle.transform.parent);
+                body.transform.SetParent(vehicle.transform.parent);
 
-            currentVehicle.SetBodyInside(null);
-            PilotedBody.Value = body;
+            vehicle.SetBodyInside(null);
+            currentVehicle.Value = body;
+            isPilotingVehicle.Value = false;
         }
     }
 }

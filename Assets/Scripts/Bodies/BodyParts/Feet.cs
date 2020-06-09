@@ -57,7 +57,7 @@ public class Feet : BodyPart
             else
                 IsOnGround.Value = true;
         }
-        else if (groundProbe == null || (int)groundProbe.GroundFlatness.Value == (int)FlatGroundProbe.Flatness.NoGround)
+        else if (groundProbe == null || groundProbe.GroundFlatness == (int)FlatGroundProbe.Flatness.NoGround)
         {
             AttachedRigidbody.constraints &= ~RigidbodyConstraints2D.FreezeRotation;
             IsOnGround.Value = false;
@@ -154,7 +154,7 @@ public class Feet : BodyPart
 
     private void AdjustRotationOnCorner()
     {
-        if ((int)groundProbe.GroundFlatness.Value ==(int)FlatGroundProbe.Flatness.Hole)
+        if (groundProbe.GroundFlatness == (int)FlatGroundProbe.Flatness.Hole)
         {
             float facing = groundProbe.transform.lossyScale.x > 0 ? 1f : -1f;
 

@@ -12,12 +12,19 @@ public class Vehicle : PhysicalBody
     public float exitForce;
     public float exitAnimationDelay;
 
+    public Trigger eject;
+
     public BoolChangeEvent IsFull;
     public Body BodyInside { get; private set; }
 
     private void Awake()
     {
         SetBodyInside(BodyInside);
+    }
+
+    private void Start()
+    {
+        eject.AddTriggerListener(Eject);
     }
 
     public void Eject()

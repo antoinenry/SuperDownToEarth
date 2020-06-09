@@ -4,8 +4,8 @@ public class HeroBrain : MonoBehaviour
 {
     [Header("Buttons")]
     public string directionAxisName = "Horizontal";
-    public string jumpButtonName = "Jump";
-    public string actionButtonName = "Fire1";
+    public string action1ButtonName = "Action1";
+    public string action2ButtonName = "Action2";
 
     //private TouchControls touchInput;
     private Pilot pilot;
@@ -18,12 +18,12 @@ public class HeroBrain : MonoBehaviour
 
     private void OnEnable()
     {
-        pilot.PilotedBody.AddValueListener<Object>(OnControlsChange);
+        pilot.currentVehicle.AddValueListener<Object>(OnControlsChange);
     }
 
     private void OnDisable()
     {
-        pilot.PilotedBody.RemoveValueListener<Object>(OnControlsChange);
+        pilot.currentVehicle.RemoveValueListener<Object>(OnControlsChange);
     }
 
     private void Update()
@@ -48,10 +48,10 @@ public class HeroBrain : MonoBehaviour
         else if (axis > 0) currentControls.axisInput.Value = 1;
         else currentControls.axisInput.Value = -1;
 
-        if (Input.GetButtonDown(jumpButtonName))
+        if (Input.GetButtonDown(action1ButtonName))
             currentControls.action1Input.Trigger();
 
-        if ((Input.GetButtonDown(actionButtonName)))
+        if ((Input.GetButtonDown(action2ButtonName)))
             currentControls.action2Input.Trigger();
     }
     
