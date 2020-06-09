@@ -48,7 +48,7 @@ namespace VCE
             if (target.MasterCount > 0)
             {
                 GUI.Box(lineRect, "");
-                EditorGUI.LabelField(lineRect, "Follows:");
+                EditorGUI.LabelField(lineRect, "Follows:", "From:");
             }
             else
                 EditorGUI.HelpBox(lineRect, "No masters", MessageType.Info);
@@ -65,7 +65,8 @@ namespace VCE
                 for (int i = 0; i < masterCount; i++)
                 {
                     lineRect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-                    EditorGUI.LabelField(lineRect, target.GetMaster(i).ToString());
+                    ValueChangeEventID master = target.GetMaster(i);
+                    EditorGUI.LabelField(lineRect, master.Name, master.Component.ToString());
 
                     button1Rect.y = lineRect.y;
                     if (GUI.Button(button1Rect, "-")) target.RemoveMasterAt(i);

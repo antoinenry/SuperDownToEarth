@@ -150,9 +150,9 @@ namespace VCE
         public override string ToString()
         {
             if (component != null)
-                return component.ToString() + "." + name;
+                return name + "[" + component.ToString() + "]";
             else
-                return "[NULL]." + name;
+                return "NULL ValueChangeEvent (" + name + ")";
         }
     }
 }

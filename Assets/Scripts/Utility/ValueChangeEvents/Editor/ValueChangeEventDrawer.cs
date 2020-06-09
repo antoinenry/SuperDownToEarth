@@ -47,7 +47,7 @@ public class ValueChangeEventDrawer : PropertyDrawer
         }
 
         if (highlightProperty == true) HighlightFade(position, property);
-                
+        
         Rect controlRect = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
         EditorGUI.BeginProperty(position, label, property);        
 
@@ -63,7 +63,10 @@ public class ValueChangeEventDrawer : PropertyDrawer
         Rect arrowRect = position;
         arrowRect.height = EditorGUIUtility.singleLineHeight;
         arrowRect.width = position.width - controlRect.width;
-        target.inspectorUnfold = EditorGUI.Foldout(arrowRect, target.inspectorUnfold, GUIContent.none, true);
+        if (target.MasterCount == 0)
+            target.inspectorUnfold = EditorGUI.Foldout(arrowRect, target.inspectorUnfold, GUIContent.none, true, GUIStyle.none);
+        else
+            target.inspectorUnfold = EditorGUI.Foldout(arrowRect, target.inspectorUnfold, GUIContent.none, true);
 
         if (target.inspectorUnfold)
         {
