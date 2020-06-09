@@ -50,7 +50,7 @@ public class Feet : BodyPart
             AttachedRigidbody.angularVelocity = GroundAngularVelocity;
             AttachedRigidbody.rotation = groundAngle;            
 
-            if ((bool)IsOnGround.Value == true)
+            if (IsOnGround == true)
             {
                 //if (groundProbe != null) AdjustRotationOnCorner();
             }

@@ -6,7 +6,7 @@ public class Pilot : MonoBehaviour
     public Body body;
     [HideInInspector] public BodyPart[] transferPartsToVehicle;
 
-    public ObjectChangeEvent PilotedBody;    
+    public UnityObjectChangeEvent PilotedBody;    
 
     private void Start()
     {
