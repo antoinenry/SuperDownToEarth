@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteAlways]
 [RequireComponent(typeof(Rigidbody2D))]
 public class CircuitBody : MonoBehaviour
 {
@@ -12,16 +13,13 @@ public class CircuitBody : MonoBehaviour
     public bool stepByStep;
     public bool mirror;
 
-    public BoolChangeEvent enableMovement;
-    public IntChangeEvent step;
+    public BoolChangeEvent isMoving;
+    public IntChangeEvent currentStep;
 
     private Rigidbody2D rb;
     private int nextStep;
     private Vector2 nextPoint;
-    private bool isMoving;
-
-    [SerializeField] private bool _enableMovement = true;
-    [SerializeField] private int _step;
+    private Coroutine moveCoroutine;
 
     public void OnDrawGizmosSelected()
     {
@@ -38,54 +36,56 @@ public class CircuitBody : MonoBehaviour
     {
         if(Application.isPlaying == false && circuit != null)
         {
-            int currentStep = (int)step.Value;
-
-            if (currentStep < 0) currentStep = circuit.Length - 1;
-            else if (currentStep >= circuit.Length) currentStep = 0;
-
-            step.Value = currentStep;
+            if (currentStep < 0) currentStep.Value = circuit.Length - 1;
+            else if (currentStep >= circuit.Length) currentStep.Value = 0;
+            
             transform.position = circuit.GetPoint(currentStep);
         }
     }
     
     private void OnEnable()
     {
-        enableMovement.AddValueListener<bool>(OnEnableMovement);
-        step.AddValueListener<int>(OnStepChange);
+        isMoving.AddValueListener<bool>(OnMovement);
+        currentStep.AddValueListener<int>(OnStepChange, isMoving);
     }
 
     private void OnDisable()
     {
-        enableMovement.RemoveValueListener<bool>(OnEnableMovement);
-        step.RemoveValueListener<int>(OnStepChange);
+        isMoving.RemoveValueListener<bool>(OnMovement);
+        currentStep.RemoveValueListener<int>(OnStepChange);
     }
 
-    private void OnEnableMovement(bool enable)
+    private void OnMovement(bool startMoving)
     {
-        if (enable == true && isMoving == false)
-            StartCoroutine(MoveCoroutine());
+        if (startMoving == true)
+        {
+            if (moveCoroutine == null)
+                moveCoroutine = StartCoroutine(MoveCoroutine());
+        }        
+        else if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
     }
 
     private void OnStepChange(int step)
     {
-        if ((bool)enableMovement.Value == true && isMoving == false)
-            StartCoroutine(MoveCoroutine());
+        isMoving.Value = true;
     }
 
     private IEnumerator MoveCoroutine()
     {
-        while((bool)enableMovement.Value)
+        while((bool)isMoving.Value)
         {
-            isMoving = true;
-
             FixedUpdateMove(out int updateSteps);
             yield return new WaitForFixedUpdate();
 
-            if (stepByStep == true && updateSteps > 0) enableMovement.Value = false;
+            if (stepByStep == true && updateSteps > 0) isMoving.Value = false;
         }
 
         rb.velocity = Vector2.zero;
-        isMoving = false;
+        moveCoroutine = null;
     }
 
     private void FixedUpdateMove(out int numSteps)
@@ -126,14 +126,14 @@ public class CircuitBody : MonoBehaviour
 
     private void MoveOneStep()
     {
-        step.Value = nextStep;
+        currentStep.Value = nextStep;
         SetNextStep();
     }
 
     private void SetNextStep()
     {
         int stepDirection = invertDirection ? -1 : 1;
-        int currentStep = (int)step.Value;
+        int currentStep = (int)this.currentStep.Value;
 
         if (speed >= 0)
             nextStep = currentStep + stepDirection;

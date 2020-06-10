@@ -86,7 +86,8 @@ namespace VCE
                     button1Rect.y = lineRect.y;
                     if (GUI.Button(button1Rect, "Ok"))
                     {
-                        target.AddMaster(masterExplorer.SelectedVceID);
+                        int error = target.AddMaster(masterExplorer.SelectedVceID);
+                        if (error != 0) Debug.Log(error);
                         masterExplorer = null;
                     }
                 }

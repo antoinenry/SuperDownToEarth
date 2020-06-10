@@ -209,7 +209,7 @@ namespace VCE
             ValueChangeEvent masterVCE = newMasterID.ValueChangeEvent;
             if (masterVCE != null)
             {
-                if (masterVCE.ValueType != null & masterVCE.ValueType != ValueType)
+                if (ValueType != null && masterVCE.ValueType != ValueType)
                     return 3;
 
                 int masterCount = MasterCount;

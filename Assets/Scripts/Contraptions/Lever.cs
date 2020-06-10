@@ -53,9 +53,10 @@ public class Lever : MonoBehaviour
 
     private IEnumerator RotateLeverCoroutine(int direction)
     {
-        LeverPosition.Value = (int)LeverPosition.Value + direction;
+        int newLeverPosition = LeverPosition + direction;
+        LeverPosition.Value = newLeverPosition;
 
-        float wantedRotation = ((float)LeverPosition.Value / (numPositions - 1) - .5f) * angleRange + transform.parent.rotation.eulerAngles.z;
+        float wantedRotation = ((float)newLeverPosition / (numPositions - 1) - .5f) * angleRange + transform.parent.rotation.eulerAngles.z;
 
         if (direction > 0)
         {
