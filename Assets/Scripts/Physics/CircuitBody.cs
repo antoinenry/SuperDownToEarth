@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 [ExecuteAlways]
@@ -8,18 +6,20 @@ using UnityEngine;
 public class CircuitBody : MonoBehaviour
 {
     public Circuit circuit;
-    public float speed;
+    [Min(0f)] public float speed;
+    [Min(0f)] public float stepRadius;
     public bool invertDirection;
-    public bool stepByStep;
-    public bool mirror;
-
-    public BoolChangeEvent isMoving;
-    public IntChangeEvent currentStep;
+    
+    public IntChangeEvent moveToStep;
+    public BoolChangeEvent autoMoving;
+    public Trigger move;
 
     private Rigidbody2D rb;
-    private int nextStep;
-    private Vector2 nextPoint;
     private Coroutine moveCoroutine;
+
+    public int LastReachedStep { get; private set; }
+    public int CurrentDirection { get => invertDirection ? -1 : 1; }
+    public bool IsMoving { get => moveCoroutine != null; }
 
     public void OnDrawGizmosSelected()
     {
@@ -29,138 +29,136 @@ public class CircuitBody : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        SetNextStep();
-    }
-
-    private void Update()
-    {
-        if(Application.isPlaying == false && circuit != null)
-        {
-            if (currentStep < 0) currentStep.Value = circuit.Length - 1;
-            else if (currentStep >= circuit.Length) currentStep.Value = 0;
-            
-            transform.position = circuit.GetPoint(currentStep);
-        }
     }
     
     private void OnEnable()
     {
-        isMoving.AddValueListener<bool>(OnMovement);
-        currentStep.AddValueListener<int>(OnStepChange, isMoving);
+        if (moveToStep == null) moveToStep = new IntChangeEvent();
+        if (autoMoving == null) autoMoving = new BoolChangeEvent();
+        if (move == null) move = new Trigger();
+
+        moveToStep.AddValueListener<int>(OnMoveStepChange);
+        autoMoving.AddValueListener<bool>(OnAutoMove);
+        move.AddTriggerListener(MoveOneStep);
     }
 
     private void OnDisable()
     {
-        isMoving.RemoveValueListener<bool>(OnMovement);
-        currentStep.RemoveValueListener<int>(OnStepChange);
+        moveToStep.RemoveValueListener<int>(OnMoveStepChange);
+        autoMoving.RemoveValueListener<bool>(OnAutoMove);
+        move.RemoveTriggerListener(MoveOneStep);
     }
 
-    private void OnMovement(bool startMoving)
+    private void OnMoveStepChange(int step)
     {
-        if (startMoving == true)
+        Debug.Log("OnStepChange");
+
+        if (Application.isPlaying)
         {
-            if (moveCoroutine == null)
-                moveCoroutine = StartCoroutine(MoveCoroutine());
-        }        
-        else if (moveCoroutine != null)
-        {
-            StopCoroutine(moveCoroutine);
-            moveCoroutine = null;
-        }
-    }
-
-    private void OnStepChange(int step)
-    {
-        isMoving.Value = true;
-    }
-
-    private IEnumerator MoveCoroutine()
-    {
-        while((bool)isMoving.Value)
-        {
-            FixedUpdateMove(out int updateSteps);
-            yield return new WaitForFixedUpdate();
-
-            if (stepByStep == true && updateSteps > 0) isMoving.Value = false;
-        }
-
-        rb.velocity = Vector2.zero;
-        moveCoroutine = null;
-    }
-
-    private void FixedUpdateMove(out int numSteps)
-    {
-        numSteps = 0;
-
-        Vector2 currentPosition = rb.position;
-        float absSpeed = Mathf.Abs(speed);
-        float distanceToGo = absSpeed * Time.fixedDeltaTime;
-        float distanceToNextPoint = Vector2.Distance(currentPosition, nextPoint);
-
-        if (stepByStep)
-        {
-            if (distanceToGo > distanceToNextPoint)
-            {
-                rb.MovePosition(nextPoint);
-                rb.velocity = Vector2.zero;
-                MoveOneStep();
-                numSteps = 1;
-                return;
-            }
+            if (IsMoving == true) StopCoroutine(moveCoroutine);
+            moveCoroutine = StartCoroutine(MoveCoroutine(step));
         }
         else
-        {
-            while (distanceToGo > distanceToNextPoint)
-            {
-                distanceToGo -= distanceToNextPoint;
-                currentPosition = nextPoint;
-                MoveOneStep();
-                distanceToNextPoint = Vector2.Distance(currentPosition, nextPoint);
-                numSteps++;
-            }
-        }        
+            MoveTo(step);
+    }
 
-        rb.velocity = absSpeed * (nextPoint - rb.position).normalized;
-        return;
+    private void OnAutoMove(bool auto)
+    {
+        if (Application.isPlaying == true && auto && IsMoving == false)
+            MoveOneStep();
     }
 
     private void MoveOneStep()
     {
-        currentStep.Value = nextStep;
-        SetNextStep();
+        MoveTo(LastReachedStep + CurrentDirection);
     }
 
-    private void SetNextStep()
+    private IEnumerator MoveCoroutine(int destinationStep)
     {
-        int stepDirection = invertDirection ? -1 : 1;
-        int currentStep = (int)this.currentStep.Value;
+        while (destinationStep != LastReachedStep)
+        {
+            MoveTo(rb.position, destinationStep, Time.fixedDeltaTime);
+            yield return new WaitForFixedUpdate();
+        }
 
-        if (speed >= 0)
-            nextStep = currentStep + stepDirection;
+        moveCoroutine = null;
+
+        if (autoMoving == true)
+        {
+            int nextStep = LastReachedStep + CurrentDirection;
+            if (circuit.cycleType != Circuit.CycleType.Single || (nextStep == circuit.GetCorrectStepIndex(nextStep)))
+                MoveTo(nextStep);
+            else
+                autoMoving.SetValueWithoutTriggeringEvent(false);
+        }
+    }
+
+    private bool MoveTo(Vector2 fromPosition, int destinationStep, float deltaTime)
+    {
+        if (deltaTime <= 0f || speed <= 0f) return false;
+        
+        int correctDestinationStep = circuit.GetCorrectStepIndex(destinationStep);
+        Vector2 destinationPoint = circuit.GetStepPosition(correctDestinationStep);
+        if (Vector2.Distance(fromPosition, destinationPoint) <= stepRadius)
+        {
+            LastReachedStep = correctDestinationStep;
+            moveToStep.SetValueWithoutTriggeringEvent(correctDestinationStep);
+            return false;
+        }
+
+        if (circuit.cycleType == Circuit.CycleType.PingPong && destinationStep != LastReachedStep)
+        {
+            invertDirection = correctDestinationStep < LastReachedStep;
+        }
+        
+        float maxDistance = speed * deltaTime;
+        int requestedNextStep = LastReachedStep + CurrentDirection;
+        int correctNextStep = circuit.GetCorrectStepIndex(requestedNextStep);
+        Vector2 nextStepPosition = circuit.GetStepPosition(correctNextStep);
+        float distanceToNextStep = Vector2.Distance(fromPosition, nextStepPosition);   
+        
+        if (correctDestinationStep == correctNextStep)
+        {
+            if (distanceToNextStep < maxDistance)
+            {
+                rb.MovePosition(destinationPoint);
+                rb.velocity = Vector2.zero;
+                LastReachedStep = correctDestinationStep;
+                moveToStep.SetValueWithoutTriggeringEvent(correctDestinationStep);
+                return true;
+            }
+        }
         else
-            nextStep = currentStep - stepDirection;
-
-        if (nextStep < 0)
         {
-            if (mirror == false)
-                nextStep += circuit.Length;
-            else
+            if (distanceToNextStep < maxDistance)
             {
-                nextStep = 1;
-                invertDirection = !invertDirection;
+                maxDistance -= distanceToNextStep;
+                LastReachedStep = correctNextStep;
+                return MoveTo(nextStepPosition, destinationStep, deltaTime);
             }
-        }
-        else if (nextStep >= circuit.Length)
-        {
-            if (mirror == false)
-                nextStep -= circuit.Length;
-            else
-            {
-                nextStep = circuit.Length - 2;
-                invertDirection = !invertDirection;
-            }
-        }
+        }        
 
-        nextPoint = circuit.GetPoint(nextStep);
+        rb.velocity = speed * (nextStepPosition - rb.position).normalized;
+        return true;
+    }    
+
+    public void MoveTo(int destinationStep)
+    {
+        if (circuit == null) return;
+
+        int correctDestinationStep = circuit.GetCorrectStepIndex(destinationStep);
+        if (circuit.cycleType == Circuit.CycleType.PingPong && correctDestinationStep != destinationStep)
+            invertDirection = !invertDirection;
+
+        if (Application.isPlaying == true)
+        {
+            moveToStep.Value = correctDestinationStep;
+        }
+        else
+        {            
+            LastReachedStep = correctDestinationStep;
+            transform.position = circuit.GetStepPosition(correctDestinationStep);
+            moveToStep.SetValueWithoutTriggeringEvent(correctDestinationStep);
+        }
     }
 }
