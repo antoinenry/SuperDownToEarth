@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-namespace VCE
+namespace Scarblab.VCE
 {
     [Serializable]
     public class ValueChangeEvent
@@ -58,7 +58,7 @@ namespace VCE
 
         private void CreateSetValueAction<T>()
         {
-            setValue = new UnityAction<T>(SetValue);
+            setValue = new UnityAction<T>(value => Value = value);
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -76,30 +76,29 @@ namespace VCE
         public object Value
         {
             get => (valueField == null) ? null : valueField.GetValue(this);
+            set => SetValue(value, true);
+        }
 
-            set
+        private void SetValue(object value, bool andTriggerEvent)
+        {
+            if (ValueType == null)
             {
-                if (ValueType == null)
-                {
-                    Debug.LogWarning("Trying to set a trigger's value.");
-                    return;
-                }
+                Debug.LogWarning("Trying to set a trigger's value.");
+                return;
+            }
 
-                object currentValue = Value;
-                if ((currentValue == null && value != null) || !currentValue.Equals(value))
-                {
-                    valueField.SetValue(this, value);
-                    Trigger();
-                }
+            object currentValue = Value;
+            if ((currentValue == null && value != null) || !currentValue.Equals(value))
+            {
+                valueField.SetValue(this, value);
+                if (andTriggerEvent) Trigger();
             }
         }
 
-        private void SetValue<T>(T value)
+        public void SetValueWithoutTriggeringEvent(object value)
         {
-            Value = value;
+            SetValue(value, false);
         }
-
-
 
         public void AddTriggerListener(UnityAction listener, bool invokeWhenAdded = true)
         {

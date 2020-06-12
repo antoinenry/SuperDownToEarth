@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-namespace VCE
+namespace Scarblab.VCE
 {
     [Serializable]
     public struct ValueChangeEventID : IEquatable<ValueChangeEventID>

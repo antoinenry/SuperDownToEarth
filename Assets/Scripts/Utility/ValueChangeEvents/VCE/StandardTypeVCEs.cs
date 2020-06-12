@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using VCE;
+using Scarblab.VCE;
 
 [Serializable] public class Trigger : ValueChangeEvent { }
 

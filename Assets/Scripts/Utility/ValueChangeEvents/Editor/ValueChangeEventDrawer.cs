@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-using VCE;
+using Scarblab.VCE;
 
 [CustomPropertyDrawer(typeof(ValueChangeEvent), true)]
 public class ValueChangeEventDrawer : PropertyDrawer

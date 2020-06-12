@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace VCE
+namespace Scarblab.VCE
 {
     public class ValueChangeEventExplorer
     {

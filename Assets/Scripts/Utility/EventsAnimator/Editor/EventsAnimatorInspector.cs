@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-using VCE;
+using Scarblab.VCE;
 
 [CustomEditor(typeof(EventsAnimator))]
 public class EventsAnimatorInspector : Editor

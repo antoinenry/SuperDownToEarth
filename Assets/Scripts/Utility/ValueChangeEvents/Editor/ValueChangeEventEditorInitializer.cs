@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine.SceneManagement;
 
-namespace VCE
+namespace Scarblab.VCE
 {
     [InitializeOnLoad]
     public class ValueChangeEventEditorInitializer

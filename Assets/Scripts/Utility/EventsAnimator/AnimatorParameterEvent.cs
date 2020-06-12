@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using VCE;
+using Scarblab.VCE;
 
 public abstract class AnimatorParameterEvent
 {
