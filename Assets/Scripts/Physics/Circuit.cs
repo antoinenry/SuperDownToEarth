@@ -3,12 +3,13 @@
 public class Circuit : MonoBehaviour
 {
     public enum CycleType { Single, Loop, PingPong }
-
-    public Vector2[] steps = new Vector2[0];
+        
     [Range(0, 5)] public int numCornerVertices;
     [Min(0f)] public float cornerRadius;
     public CycleType cycleType;
-    
+
+    [SerializeField]
+    private Vector2[] controlPoints = new Vector2[0];
     [HideInInspector] [SerializeField]
     private Vector2[] trajectory = new Vector2[0];
 
@@ -21,11 +22,11 @@ public class Circuit : MonoBehaviour
     {
         Vector2 circuitPosition = transform.position;
 
-        int length = steps.Length;
+        int length = controlPoints.Length;
         if (length < 2) return;
         Gizmos.color = Color.gray;
         for (int i = 0; i < length; i++)
-            Gizmos.DrawLine(circuitPosition, circuitPosition + steps[i]);
+            Gizmos.DrawLine(circuitPosition, circuitPosition + controlPoints[i]);
 
         length = trajectory.Length;
         if (length < 2) return;
@@ -35,23 +36,18 @@ public class Circuit : MonoBehaviour
         if (cycleType == CycleType.Loop) Gizmos.DrawLine(circuitPosition + trajectory[length - 1], circuitPosition + trajectory[0]);
     }
 
-    public Vector2 GetStepPosition(int index)
+    public Vector2 GetPosition(int index)
     {
-        if (steps == null || index < 0 || index >= steps.Length) return transform.position;
-        else return (Vector2)transform.position + steps[index];
+        if (trajectory == null || index < 0 || index >= trajectory.Length) return transform.position;
+        else return (Vector2)transform.position + trajectory[index];
     }
 
-    public int GetCorrectStepIndex(int index)
-    {
-        return GetCorrectIndex(index, ref steps);
-    }
-    
-    private int GetCorrectIndex(int index, ref Vector2[] points)
+    public int GetCorrectPositionIndex(int index)
     {
         int correctIndex = -1;
-        if (points != null && points.Length != 0)
+        if (trajectory != null && trajectory.Length != 0)
         {
-            if (points.Length == 1)
+            if (trajectory.Length == 1)
             {
                 correctIndex = 0;
             }
@@ -60,23 +56,23 @@ public class Circuit : MonoBehaviour
                 switch (cycleType)
                 {
                     case CycleType.Single:
-                        correctIndex = Mathf.Clamp(index, 0, points.Length - 1);
+                        correctIndex = Mathf.Clamp(index, 0, trajectory.Length - 1);
                         break;
                     case CycleType.Loop:
-                        correctIndex = (int)Mathf.Repeat(index, points.Length);
+                        correctIndex = (int)Mathf.Repeat(index, trajectory.Length);
                         break;
                     case CycleType.PingPong:
-                        correctIndex = (int)Mathf.PingPong(index, points.Length - 1);
+                        correctIndex = (int)Mathf.PingPong(index, trajectory.Length - 1);
                         break;
                 }
             }
         }
 
         return correctIndex;
-    }    
+    }
 
     public void UpdateTrajectory()
     {
-        trajectory = ChaikinSmoothLine.Smoothen(steps, cycleType == CycleType.Loop, cornerRadius, numCornerVertices);
+        trajectory = ChaikinSmoothLine.Smoothen(controlPoints, cycleType == CycleType.Loop, cornerRadius, numCornerVertices);
     }
 }

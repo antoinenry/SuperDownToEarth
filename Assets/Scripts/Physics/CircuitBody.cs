@@ -51,8 +51,6 @@ public class CircuitBody : MonoBehaviour
 
     private void OnMoveStepChange(int step)
     {
-        Debug.Log("OnStepChange");
-
         if (Application.isPlaying)
         {
             if (IsMoving == true) StopCoroutine(moveCoroutine);
@@ -86,7 +84,7 @@ public class CircuitBody : MonoBehaviour
         if (autoMoving == true)
         {
             int nextStep = LastReachedStep + CurrentDirection;
-            if (circuit.cycleType != Circuit.CycleType.Single || (nextStep == circuit.GetCorrectStepIndex(nextStep)))
+            if (circuit.cycleType != Circuit.CycleType.Single || (nextStep == circuit.GetCorrectPositionIndex(nextStep)))
                 MoveTo(nextStep);
             else
                 autoMoving.SetValueWithoutTriggeringEvent(false);
@@ -97,8 +95,8 @@ public class CircuitBody : MonoBehaviour
     {
         if (deltaTime <= 0f || speed <= 0f) return false;
         
-        int correctDestinationStep = circuit.GetCorrectStepIndex(destinationStep);
-        Vector2 destinationPoint = circuit.GetStepPosition(correctDestinationStep);
+        int correctDestinationStep = circuit.GetCorrectPositionIndex(destinationStep);
+        Vector2 destinationPoint = circuit.GetPosition(correctDestinationStep);
         if (Vector2.Distance(fromPosition, destinationPoint) <= stepRadius)
         {
             LastReachedStep = correctDestinationStep;
@@ -113,8 +111,8 @@ public class CircuitBody : MonoBehaviour
         
         float maxDistance = speed * deltaTime;
         int requestedNextStep = LastReachedStep + CurrentDirection;
-        int correctNextStep = circuit.GetCorrectStepIndex(requestedNextStep);
-        Vector2 nextStepPosition = circuit.GetStepPosition(correctNextStep);
+        int correctNextStep = circuit.GetCorrectPositionIndex(requestedNextStep);
+        Vector2 nextStepPosition = circuit.GetPosition(correctNextStep);
         float distanceToNextStep = Vector2.Distance(fromPosition, nextStepPosition);   
         
         if (correctDestinationStep == correctNextStep)
@@ -146,7 +144,7 @@ public class CircuitBody : MonoBehaviour
     {
         if (circuit == null) return;
 
-        int correctDestinationStep = circuit.GetCorrectStepIndex(destinationStep);
+        int correctDestinationStep = circuit.GetCorrectPositionIndex(destinationStep);
         if (circuit.cycleType == Circuit.CycleType.PingPong && correctDestinationStep != destinationStep)
             invertDirection = !invertDirection;
 
@@ -157,7 +155,7 @@ public class CircuitBody : MonoBehaviour
         else
         {            
             LastReachedStep = correctDestinationStep;
-            transform.position = circuit.GetStepPosition(correctDestinationStep);
+            transform.position = circuit.GetPosition(correctDestinationStep);
             moveToStep.SetValueWithoutTriggeringEvent(correctDestinationStep);
         }
     }
