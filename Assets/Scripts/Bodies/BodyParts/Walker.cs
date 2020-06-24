@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 public class Walker : BodyPart
-{
-    public float walkSpeed;   
-    
+{     
     public Feet Feet { get; private set; }
 
     private Coroutine walkCoroutine;
     private Vector2 currentWalkVelocity;
-    private GearBox gearBox;
     private bool switchingGears;
 
+    public FloatChangeEvent walkSpeed;
     public IntChangeEvent currentWalkDirection;
 
     private void Awake()
     {
         AttachedBody = GetComponent<Body>();
         Feet = GetComponent<Feet>();
-        gearBox = GetComponent<GearBox>();
     }
 
     private void FixedUpdate()
@@ -32,18 +27,12 @@ public class Walker : BodyPart
     private void OnEnable()
     {
         currentWalkDirection.AddValueListener<int>(OnWalkDirectionChange);
-        if (gearBox != null)
-        {
-            gearBox.CurrentGear.AddValueListener<int>(OnSwitchGear);
-            OnSwitchGear((int)gearBox.CurrentGear.Value);
-        }
     }
 
     private void OnDisable()
     {
         StopAllCoroutines();
         currentWalkDirection.RemoveValueListener<int>(OnWalkDirectionChange);
-        if (gearBox != null) gearBox.CurrentGear.RemoveValueListener<int>(OnSwitchGear);
     }
 
     public void Walk(int direction)
@@ -53,6 +42,8 @@ public class Walker : BodyPart
 
     private void OnWalkDirectionChange(int newWalkDirection)
     {
+        currentWalkDirection.SetValueWithoutTriggeringEvent(Mathf.Clamp(newWalkDirection, -1, 1));
+
         if (walkCoroutine != null)
             StopCoroutine(walkCoroutine);
 
@@ -86,10 +77,5 @@ public class Walker : BodyPart
             yield return new WaitForFixedUpdate();
         }
         while (currentWalkDirection != 0);
-    }
-
-    private void OnSwitchGear(int gear)
-    {
-        walkSpeed = gearBox.GetCurrentSpeed();
-    }    
+    } 
 }

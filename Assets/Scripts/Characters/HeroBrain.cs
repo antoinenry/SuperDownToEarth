@@ -35,7 +35,7 @@ public class HeroBrain : MonoBehaviour
     private void OnControlsChange(Object piloted)
     {
         if (piloted != null && piloted is Body)
-            currentControls = (piloted as Body).GetComponent<PlayerControls>();
+            currentControls = (piloted as Body).GetComponentInChildren<PlayerControls>();
         else
             currentControls = null;
     }

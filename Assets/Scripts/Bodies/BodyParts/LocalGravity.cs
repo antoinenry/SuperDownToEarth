@@ -3,8 +3,6 @@
 public class LocalGravity : BodyPart
 {
     public float gravityForce;
-    public float angleOffset;
-
     public BoolChangeEvent isFalling;
 
     public float FallSpeed { get; private set; }
@@ -16,7 +14,7 @@ public class LocalGravity : BodyPart
 
     private void FixedUpdate ()
     {
-        Vector2 localDown = Quaternion.Euler(0f, 0f, angleOffset) * transform.rotation * Vector2.down;
+        Vector2 localDown = transform.rotation * Vector2.down;
 
         AttachedRigidbody.AddForce(localDown * gravityForce);
 

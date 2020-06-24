@@ -20,6 +20,7 @@ public class FlatGroundProbe : BodyPart
     public bool BackUpCollision { get => backUp != null && (bool)backUp.IsTriggered.Value; }
 
     public IntChangeEvent GroundFlatness;
+    public BoolChangeEvent groundIsFlat;
 
     private void Start()
     {
@@ -53,5 +54,7 @@ public class FlatGroundProbe : BodyPart
             GroundFlatness.Value = ((int)Flatness.FrontDrop);
 
         else GroundFlatness.Value = ((int)Flatness.Other);
+
+        groundIsFlat.Value = (GroundFlatness == (int)Flatness.Flat);
     }
 }

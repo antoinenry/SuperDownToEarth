@@ -1,60 +1,78 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class GearBox : BodyPart
+[ExecuteAlways]
+public class GearBox : MonoBehaviour
 {
-    public float[] speed;
-    [Min(0f)] public float switchDelay;
+    public enum GearCycle { Clamp, Loop, Mirror }
 
-    public IntChangeEvent CurrentGear;
-    public Trigger OnGearUp;
-    public Trigger OnGearDown;
+    [Header("Settings")]
+    public float[] speeds;
+    public GearCycle cycleType;
+    public bool downMeansStop = true;
 
-    private float timeSinceLastSwitch;
+    [Header("Controls")]
+    public BoolChangeEvent canSwitchGear;
+    public IntChangeEvent currentGear;
+    public FloatChangeEvent currentSpeed;
+    public IntChangeEvent gearSwitch;
 
-    public float GetCurrentSpeed()
-    {  
-        int speedIndex = ClampedGear((int)CurrentGear.Value);
-        return speed[speedIndex];
+    private void Awake()
+    {
+        if (currentGear == null) currentGear = new IntChangeEvent();
+        if (currentSpeed == null) currentSpeed = new FloatChangeEvent();
+        if (gearSwitch == null) gearSwitch = new IntChangeEvent();
     }
 
-    public void GearUp()
+    private void OnEnable()
     {
-        timeSinceLastSwitch += Time.fixedTime;
-        if(timeSinceLastSwitch >= switchDelay)
+        currentGear.AddValueListener<int>(OnGearSet);
+        gearSwitch.AddValueListener<int>(OnGearSwitch);
+    }
+
+    private void OnDisable()
+    {
+        currentGear.RemoveValueListener<int>(OnGearSet);
+        gearSwitch.RemoveValueListener<int>(OnGearSwitch);
+    }
+
+    public int GearCount { get => speeds == null ? 0 : speeds.Length; }
+    
+    public int CorrectGear(int gear)
+    {
+        int numGears = GearCount;
+        if (numGears != 0)
         {
-            CurrentGear.Value = (int)CurrentGear.Value + 1;
-            /*
-            if (CurrentGear.Invoked)
+            switch (cycleType)
             {
-                OnGearUp.Invoke();
-                timeSinceLastSwitch = 0f;
-            }*/
+                case GearCycle.Clamp:
+                    return Mathf.Clamp(gear, 0, numGears - 1);
+                case GearCycle.Loop:
+                    return (int)Mathf.Repeat(gear, numGears);
+                case GearCycle.Mirror:
+                    return Mathf.Clamp(gear, 1 - numGears, numGears - 1);
+            }
         }
+
+        return 0;
     }
 
-    public void GearDown()
+    private void OnGearSet(int gear)
     {
-        timeSinceLastSwitch += Time.fixedTime;
-        if (timeSinceLastSwitch >= switchDelay)
+        int correctGear = CorrectGear(gear);
+        currentGear.SetValueWithoutTriggeringEvent(correctGear);
+
+        if (GearCount != 0)
+            currentSpeed.Value = speeds[Mathf.Abs(correctGear)];
+    }
+
+    private void OnGearSwitch(int direction)
+    {
+        if (canSwitchGear)
         {
-            CurrentGear.Value = (int)CurrentGear.Value - 1;
-            /*
-            if (CurrentGear.Invoked)
-            {
-                OnGearUp.Invoke();
-                timeSinceLastSwitch = 0f;
-            }*/
+            if (downMeansStop && direction * currentGear < 0)
+                currentGear.Value = 0;
+            else
+                currentGear.Value = CorrectGear(currentGear + direction);
         }
-    }
-
-    public int ClampedGear(int value, bool allowNegative = false)
-    {
-        if (allowNegative == false)
-            return Mathf.Clamp(value, 0, speed.Length - 1);
-        else
-            return Mathf.Clamp(value, 1 - speed.Length, speed.Length - 1);
     }
 }

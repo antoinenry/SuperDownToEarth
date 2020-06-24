@@ -44,7 +44,6 @@ public class EventsAnimatorInspector : Editor
 
         if (resetVCEs)
         {
-            Debug.Log("resetvces");
             eventsAnimator.Init();
         }
         else

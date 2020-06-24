@@ -38,8 +38,8 @@ public class CircuitBody : MonoBehaviour
         if (move == null) move = new Trigger();
 
         moveToStep.AddValueListener<int>(OnMoveStepChange);
-        autoMoving.AddValueListener<bool>(OnAutoMove);
-        move.AddTriggerListener(MoveOneStep);
+        autoMoving.AddValueListener<bool>(OnAutoMove, false);
+        move.AddTriggerListener(MoveOneStep, false);
     }
 
     private void OnDisable()
