@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PhysicalBody : Body
 {
@@ -98,15 +96,15 @@ public class PhysicalBody : Body
         SetAllFlags(false);
     }
 
-    public override void Kill()
+    protected override void OnDestroyBody()
     {
-        base.Kill();
+        base.OnDestroyBody();
         SetAllFlags(false);
     }
 
-    public override void Respawn()
+    protected override void OnRespawnBody()
     {
-        base.Respawn();
+        base.OnRespawnBody();
         SetAllFlags(true);
     }
 

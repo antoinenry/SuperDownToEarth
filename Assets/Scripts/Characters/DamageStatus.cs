@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
-using UnityEngine.Events;
 
-public class DamageStatus : BodyPart
+public class DamageStatus : MonoBehaviour
 {
     public string[] damagingTags;
-    public UnityEvent OnDeath;
+
+    public Trigger death;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -20,6 +20,6 @@ public class DamageStatus : BodyPart
 
     public void GetDamaged()
     {
-        OnDeath.Invoke();
+        death.Trigger();
     }
 }

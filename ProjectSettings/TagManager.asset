@@ -8,8 +8,9 @@ TagManager:
   - Unwalkable
   - Entrance
   - Exit
-  - CheckPoint
   - Damaging
+  - Checkpoint
+  - Atmosphere
   layers:
   - Default
   - TransparentFX

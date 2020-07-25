@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Body : MonoBehaviour
 {
     [Header("Body")]
-    public BoolChangeEvent IsDead;
+    public Trigger destroyBody;
+    public Trigger respawnBody;
 
     public BodyPart[] parts { get; private set; }
 
@@ -26,21 +25,33 @@ public class Body : MonoBehaviour
         parts = GetComponentsInChildren<BodyPart>(true);
     }
 
-    public virtual void Kill()
+    private void Start()
     {
-        IsDead.Value = true;
+        destroyBody.AddTriggerListener(OnDestroyBody);
+        respawnBody.AddTriggerListener(OnRespawnBody);
+    }
+
+    private void OnDestroy()
+    {
+        destroyBody.RemoveTriggerListener(OnDestroyBody);
+        respawnBody.RemoveTriggerListener(OnRespawnBody);
+    }
+
+    protected virtual void OnDestroyBody()
+    {
         foreach (BodyPart part in parts)
             part.enabled = false;
     }
 
-    public virtual void Respawn()
+    protected virtual void OnRespawnBody()
     {
-        IsDead.Value = false;
         foreach (BodyPart part in parts)
             part.enabled = true;
     }
     
     /*
+     * Tout ça devrait être géré ailleurs
+     * 
     public override void OnCheckPointSave(Transform checkPoint)
     {
         //Debug.Log("CheckPoint save " + name);

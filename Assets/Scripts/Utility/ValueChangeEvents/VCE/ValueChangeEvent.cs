@@ -100,7 +100,7 @@ namespace Scarblab.VCE
             SetValue(value, false);
         }
 
-        public void AddTriggerListener(UnityAction listener, bool invokeWhenAdded = true)
+        public void AddTriggerListener(UnityAction listener, bool invokeWhenAdded = false)
         {
             if (listener == null) return;
             changeEvent.AddListener(listener);

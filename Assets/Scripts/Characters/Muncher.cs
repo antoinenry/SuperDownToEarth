@@ -106,7 +106,7 @@ public class Muncher : MonoBehaviour
         foreach (Body body in prey.GetComponentsInChildren<Body>(true))
         {
             if (eatableTags.Contains(body.tag))
-                body.Kill();
+                body.destroyBody.Trigger();
         }
     }
 

@@ -13,7 +13,7 @@ public class Pilot : MonoBehaviour
     {
         if (body != null)
         {
-            body.IsDead.AddValueListener<bool>(OnDeath);
+            body.destroyBody.AddTriggerListener(OnDeath);
             currentVehicle.Value = body;
             isPilotingVehicle.Value = false;
         }
@@ -56,7 +56,7 @@ public class Pilot : MonoBehaviour
 
         vehicle.SetBodyInside(body);
         vehicle.IsFull.AddValueListener<bool>(OnVehicleIsFullChange);
-        vehicle.IsDead.AddValueListener<bool>(OnVehicleDestruction);
+        vehicle.destroyBody.AddTriggerListener(OnVehicleDestruction);
 
         foreach (BodyPart part in transferPartsToVehicle)
             part.AttachedBody = vehicle;
@@ -98,7 +98,7 @@ public class Pilot : MonoBehaviour
             }
 
             exitVehicle.IsFull.RemoveValueListener<bool>(OnVehicleIsFullChange);
-            exitVehicle.IsDead.RemoveValueListener<bool>(OnVehicleDestruction);
+            exitVehicle.destroyBody.RemoveTriggerListener(OnVehicleDestruction);
             exitVehicle.SetBodyInside(null);
 
             foreach (BodyPart part in transferPartsToVehicle)
@@ -114,19 +114,16 @@ public class Pilot : MonoBehaviour
         if (vehicleIsFull == false) ExitCurrentVehicle();
     }
 
-    private void OnVehicleDestruction(bool vehicleIsDestroyed)
+    private void OnVehicleDestruction()
     {
-        if(vehicleIsDestroyed)
-        {
-            StartCoroutine(ExitVehicleCoroutine(true));
-            DamageStatus status = GetComponent<DamageStatus>();
-            if (status != null) status.GetDamaged();
-        }
+        StartCoroutine(ExitVehicleCoroutine(true));
+        DamageStatus status = GetComponent<DamageStatus>();
+        if (status != null) status.GetDamaged();
     }
 
-    private void OnDeath(bool isDead)
+    private void OnDeath()
     {
-        if (isDead) ExitCurrentVehicle();
+        ExitCurrentVehicle();
     }
 
     private void Die()

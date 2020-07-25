@@ -55,8 +55,9 @@ public class ValueChangeEventDrawer : PropertyDrawer
         EditorGUI.indentLevel = 0;           
 
         SerializedProperty valueProperty = property.FindPropertyRelative("value");
+        SerializedProperty enumNamesProperty = property.FindPropertyRelative("enumNames");
         if (valueProperty != null)
-            ValueGUI(controlRect, valueProperty);
+            ValueGUI(controlRect, valueProperty, enumNamesProperty);
         else
             TriggerGUI(controlRect);
 
@@ -88,11 +89,27 @@ public class ValueChangeEventDrawer : PropertyDrawer
         changeCheck = GUI.Button(position, "", EditorStyles.radioButton);
     }
 
-    private void ValueGUI(Rect position, SerializedProperty value)
+    private void ValueGUI(Rect position, SerializedProperty value, SerializedProperty enumNames)
     {
         EditorGUI.BeginChangeCheck();
         position.height = EditorGUIUtility.singleLineHeight;
-        EditorGUI.PropertyField(position, value, GUIContent.none);
+        if (enumNames == null)
+        {
+            EditorGUI.PropertyField(position, value, GUIContent.none);
+        }
+        else
+        {
+            if (enumNames.isArray)
+            {
+                int enumNamesCount = enumNames.arraySize;
+                string[] enumNamesArray = new string[enumNamesCount];
+                for (int i = 0; i < enumNamesCount; i++)
+                    enumNamesArray[i] = enumNames.GetArrayElementAtIndex(i).stringValue;
+                value.intValue = EditorGUI.Popup(position, value.intValue, enumNamesArray);
+            }
+            else
+                EditorGUI.HelpBox(position, "enumNames property must be of type string[]", MessageType.Error);
+        }
         changeCheck = EditorGUI.EndChangeCheck();
     }    
 

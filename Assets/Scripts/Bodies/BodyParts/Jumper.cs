@@ -9,6 +9,7 @@ public class Jumper : BodyPart
     public float startVelocityDamping;
     public bool showGizmo;
 
+    public Trigger tryJump;
     public Trigger jump;
 
     public Feet Feet { get; private set; }    
@@ -39,26 +40,33 @@ public class Jumper : BodyPart
 
     private void OnEnable()
     {
+        tryJump.AddTriggerListener(OnTryJump);
         jump.AddTriggerListener(OnJump);
     }
 
     private void OnDisable()
     {
         StopAllCoroutines();
+        tryJump.RemoveTriggerListener(OnTryJump);
         jump.RemoveTriggerListener(OnJump);
     }
 
-    public void Jump()
+    public bool CanJump { get => (airJump || (bool)Feet.IsOnGround.Value == true) && (bool)Feet.IsTumbling.Value == false; }
+
+    public void Jump(bool evenIfCantJump = false)
     {
-        jump.Trigger();
+        tryJump.Trigger();
+        if (evenIfCantJump && CanJump == false) jump.Trigger();
+    }
+
+    private void OnTryJump()
+    {
+        if (CanJump) jump.Trigger();
     }
 
     private void OnJump()
     {
-        if ((airJump || (bool)Feet.IsOnGround.Value == true) && (bool)Feet.IsTumbling.Value == false)
-        {
-            StartCoroutine(JumpCoroutine());
-        }
+        StartCoroutine(JumpCoroutine());        
     }
 
     private IEnumerator JumpCoroutine()

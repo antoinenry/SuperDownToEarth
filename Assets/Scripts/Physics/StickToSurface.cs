@@ -12,12 +12,10 @@ public class StickToSurface : MonoBehaviour
     {
         rb2D = GetComponent<Rigidbody2D>();
     }
-
-    private void OnTriggerStay2D(Collider2D collision)
+    
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        if (rb2D == null || collision.isTrigger) return;
-
-        Vector2 stickDirection = (collision.ClosestPoint(rb2D.position) - rb2D.position);
+        Vector2 stickDirection = (collision.GetContact(0).point - rb2D.position);
 
         if(stickDirection != Vector2.zero)
         {

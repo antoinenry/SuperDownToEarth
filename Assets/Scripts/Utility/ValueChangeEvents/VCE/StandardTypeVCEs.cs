@@ -27,3 +27,17 @@ using Scarblab.VCE;
     [SerializeField] private UnityEngine.Object value;
     public static implicit operator UnityEngine.Object(UnityObjectChangeEvent vce) => (UnityEngine.Object)vce.Value;
 }
+
+[Serializable] public class EnumChangeEvent : ValueChangeEvent
+{
+    [SerializeField] private int value;
+    [SerializeField] private string[] enumNames;
+    public static implicit operator int(EnumChangeEvent vce) => (int)vce.Value;
+    public EnumChangeEvent(Type enumType)
+    {
+        if (enumType.IsEnum)
+            enumNames = enumType.GetEnumNames();
+        else
+            Debug.LogError(enumType.ToString() + " is not an enum type");
+    }
+}
