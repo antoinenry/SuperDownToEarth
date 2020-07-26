@@ -42,17 +42,16 @@ public class Feet : BodyPart
     private void FixedUpdate()
     {
         CheckGround();
-        groundContacts.Clear();
 
         if (groundCount > 0 && (bool)IsTumbling.Value == false)
         {
             AttachedRigidbody.velocity = GroundVelocity;
             AttachedRigidbody.angularVelocity = GroundAngularVelocity;
-            AttachedRigidbody.rotation = groundAngle;            
+            AttachedRigidbody.rotation = groundAngle;         
 
             if (IsOnGround == true)
             {
-                //if (groundProbe != null) AdjustRotationOnCorner();
+                if (groundProbe != null) AdjustRotationOnCorner();
             }
             else
                 IsOnGround.Value = true;
@@ -62,6 +61,8 @@ public class Feet : BodyPart
             AttachedRigidbody.constraints &= ~RigidbodyConstraints2D.FreezeRotation;
             IsOnGround.Value = false;
         }
+
+        groundContacts.Clear();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
