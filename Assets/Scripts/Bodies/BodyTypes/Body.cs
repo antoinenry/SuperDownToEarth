@@ -20,18 +20,18 @@ public class Body : MonoBehaviour
         protected set { }
     }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         parts = GetComponentsInChildren<BodyPart>(true);
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         destroyBody.AddTriggerListener(OnDestroyBody);
         respawnBody.AddTriggerListener(OnRespawnBody);
     }
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
         destroyBody.RemoveTriggerListener(OnDestroyBody);
         respawnBody.RemoveTriggerListener(OnRespawnBody);

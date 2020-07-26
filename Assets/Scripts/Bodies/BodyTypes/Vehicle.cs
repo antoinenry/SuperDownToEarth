@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Vehicle : PhysicalBody
 {
@@ -17,13 +13,15 @@ public class Vehicle : PhysicalBody
     public BoolChangeEvent IsFull;
     public Body BodyInside { get; private set; }
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         SetBodyInside(BodyInside);
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         eject.AddTriggerListener(Eject);
     }
 

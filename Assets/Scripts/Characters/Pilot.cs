@@ -44,7 +44,7 @@ public class Pilot : MonoBehaviour
             body.transform.SetParent(vehicle.seat);
             body.transform.SetPositionAndRotation(vehicle.seat.position, vehicle.seat.rotation);
             body.transform.localScale = vehicle.seat.localScale;
-            this.transform.SetParent(vehicle.seat);
+            //this.transform.SetParent(vehicle.seat);
 
             if (body is PhysicalBody)
             {
@@ -65,9 +65,9 @@ public class Pilot : MonoBehaviour
         isPilotingVehicle.Value = true;
     }
 
-    public void ExitCurrentVehicle()
+    public void ExitCurrentVehicle(bool immediate = false)
     {
-        StartCoroutine(ExitVehicleCoroutine(false));
+        StartCoroutine(ExitVehicleCoroutine(immediate));
     }
 
     private IEnumerator ExitVehicleCoroutine(bool immediate)
@@ -89,7 +89,7 @@ public class Pilot : MonoBehaviour
                     pBody.Move = true;
                 }
 
-                this.transform.SetParent(body.transform);
+                //this.transform.SetParent(body.transform);
                 body.transform.SetParent(exitVehicle.transform.parent);
                 body.transform.position = exitVehicle.exit.position;
 
@@ -123,7 +123,7 @@ public class Pilot : MonoBehaviour
 
     private void OnDeath()
     {
-        ExitCurrentVehicle();
+        ExitCurrentVehicle(true);
     }
 
     private void Die()
