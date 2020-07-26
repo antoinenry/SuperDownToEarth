@@ -1,27 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ImpactEffect : MonoBehaviour
 {
-    public GameObject impactPrefab;
-    public GameObject tafeOffPrefab;
+    public GameObject impactSurfaceEffect;
+    public GameObject leaveSurfaceEffect;
 
-    private void InstanciateCollisionEffect(GameObject effectPrefab, Collision2D collision)
+    private void InstanciateCollisionEffect(GameObject effectPrefab, Transform setTransform, bool setParent)
     {
         if (effectPrefab == null) return;
-
-        Vector3 splooshPosition = collision.transform.position;
-        Instantiate<GameObject>(effectPrefab, splooshPosition, Quaternion.Euler(0f, 0f, collision.rigidbody.rotation));
+        Instantiate(effectPrefab, setTransform.position, setTransform.rotation, setParent ? setTransform : null);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        InstanciateCollisionEffect(impactPrefab, collision);
+        InstanciateCollisionEffect(impactSurfaceEffect, collision.transform, false);
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        InstanciateCollisionEffect(tafeOffPrefab, collision);
+        InstanciateCollisionEffect(leaveSurfaceEffect, collision.transform, false);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        InstanciateCollisionEffect(impactSurfaceEffect, other.transform, false);
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        InstanciateCollisionEffect(impactSurfaceEffect, other.transform, false);
     }
 }
