@@ -1,27 +1,36 @@
 fileFormatVersion: 2
-guid: 29a6315c464acc4459d743a4e61b1c70
+guid: 3afba8158e01dcc42b2a34b149306e27
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -9014430466174456004
-    second: sheet_rogue_crawl_0
+      213: -2438624745938325850
+    second: sheet_rogue_pilot_0
   - first:
-      213: 2058059297093625405
-    second: sheet_rogue_crawl_1
+      213: 8244526317502570422
+    second: sheet_rogue_pilot_1
   - first:
-      213: -3318640019336923995
-    second: sheet_rogue_crawl_2
+      213: -5195297036867599571
+    second: sheet_rogue_pilot_2
   - first:
-      213: 3556119282976695557
-    second: sheet_rogue_crawl_3
+      213: -7212635338362171863
+    second: sheet_rogue_pilot_3
   - first:
-      213: -2523067748747628809
-    second: sheet_rogue_crawl_4
+      213: -8558476051945035751
+    second: sheet_rogue_pilot_0
   - first:
-      213: 4314633260530381452
-    second: sheet_rogue_crawl_5
+      213: -4402144825812838890
+    second: sheet_rogue_pilot_4
+  - first:
+      213: -3217077646195919902
+    second: sheet_rogue_pilot_5
+  - first:
+      213: -7693655185993958415
+    second: sheet_rogue_pilot_6
+  - first:
+      213: 8630633972787397428
+    second: sheet_rogue_pilot_7
   externalObjects: {}
-  serializedVersion: 10
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -41,6 +50,7 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -63,7 +73,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 150
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -75,6 +85,8 @@ TextureImporter:
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -100,101 +112,29 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sheet_rogue_crawl_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 256
-        width: 512
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 942c69d50196bbb439e76a0d27b91f8b
-      internalID: -9014430466174456004
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sheet_rogue_crawl_1
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 256
-        width: 512
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ce05c2ef356b1c1439050a7ac4163448
-      internalID: 2058059297093625405
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sheet_rogue_crawl_2
-      rect:
-        serializedVersion: 2
-        x: 1024
-        y: 256
-        width: 512
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: aa9de96995516684087a1776ac942847
-      internalID: -3318640019336923995
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sheet_rogue_crawl_3
-      rect:
-        serializedVersion: 2
-        x: 1536
-        y: 256
-        width: 512
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6af9146278bfb5b4aae08bb4e782686a
-      internalID: 3556119282976695557
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sheet_rogue_crawl_4
+      name: sheet_rogue_pilot_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 512
-        height: 256
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -202,20 +142,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 634266de7b409264699cf79179c2a0f1
-      internalID: -2523067748747628809
+      spriteID: 918e021206f2a3980800000000000000
+      internalID: -8558476051945035751
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sheet_rogue_crawl_5
+      name: sheet_rogue_pilot_1
       rect:
         serializedVersion: 2
-        x: 512
+        x: 128
         y: 0
-        width: 512
-        height: 256
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -223,8 +163,134 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f2cd5e6c229cc3948aebd69f23154092
-      internalID: 4314633260530381452
+      spriteID: 6bf991021017a6270800000000000000
+      internalID: 8244526317502570422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_rogue_pilot_2
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d230edeeed896e7b0800000000000000
+      internalID: -5195297036867599571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_rogue_pilot_3
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 92e4e7abf5297eb90800000000000000
+      internalID: -7212635338362171863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_rogue_pilot_4
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6161a9fba9078e2c0800000000000000
+      internalID: -4402144825812838890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_rogue_pilot_5
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e374a3fce4aa53d0800000000000000
+      internalID: -3217077646195919902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_rogue_pilot_6
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1fbfc7efe55aa3590800000000000000
+      internalID: -7693655185993958415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_rogue_pilot_7
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43349660fdb26c770800000000000000
+      internalID: 8630633972787397428
       vertices: []
       indices: 
       edges: []

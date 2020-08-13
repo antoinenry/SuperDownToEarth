@@ -1,17 +1,18 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-[ExecuteAlways]
 public class Propeller : BodyPart
 {
-    public float populsionForce;
-    public float propulsionAngle;
-    public bool constantWorldDirection;
-
-    public BoolChangeEvent turnedOn;
-    public BoolChangeEvent turnedOff;
+    public float populsionForce = 100f;
+    public float propulsionAngle = 90f;
+    public bool constantWorldDirection = false;
+    public float propulsionDuration = -1f;
+    public bool automatic = false;
+    
+    public BoolChangeEvent running;
 
     private Coroutine propulsionCoroutine;
+    private bool colliding;
 
     private void Awake()
     {
@@ -20,55 +21,65 @@ public class Propeller : BodyPart
 
     private void OnEnable()
     {
-        if (turnedOn == null) turnedOn = new BoolChangeEvent();
-        if (turnedOff == null) turnedOff = new BoolChangeEvent();
-
-        turnedOn.AddValueListener<bool>(OnTurnedOn);
-        turnedOff.AddValueListener<bool>(OnTurnedOff);
+        running.AddValueListener<bool>(OnSetRunning);
     }
 
     private void OnDisable()
     {
-        turnedOn.RemoveValueListener<bool>(OnTurnedOn);
-        turnedOff.RemoveValueListener<bool>(OnTurnedOff);
+        running.RemoveValueListener<bool>(OnSetRunning);
     }
 
-    private void OnTurnedOn(bool on)
+    private void FixedUpdate()
     {
-        turnedOff.SetValueWithoutTriggeringEvent(!on);
-        if (Application.isPlaying == true)
+        if (automatic == true)
+            running.Value = !colliding;        
+        colliding = false;
+    }
+
+    public Vector2 PropulsionDirection
+        => constantWorldDirection ?
+            Quaternion.Euler(0f, 0f, propulsionAngle) * Vector2.right :
+            Quaternion.Euler(0f, 0f, propulsionAngle) * transform.rotation * Vector2.right;
+
+    private void OnSetRunning(bool on)
+    {
+        if (on)
         {
-            if (on)
+            if (propulsionCoroutine == null)
+                propulsionCoroutine = StartCoroutine(PropulsionCoroutine());
+        }
+        else
+        {
+            if (propulsionCoroutine != null)
             {
-                if (propulsionCoroutine == null)
-                    propulsionCoroutine = StartCoroutine(PropulsionCoroutine());
-            }
-            else
-            {
-                if (propulsionCoroutine != null)
-                {
-                    StopCoroutine(propulsionCoroutine);
-                    propulsionCoroutine = null;
-                }
+                StopCoroutine(propulsionCoroutine);
+                propulsionCoroutine = null;
             }
         }
-    }
-
-    private void OnTurnedOff(bool off)
-    {
-        turnedOn.Value = !off;
     }
 
     private IEnumerator PropulsionCoroutine()
     {
-        while (turnedOn)
-        {
-            Vector2 propulsionDirection = constantWorldDirection ?
-            Quaternion.Euler(0f, 0f, propulsionAngle) * Vector2.right :
-            Quaternion.Euler(0f, 0f, propulsionAngle) * transform.rotation * Vector2.right;
+        float propulsionTimer = 0f;
 
-            AttachedRigidbody.AddForce(propulsionDirection * populsionForce);
+        while (running)
+        {
+            AttachedRigidbody.AddForce(PropulsionDirection * populsionForce);
             yield return new WaitForFixedUpdate();
+
+            if (propulsionDuration > 0f)
+            {
+                propulsionTimer += Time.fixedDeltaTime;
+                if (propulsionTimer > propulsionDuration) running.Value = false;
+            }
+            else if (propulsionDuration == 0f) running.Value = false;
         }
+
+        propulsionCoroutine = null;
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        colliding = true;
     }
 }

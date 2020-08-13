@@ -5,12 +5,13 @@ using UnityEngine;
 public class Jumper : BodyPart
 {
     public AnimationCurve jumpCurve;
-    public bool airJump;
     public float startVelocityDamping;
     public bool showGizmo;
 
     public Trigger tryJump;
     public Trigger jump;
+
+    private Coroutine currentJumpCoroutine;
 
     public Feet Feet { get; private set; }    
 
@@ -47,11 +48,12 @@ public class Jumper : BodyPart
     private void OnDisable()
     {
         StopAllCoroutines();
+        currentJumpCoroutine = null;
         tryJump.RemoveTriggerListener(OnTryJump);
         jump.RemoveTriggerListener(OnJump);
     }
 
-    public bool CanJump { get => (airJump || (bool)Feet.IsOnGround.Value == true) && (bool)Feet.IsTumbling.Value == false; }
+    public bool CanJump { get => (bool)Feet.IsOnGround.Value == true && (bool)Feet.IsTumbling.Value == false; }
 
     public void Jump(bool evenIfCantJump = false)
     {
@@ -66,7 +68,8 @@ public class Jumper : BodyPart
 
     private void OnJump()
     {
-        StartCoroutine(JumpCoroutine());        
+        if (currentJumpCoroutine == null)
+            currentJumpCoroutine = StartCoroutine(JumpCoroutine());        
     }
 
     private IEnumerator JumpCoroutine()
@@ -79,7 +82,7 @@ public class Jumper : BodyPart
         Vector2 lastPosition = startPosition;
         float jumpDuration = jumpCurve.keys[jumpCurve.length - 1].time;
         Vector2 additionnalVelocity = Feet.GroundVelocity;
-        bool onGround = true;
+        bool stillOnGround = true;
         
         while (AttachedRigidbody.simulated == true)
         {
@@ -102,14 +105,16 @@ public class Jumper : BodyPart
 
             if ((bool)Feet.IsTumbling.Value == true) break;
 
-            if (onGround)
+            if (stillOnGround)
             {
-                if ((bool)Feet.IsOnGround.Value == false) onGround = false;
+                if ((bool)Feet.IsOnGround.Value == false) stillOnGround = false;
             }
             else
             {
                 if ((bool)Feet.IsOnGround.Value == true) break;
             }
         }
+
+        currentJumpCoroutine = null;
     }
 }

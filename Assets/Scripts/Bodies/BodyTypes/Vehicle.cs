@@ -30,7 +30,7 @@ public class Vehicle : PhysicalBody
         SetBodyInside(null);
     }
 
-    public void SetBodyInside(Body body)
+    public virtual void SetBodyInside(Body body)
     {
         BodyInside = body;
 

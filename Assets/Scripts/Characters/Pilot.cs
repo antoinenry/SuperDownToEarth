@@ -4,7 +4,8 @@ using UnityEngine;
 public class Pilot : MonoBehaviour
 {
     public Body body;
-    [HideInInspector] public BodyPart[] transferPartsToVehicle;
+    public bool enterVehicleOnCollision = true;
+    //[HideInInspector] public BodyPart[] transferPartsToVehicle;
 
     public BoolChangeEvent isPilotingVehicle;
     public UnityObjectChangeEvent currentVehicle;
@@ -25,9 +26,9 @@ public class Pilot : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        if (isPilotingVehicle == false)
+        if (enterVehicleOnCollision && isPilotingVehicle == false)
         {
             Vehicle vehicle = collision.gameObject.GetComponent<Vehicle>();
             if (vehicle != null) EnterVehicle(vehicle);
@@ -57,9 +58,9 @@ public class Pilot : MonoBehaviour
         vehicle.SetBodyInside(body);
         vehicle.IsFull.AddValueListener<bool>(OnVehicleIsFullChange);
         vehicle.destroyBody.AddTriggerListener(OnVehicleDestruction);
-
-        foreach (BodyPart part in transferPartsToVehicle)
-            part.AttachedBody = vehicle;
+        
+        //foreach (BodyPart part in transferPartsToVehicle)
+        //    part.AttachedBody = vehicle;
 
         currentVehicle.Value = vehicle;
         isPilotingVehicle.Value = true;
@@ -101,8 +102,8 @@ public class Pilot : MonoBehaviour
             exitVehicle.destroyBody.RemoveTriggerListener(OnVehicleDestruction);
             exitVehicle.SetBodyInside(null);
 
-            foreach (BodyPart part in transferPartsToVehicle)
-                part.AttachedBody = body;
+            //foreach (BodyPart part in transferPartsToVehicle)
+            //    part.AttachedBody = body;
             
             currentVehicle.Value = body;
             isPilotingVehicle.Value = false;

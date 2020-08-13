@@ -1,39 +1,39 @@
 fileFormatVersion: 2
-guid: 83c0733e7b5a40e4c84560187ca34776
+guid: 5ee9e241f0c99ea45a1fcd0ef9b4db3e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3711936055077438836
-    second: sheet_rogue_float_0
+      213: 8379444446534152256
+    second: sheet_rogue_idle_0
   - first:
-      213: 5016931901768442394
-    second: sheet_rogue_float_1
+      213: -3272264293315568815
+    second: sheet_rogue_idle_1
   - first:
-      213: 8613112731509885913
-    second: sheet_rogue_float_2
+      213: 8434666670847448099
+    second: sheet_rogue_idle_2
   - first:
-      213: 8089068831965971068
-    second: sheet_rogue_float_3
+      213: 6556276430389856716
+    second: sheet_rogue_idle_3
   - first:
-      213: -1410083950742042069
-    second: sheet_rogue_float_4
+      213: -496198803080027403
+    second: sheet_rogue_idle_4
   - first:
-      213: -5098115786887270607
-    second: sheet_rogue_float_5
+      213: -5310654883945067912
+    second: sheet_rogue_idle_5
   - first:
-      213: -7984087551888498448
-    second: sheet_rogue_float_6
+      213: -8246427167135379402
+    second: sheet_rogue_idle_6
   - first:
-      213: 7892134095675811329
-    second: sheet_rogue_float_7
+      213: 3485843833234949005
+    second: sheet_rogue_idle_7
   - first:
-      213: -230743251544510573
-    second: sheet_rogue_float_8
+      213: -7003953325923614466
+    second: sheet_rogue_idle_8
   - first:
-      213: -6745688513316074524
-    second: sheet_rogue_float_9
+      213: -8038699565969295364
+    second: sheet_rogue_idle_9
   externalObjects: {}
-  serializedVersion: 10
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -53,6 +53,7 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -75,7 +76,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 150
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -87,6 +88,8 @@ TextureImporter:
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -112,11 +115,23 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sheet_rogue_float_0
+      name: sheet_rogue_idle_0
       rect:
         serializedVersion: 2
         x: 0
@@ -130,14 +145,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a9184d1efe9eca54083f1612748ba8ef
-      internalID: -3711936055077438836
+      spriteID: 304b45fa800d8144dbc0fbc99bc6ebf3
+      internalID: 8379444446534152256
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sheet_rogue_float_1
+      name: sheet_rogue_idle_1
       rect:
         serializedVersion: 2
         x: 512
@@ -151,14 +166,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7ff62e752b05ec740a28e1f3a6d46558
-      internalID: 5016931901768442394
+      spriteID: ffc4bb95ecb3c324bb3a0fe218b7b869
+      internalID: -3272264293315568815
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sheet_rogue_float_2
+      name: sheet_rogue_idle_2
       rect:
         serializedVersion: 2
         x: 1024
@@ -172,14 +187,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 074de6e8f2e4d0445b8842d90ded9e33
-      internalID: 8613112731509885913
+      spriteID: 7f53e74112711fe4fa8bd638e4fbbab4
+      internalID: 8434666670847448099
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sheet_rogue_float_3
+      name: sheet_rogue_idle_3
       rect:
         serializedVersion: 2
         x: 1536
@@ -193,14 +208,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dcbdf20a888047f4b9efd355e7ae0597
-      internalID: 8089068831965971068
+      spriteID: 6c9069f4a8ba56a419a976cf15a0a868
+      internalID: 6556276430389856716
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sheet_rogue_float_4
+      name: sheet_rogue_idle_4
       rect:
         serializedVersion: 2
         x: 0
@@ -214,14 +229,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 681b693977e7a5149bae6fca654e4014
-      internalID: -1410083950742042069
+      spriteID: e8c68d13545bbc74eaa755953e7b2f45
+      internalID: -496198803080027403
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sheet_rogue_float_5
+      name: sheet_rogue_idle_5
       rect:
         serializedVersion: 2
         x: 512
@@ -235,14 +250,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 174f60d1b8439914798b810fb65cab3f
-      internalID: -5098115786887270607
+      spriteID: 50d27c06c279d0945a27a29af7b1bf36
+      internalID: -5310654883945067912
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sheet_rogue_float_6
+      name: sheet_rogue_idle_6
       rect:
         serializedVersion: 2
         x: 1024
@@ -256,14 +271,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2e97020db8a869e4da6229c7000aecd4
-      internalID: -7984087551888498448
+      spriteID: a8c84e718aa26404287f92759d0468d2
+      internalID: -8246427167135379402
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sheet_rogue_float_7
+      name: sheet_rogue_idle_7
       rect:
         serializedVersion: 2
         x: 1536
@@ -277,14 +292,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 70ad5ebd294a8f340b8257bd64d5e5f6
-      internalID: 7892134095675811329
+      spriteID: 61b4d98ab3523574ca0e1a69d6a656b4
+      internalID: 3485843833234949005
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sheet_rogue_float_8
+      name: sheet_rogue_idle_8
       rect:
         serializedVersion: 2
         x: 0
@@ -298,14 +313,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7670b0e99b1644441a26fe4e0068d44b
-      internalID: -230743251544510573
+      spriteID: d15f35e6e69112a4986eb42bbea6a010
+      internalID: -7003953325923614466
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sheet_rogue_float_9
+      name: sheet_rogue_idle_9
       rect:
         serializedVersion: 2
         x: 512
@@ -319,8 +334,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: afa604863c1681c48b90b0e80c7fe420
-      internalID: -6745688513316074524
+      spriteID: f0381157ad5c44e49ae00a2080b6aee3
+      internalID: -8038699565969295364
       vertices: []
       indices: 
       edges: []
