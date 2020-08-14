@@ -62,35 +62,4 @@ public class Body : MonoBehaviour
     {
         respawnBody.Trigger();
     }
-    
-    /*
-     * Tout ça devrait être géré ailleurs
-     * 
-    public override void OnCheckPointSave(Transform checkPoint)
-    {
-        //Debug.Log("CheckPoint save " + name);
-
-        if (IsDead.Get<bool>() == true)
-        {
-            Destroy(this.gameObject);
-            return;
-        }
-
-        base.OnCheckPointSave(checkPoint);
-    }
-
-    public override void OnCheckPointLoad(Transform checkPoint)
-    {
-        StartCoroutine(LoadCheckPointCoroutine(checkPoint));
-    }
-
-    private IEnumerator LoadCheckPointCoroutine(Transform checkPoint)
-    {
-        Kill();
-        yield return new WaitForFixedUpdate();
-        base.OnCheckPointLoad(checkPoint);
-        yield return new WaitForFixedUpdate();
-        Respawn();
-    }
-    */
 }

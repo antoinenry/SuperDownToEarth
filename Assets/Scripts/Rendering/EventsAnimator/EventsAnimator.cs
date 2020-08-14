@@ -3,8 +3,6 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-using Scarblab.VCE;
-
 [RequireComponent(typeof(Animator))]
 public class EventsAnimator : MonoBehaviour
 {

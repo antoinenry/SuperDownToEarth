@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gum : MonoBehaviour
+public class Bouncer : MonoBehaviour
 {
     public float bounceSpeed = 20f;
 
@@ -20,6 +20,4 @@ public class Gum : MonoBehaviour
         collision.rigidbody.velocity = -bounceNormal * bounceSpeed;
         collision.rigidbody.angularVelocity = 0f;
     }
-
-
 }

@@ -118,8 +118,6 @@ public class Pilot : MonoBehaviour
     private void OnVehicleDestruction()
     {
         StartCoroutine(ExitVehicleCoroutine(true));
-        DamageStatus status = GetComponent<DamageStatus>();
-        if (status != null) status.GetDamaged();
     }
 
     private void OnDeath()

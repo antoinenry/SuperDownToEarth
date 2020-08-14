@@ -34,10 +34,17 @@ public class HeroBrain : MonoBehaviour
 
     private void OnControlsChange(Object piloted)
     {
+        if (currentControls != null) currentControls.ResetControls();
+
         if (piloted != null && piloted is Body)
+        {
             currentControls = (piloted as Body).GetComponentInChildren<PlayerControls>();
+            currentControls.enabled = true;
+        }
         else
+        {
             currentControls = null;
+        }
     }
     
     private void GetButtonControls()
