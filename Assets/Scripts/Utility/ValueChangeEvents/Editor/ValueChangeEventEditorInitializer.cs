@@ -17,7 +17,7 @@ namespace Scarblab.VCE
 
         private static void OnPlayModeChange(PlayModeStateChange mode)
         {
-            if (mode == PlayModeStateChange.EnteredEditMode) InitializeAllValueChangeEvents();
+            if (mode == PlayModeStateChange.EnteredEditMode) ValueChangeEvent.InitializeAllValueChangeEvents();
         }
 
         private static void OnHierarchyChange()
@@ -26,7 +26,7 @@ namespace Scarblab.VCE
 
             if (getScene != activeScene)
             {
-                InitializeAllValueChangeEvents();
+                ValueChangeEvent.InitializeAllValueChangeEvents();
                 activeScene = getScene;
             }
         }
@@ -35,18 +35,7 @@ namespace Scarblab.VCE
         private static void OnReloadScripts()
         {
             if (EditorApplication.isPlayingOrWillChangePlaymode == false)
-                InitializeAllValueChangeEvents();
-        }
-
-        private static void InitializeAllValueChangeEvents()
-        {
-            Component[] allComponent = Object.FindObjectsOfType<Component>();
-            foreach (Component anyComponent in allComponent)
-            {
-                ValueChangeEvent[] vces = ValueChangeEventID.FindValueChangeEvents(anyComponent);
-                foreach (ValueChangeEvent vce in vces)
-                    vce.ListenToMasters();
-            }
-        }
+                ValueChangeEvent.InitializeAllValueChangeEvents();
+        }        
     }
 }

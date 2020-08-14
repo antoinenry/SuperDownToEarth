@@ -6,7 +6,8 @@ public class Body : MonoBehaviour
     public Trigger destroyBody;
     public Trigger respawnBody;
 
-    public BodyPart[] parts { get; private set; }
+    public bool IsAlive { get; private set; }
+    public BodyPart[] Parts { get; private set; }
 
     public virtual Rigidbody2D AttachedRigidBody
     {
@@ -22,7 +23,8 @@ public class Body : MonoBehaviour
 
     protected virtual void Awake()
     {
-        parts = GetComponentsInChildren<BodyPart>(true);
+        Parts = GetComponentsInChildren<BodyPart>(true);
+        IsAlive = true;
     }
 
     protected virtual void Start()
@@ -39,14 +41,26 @@ public class Body : MonoBehaviour
 
     protected virtual void OnDestroyBody()
     {
-        foreach (BodyPart part in parts)
+        IsAlive = false;
+        foreach (BodyPart part in Parts)
             part.enabled = false;
     }
 
     protected virtual void OnRespawnBody()
     {
-        foreach (BodyPart part in parts)
+        IsAlive = true;
+        foreach (BodyPart part in Parts)
             part.enabled = true;
+    }
+
+    public void Kill()
+    {
+        destroyBody.Trigger();
+    }
+
+    public void Respawn()
+    {
+        respawnBody.Trigger();
     }
     
     /*

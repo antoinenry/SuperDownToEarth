@@ -3,6 +3,8 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+using Scarblab.VCE;
+
 [RequireComponent(typeof(Animator))]
 public class EventsAnimator : MonoBehaviour
 {
@@ -19,6 +21,30 @@ public class EventsAnimator : MonoBehaviour
     private void Awake()
     {
         Init();
+    }
+
+    private void OnEnable()
+    {
+        foreach (AnimatorTriggerEvent t in animatorTriggers)
+            t.VCE.ListenToMasters();
+        foreach (AnimatorBoolEvent b in animatorBools)
+            b.VCE.ListenToMasters();
+        foreach (AnimatorIntEvent i in animatorInts)
+            i.VCE.ListenToMasters();
+        foreach (AnimatorFloatEvent f in animatorFloats)
+            f.VCE.ListenToMasters();
+    }
+
+    private void OnDisable()
+    {
+        foreach (AnimatorTriggerEvent t in animatorTriggers)
+            t.VCE.IgnoreMasters();
+        foreach (AnimatorBoolEvent b in animatorBools)
+            b.VCE.IgnoreMasters();
+        foreach (AnimatorIntEvent i in animatorInts)
+            i.VCE.IgnoreMasters();
+        foreach (AnimatorFloatEvent f in animatorFloats)
+            f.VCE.IgnoreMasters();
     }
 
     private void OnDestroy()

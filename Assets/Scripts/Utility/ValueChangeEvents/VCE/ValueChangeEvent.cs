@@ -42,7 +42,7 @@ namespace Scarblab.VCE
             }
 
             trigger = new UnityAction(Trigger);
-
+            
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
@@ -252,6 +252,41 @@ namespace Scarblab.VCE
                 return 0;
             }
             else return 1;
+        }
+
+        public static void InitializeVCEs(Component inComponent)
+        {
+            if (inComponent == null) return;
+
+            Debug.Log("*Initializing VCEs in " + inComponent.ToString());
+
+            ValueChangeEvent[] vces = ValueChangeEventID.FindValueChangeEvents(inComponent);
+            foreach (ValueChangeEvent vce in vces)
+            {
+                Debug.Log(" - " + vce.ToString());
+                vce.ListenToMasters();
+            }
+        }
+
+        public static void InitializeVCEs(Component[] inComponents)
+        {
+            if (inComponents == null) return;
+
+            foreach(Component c in inComponents)
+                InitializeVCEs(c);
+        }
+
+        public static void InitializeVCEs(GameObject inGameObject)
+        {
+            if (inGameObject == null) return;
+
+            InitializeVCEs(inGameObject.GetComponentsInChildren<Component>());
+        }
+
+        public static void InitializeAllValueChangeEvents()
+        {
+            Component[] allComponents = UnityEngine.Object.FindObjectsOfType<Component>();
+            ValueChangeEvent.InitializeVCEs(allComponents);
         }
     }
 }
