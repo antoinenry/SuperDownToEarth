@@ -35,8 +35,8 @@ public class Body : MonoBehaviour
 
     protected virtual void OnDestroy()
     {
-        destroyBody.RemoveTriggerListener(OnDestroyBody);
-        respawnBody.RemoveTriggerListener(OnRespawnBody);
+        destroyBody.RemoveAllListeners();
+        respawnBody.RemoveAllListeners();
     }
 
     protected virtual void OnDestroyBody()

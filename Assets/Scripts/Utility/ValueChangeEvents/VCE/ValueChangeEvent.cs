@@ -258,12 +258,12 @@ namespace Scarblab.VCE
         {
             if (inComponent == null) return;
 
-            Debug.Log("*Initializing VCEs in " + inComponent.ToString());
+            //Debug.Log("*Initializing VCEs in " + inComponent.ToString());
 
             ValueChangeEvent[] vces = ValueChangeEventID.FindValueChangeEvents(inComponent);
             foreach (ValueChangeEvent vce in vces)
             {
-                Debug.Log(" - " + vce.ToString());
+                //Debug.Log(" - " + vce.ToString());
                 vce.ListenToMasters();
             }
         }
