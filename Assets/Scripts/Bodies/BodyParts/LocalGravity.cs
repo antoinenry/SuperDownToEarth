@@ -12,6 +12,11 @@ public class LocalGravity : BodyPart
         AttachedBody = GetComponent<Body>();
     }
 
+    private void OnDisable()
+    {
+        isFalling.Value = false;
+    }
+
     private void FixedUpdate ()
     {
         Vector2 localDown = transform.rotation * Vector2.down;

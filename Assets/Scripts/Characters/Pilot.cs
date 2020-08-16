@@ -37,7 +37,7 @@ public class Pilot : MonoBehaviour
 
     public void EnterVehicle (Vehicle vehicle)
     {
-        if (vehicle.BodyInside != null)
+        if (vehicle.IsFull == true)
             return;
 
         if (body != null)

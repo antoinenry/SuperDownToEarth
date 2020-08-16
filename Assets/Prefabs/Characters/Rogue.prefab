@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1156132173160763320}
   - component: {fileID: 1156132173160763326}
   m_Layer: 0
-  m_Name: RogueRenderer
+  m_Name: rogue_renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -426,7 +426,7 @@ GameObject:
   - component: {fileID: 1156132175193888739}
   - component: {fileID: 1156132175193888749}
   m_Layer: 8
-  m_Name: RogueBrain
+  m_Name: rogue_core
   m_TagString: Rogue
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

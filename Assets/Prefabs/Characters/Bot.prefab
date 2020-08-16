@@ -5075,6 +5075,7 @@ GameObject:
   - component: {fileID: 4004305952871450383}
   - component: {fileID: 4004305952871450380}
   - component: {fileID: 4004305952871450381}
+  - component: {fileID: 760104898}
   m_Layer: 8
   m_Name: bot_core
   m_TagString: Untagged
@@ -5129,6 +5130,34 @@ MonoBehaviour:
   hit:
     inspectorUnfold: 0
     masters: []
+--- !u!114 &760104898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4004305952871450382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7125c03a27f61944a4d6ef8ddb7877c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentState: 0
+  body: {fileID: 4976841636933741878}
+  followTransform: {fileID: 0}
+  avoidTransform: {fileID: 0}
+  thinkDelay: 2
+  detectionWidth: 2
+  detectionRange: {x: 3, y: 20}
+  avoidDistance: 15
+  detectionLayers:
+    serializedVersion: 2
+    m_Bits: 512
+  followTag: Player
+  avoidTag: Damaging
+  jumpiness: 0.5
+  randomness: 0.5
+  spinDuration: 1.02
 --- !u!1 &4411055551944402098
 GameObject:
   m_ObjectHideFlags: 0
@@ -5214,7 +5243,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4976841636933741885}
-  m_LocalRotation: {x: -0, y: -0, z: -0.000000059604645, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 10.77, y: -48.18, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -5225,7 +5254,7 @@ Transform:
   - {fileID: 4004305952553135073}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -100.11301}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &4976841636933741887
 Rigidbody2D:
   serializedVersion: 4
@@ -5482,7 +5511,7 @@ MonoBehaviour:
   freeAngularVelocity: 5
   seat: {fileID: 4411055551944402097}
   exit: {fileID: 4004305952472903186}
-  exitForce: 50
+  exitForce: 20
   exitAnimationDelay: 0.2
   eject:
     inspectorUnfold: 0
@@ -5494,6 +5523,10 @@ MonoBehaviour:
     inspectorUnfold: 0
     masters: []
     value: 0
+  minHitVelocity: 10
+  backHitBounce: 1
+  backHitTorque: 15
+  backHitDuration: 2
 --- !u!1 &4976841637461602013
 GameObject:
   m_ObjectHideFlags: 0

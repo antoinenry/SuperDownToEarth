@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
-public class RogueBrain : MonoBehaviour
+public class BotBrain : MonoBehaviour
 {
-    public enum BrainState { Thinking, Chasing, Floating, Fleeing }
+    public enum BrainState { Thinking, Chasing }
     public enum DetectionResult { Nothing, Avoid }
 
     public BrainState currentState;
@@ -19,12 +19,12 @@ public class RogueBrain : MonoBehaviour
     public string avoidTag = "Damaging";
     [Range(0f, 1f)] public float jumpiness = .5f;
     [Range(0f, 1f)] public float randomness = .5f;
-
-    private Pilot pilot;
+    public float spinDuration = 1f;
+    
     private Walker walker;
     private Jumper jumper;
+    private Spinner spinner;
     private Feet feet;
-    private Propeller propeller;
     private StickToSurface stick;
     private Pilot player;
 
@@ -51,20 +51,14 @@ public class RogueBrain : MonoBehaviour
 
     private void Awake()
     {
-        pilot = GetComponent<Pilot>();
         walker = body.GetComponent<Walker>();
         jumper = body.GetComponent<Jumper>();
+        spinner = body.GetComponent<Spinner>();
         feet = body.GetComponent<Feet>();
-        propeller = body.GetComponent<Propeller>();
         stick = body.GetComponent<StickToSurface>();
 
         GameObject playerGO = GameObject.FindWithTag(followTag);
         if (playerGO != null) player = playerGO.GetComponentInChildren<Pilot>(true);
-    }
-
-    private void Start()
-    {
-        pilot.isPilotingVehicle.AddValueListener<bool>(OnPilotingVehicle);
     }
 
     private void OnEnable()
@@ -84,19 +78,14 @@ public class RogueBrain : MonoBehaviour
         player.isPilotingVehicle.RemoveValueListener<bool>(OnPlayerIsPiloting);
     }
 
-    private void OnDestroy()
-    {
-        pilot.isPilotingVehicle.RemoveValueListener<bool>(OnPilotingVehicle);
-    }
-
-    private void OnPilotingVehicle(bool piloting)
-    {
-        enabled = !piloting;
-    }
-
     private void StateCoroutineSwitch()
     {
-        if (currentStateCoroutine != null) StopCoroutine(currentStateCoroutine);
+        if (currentStateCoroutine != null)
+        {
+            StopCoroutine(currentStateCoroutine);
+            currentStateCoroutine = null;
+
+        }
 
         switch (currentState)
         {
@@ -106,14 +95,6 @@ public class RogueBrain : MonoBehaviour
 
             case BrainState.Thinking:
                 currentStateCoroutine = StartCoroutine(ThinkCoroutine());
-                break;
-
-            case BrainState.Floating:
-                currentStateCoroutine = StartCoroutine(FloatCoroutine());
-                break;
-
-            case BrainState.Fleeing:
-                currentStateCoroutine = StartCoroutine(FleeCoroutine());
                 break;
 
             default:
@@ -135,18 +116,13 @@ public class RogueBrain : MonoBehaviour
             thinkTime += Time.fixedDeltaTime;
             if (thinkTime >= thinkDelay)
             {
-                if (feet.IsOnGround == false)
-                    currentState = BrainState.Floating;
-                else if (avoidTransform != null)
-                    currentState = BrainState.Fleeing;
-                else if (followTransform != null)
+                if (followTransform != null)
                     currentState = BrainState.Chasing;
                 else
                     thinkTime = thinkDelay * Random.Range(-randomness, randomness);
             }
         }
-
-        currentStateCoroutine = null;
+        
         StateCoroutineSwitch();
     }
 
@@ -186,84 +162,31 @@ public class RogueBrain : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        currentStateCoroutine = null;
         StateCoroutineSwitch();
     }
-
-    private IEnumerator FloatCoroutine()
-    {
-        body.isFree = true;
-
-        while (currentState == BrainState.Floating)
-        {
-            propeller.running.Value = true;
-
-            yield return new WaitForFixedUpdate();
-
-            if (feet.IsOnGround == true)
-                currentState = BrainState.Thinking;
-        }
-
-        body.isFree = false;
-        propeller.running.Value = false;
-        currentStateCoroutine = null;
-        StateCoroutineSwitch();
-    }
-
-    private IEnumerator FleeCoroutine()
-    {
-        float randomizedAvoidDistance = avoidDistance * (1f + Random.Range(-randomness, randomness));
-
-        while (currentState == BrainState.Fleeing)
-        {
-            if (avoidTransform != null)
-            {
-                if (Vector2.Distance(transform.position, avoidTransform.position) < randomizedAvoidDistance)
-                {
-                    float horizontalToTarget = Vector2.Dot(avoidTransform.position - transform.position, transform.right);
-                    float verticalToTarget = Vector2.Dot(avoidTransform.position - transform.position, transform.up);
-
-                    if (walker.currentWalkDirection == 0 && Mathf.Abs(verticalToTarget) < Mathf.Abs(horizontalToTarget) && CheckAbove() != DetectionResult.Avoid && Random.Range(0f, randomness) < jumpiness)
-                    {
-                        jumper.Jump();
-                    }
-                    else if (horizontalToTarget > 0f)
-                    {
-                        if (CheckLeft() != DetectionResult.Avoid)
-                            walker.Walk(-1);
-                        else
-                        {
-                            walker.Walk(0);
-                            jumper.Jump();
-                        }
-                    }
-                    else
-                    {
-                        if (CheckRight() != DetectionResult.Avoid)
-                            walker.Walk(1);
-                        else
-                        {
-                            walker.Walk(0);
-                            jumper.Jump();
-                        }
-                    }
-                }
-                else
-                    walker.Walk(0);
-            }
-            else
-                currentState = BrainState.Thinking;
-
-            yield return new WaitForFixedUpdate();
-        }
-
-        currentStateCoroutine = null;
-        StateCoroutineSwitch();
-    }
-
+    
     private void OnJump()
     {
         stick.enabled = false;
+        StartCoroutine(SpinCoroutine());
+    }
+
+    private IEnumerator SpinCoroutine()
+    {
+        float spinTimer = 0f;
+
+        while (spinTimer < spinDuration)
+        {
+            spinner.Spin(1);
+
+            yield return new WaitForFixedUpdate();
+            spinTimer += Time.fixedDeltaTime;
+        }
+
+        spinner.Spin(0);
+
+        currentState = BrainState.Thinking;
+        StateCoroutineSwitch();
     }
 
     private void OnTouchGround(bool touch)
