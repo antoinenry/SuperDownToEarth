@@ -41,6 +41,17 @@ public class Propeller : BodyPart
             Quaternion.Euler(0f, 0f, propulsionAngle) * Vector2.right :
             Quaternion.Euler(0f, 0f, propulsionAngle) * transform.rotation * Vector2.right;
 
+    public void Run()
+    {
+        running.Value = true;
+    }
+
+    public void Stop()
+    {
+        running.Value = false;
+    }
+
+
     private void OnSetRunning(bool on)
     {
         if (on)

@@ -18,12 +18,12 @@ public class HeroBrain : MonoBehaviour
 
     private void OnEnable()
     {
-        pilot.currentVehicle.AddValueListener<Object>(OnControlsChange);
+        pilot.currentVehicle.AddValueListener<Component>(OnControlsChange);
     }
 
     private void OnDisable()
     {
-        pilot.currentVehicle.RemoveValueListener<Object>(OnControlsChange);
+        pilot.currentVehicle.RemoveValueListener<Component>(OnControlsChange);
     }
 
     private void Update()

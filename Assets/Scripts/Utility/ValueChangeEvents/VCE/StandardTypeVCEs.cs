@@ -22,10 +22,10 @@ using Scarblab.VCE;
     public static implicit operator float(FloatChangeEvent vce) => (float)vce.Value;
 }
 
-[Serializable] public class UnityObjectChangeEvent : ValueChangeEvent
+[Serializable] public class ComponentChangeEvent : ValueChangeEvent
 {
-    [SerializeField] private UnityEngine.Object value;
-    public static implicit operator UnityEngine.Object(UnityObjectChangeEvent vce) => (UnityEngine.Object)vce.Value;
+    [SerializeField] private Component value;
+    public static implicit operator Component(ComponentChangeEvent vce) => (Component)vce.Value;
 }
 
 [Serializable] public class EnumChangeEvent : ValueChangeEvent

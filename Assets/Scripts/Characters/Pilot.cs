@@ -8,7 +8,7 @@ public class Pilot : MonoBehaviour
     //[HideInInspector] public BodyPart[] transferPartsToVehicle;
 
     public BoolChangeEvent isPilotingVehicle;
-    public UnityObjectChangeEvent currentVehicle;
+    public ComponentChangeEvent currentVehicle;
 
     private void Start()
     {
@@ -44,7 +44,7 @@ public class Pilot : MonoBehaviour
         {
             body.transform.SetParent(vehicle.seat);
             body.transform.SetPositionAndRotation(vehicle.seat.position, vehicle.seat.rotation);
-            body.transform.localScale = vehicle.seat.localScale;
+            body.transform.localScale = Vector3.one;
             //this.transform.SetParent(vehicle.seat);
 
             if (body is PhysicalBody)
