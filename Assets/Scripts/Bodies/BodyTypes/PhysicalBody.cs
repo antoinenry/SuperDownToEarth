@@ -3,26 +3,14 @@
 public class PhysicalBody : Body
 {
     public Rigidbody2D rb2d;
-    public SpriteRenderer render;
 
     [Header("Physical")]
     public bool isFree;
     [Min(0f)] public float freeLinearVelocity = 1f;
     [Min(0f)] public float freeAngularVelocity = 5f;
 
-    private bool visible;
     private bool simulate;
-    private bool move;
-
-    public bool Visible
-    {
-        get => visible;
-        set
-        {
-            visible = value;
-            if (render != null) render.enabled = value;
-        }
-    }
+    private bool move;    
 
     public bool Simulate
     {

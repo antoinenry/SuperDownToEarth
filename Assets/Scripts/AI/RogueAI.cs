@@ -8,7 +8,7 @@ public class RogueAI : AIBehaviour
 
     public BrainState currentState;
     public PhysicalBody body;
-    public Transform followTransform;
+    public Body followBody;
     public Transform avoidTransform;
     [Min(0f)] public float thinkDelay;
     [Min(0f)] public float detectionWidth;
@@ -19,13 +19,13 @@ public class RogueAI : AIBehaviour
     public string avoidTag = "Damaging";
     [Range(0f, 1f)] public float jumpiness = .5f;
     [Range(0f, 1f)] public float randomness = .5f;
-        
+    
     private Walker walker;
     private Jumper jumper;
     private Feet feet;
     private Propeller propeller;
     private StickToSurface stick;
-    private Pilot player;
+    private GameObject playerGO;
 
     private float thinkTime;
     private Coroutine currentStateCoroutine;
@@ -56,8 +56,7 @@ public class RogueAI : AIBehaviour
         propeller = body.GetComponent<Propeller>();
         stick = body.GetComponent<StickToSurface>();
 
-        GameObject playerGO = GameObject.FindWithTag(followTag);
-        if (playerGO != null) player = playerGO.GetComponentInChildren<Pilot>(true);
+        playerGO = GameObject.FindWithTag(followTag);
     }
 
     private void OnEnable()
@@ -65,7 +64,8 @@ public class RogueAI : AIBehaviour
         StateCoroutineSwitch();
         feet.IsOnGround.AddValueListener<bool>(OnTouchGround);
         jumper.jump.AddTriggerListener(OnJump);
-        player.isPilotingVehicle.AddValueListener<bool>(OnPlayerIsPiloting);
+        Pilot playerPilot = playerGO.GetComponentInChildren<Pilot>(true);
+        playerPilot.isPilotingVehicle.AddValueListener<bool>(OnPlayerIsPiloting);
     }
 
     private void OnDisable()
@@ -78,7 +78,8 @@ public class RogueAI : AIBehaviour
 
         feet.IsOnGround.RemoveValueListener<bool>(OnTouchGround);
         jumper.jump.RemoveTriggerListener(OnJump);
-        player.isPilotingVehicle.RemoveValueListener<bool>(OnPlayerIsPiloting);
+        Pilot playerPilot = playerGO.GetComponentInChildren<Pilot>(true);
+        playerPilot.isPilotingVehicle.RemoveValueListener<bool>(OnPlayerIsPiloting);
     }   
 
     private void StateCoroutineSwitch()
@@ -126,7 +127,7 @@ public class RogueAI : AIBehaviour
                     currentState = BrainState.Floating;
                 else if (avoidTransform != null)
                     currentState = BrainState.Fleeing;
-                else if (followTransform != null)
+                else if (followBody != null && followBody.Visible == true)
                     currentState = BrainState.Chasing;
                 else
                     thinkTime = thinkDelay * Random.Range(-randomness, randomness);
@@ -141,9 +142,9 @@ public class RogueAI : AIBehaviour
     {
         while (currentState == BrainState.Chasing)
         {
-            if (followTransform != null)
+            if (followBody != null && followBody.Visible == true)
             {
-                float horizontalToTarget = Vector2.Dot(followTransform.position - transform.position, transform.right);
+                float horizontalToTarget = Vector2.Dot(followBody.transform.position - transform.position, transform.right);
 
                 if (horizontalToTarget > detectionWidth / 2f && CheckRight() != DetectionResult.Avoid)
                 {
@@ -262,12 +263,12 @@ public class RogueAI : AIBehaviour
     {
         if (piloting)
         {
-            followTransform = null;
-            avoidTransform = player.transform;
+            followBody = null;
+            avoidTransform = playerGO.transform;
         }
         else
         {
-            followTransform = player.transform;
+            followBody = playerGO.GetComponent<Body>();
             avoidTransform = null;
         }
     }

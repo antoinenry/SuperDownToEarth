@@ -373,7 +373,7 @@ MonoBehaviour:
   avoidTransform: {fileID: 0}
   thinkDelay: 1.5
   detectionWidth: 2
-  detectionRange: {x: 2.5, y: 15}
+  detectionRange: {x: 2.5, y: 25}
   avoidDistance: 15
   detectionLayers:
     serializedVersion: 2
