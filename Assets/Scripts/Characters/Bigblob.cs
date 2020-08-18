@@ -3,29 +3,22 @@ using UnityEngine;
 
 public class Bigblob : MonoBehaviour
 {
-    public enum BigblobState { Asleep, Wriggle, Awake, Dance }
-    
-    public EnumChangeEvent currentState = new EnumChangeEvent(typeof(BigblobState));
-    public float wriggleTime = 1f;
+    public BoolChangeEvent isAwake;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        StartCoroutine(ChangeStateCoroutine(BigblobState.Awake));
+        isAwake.Value = true;
+        TransferBodyColor(collision.attachedRigidbody.GetComponent<Body>());
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void TransferBodyColor(Body body)
     {
-        StartCoroutine(ChangeStateCoroutine(BigblobState.Dance));
-    }
-
-    private IEnumerator ChangeStateCoroutine(BigblobState newState)
-    {
-        if (currentState == (int)BigblobState.Asleep || currentState == (int)BigblobState.Dance)
+        if (body != null)
         {
-            currentState.Value = (int)BigblobState.Wriggle;
-            yield return new WaitForSeconds(wriggleTime);
+            body.render.color = GetComponentInChildren<SpriteRenderer>().color;
+            Light bodyLight = body.GetComponent<Light>();
+            if (bodyLight != null)
+                bodyLight.color = GetComponentInChildren<Light>().color;
         }
-
-        currentState.Value = newState;
     }
 }

@@ -22,10 +22,10 @@ using Scarblab.VCE;
     public static implicit operator float(FloatChangeEvent vce) => (float)vce.Value;
 }
 
-[Serializable] public class ComponentChangeEvent : ValueChangeEvent
+[Serializable] public class StringChangeEvent : ValueChangeEvent
 {
-    [SerializeField] private Component value;
-    public static implicit operator Component(ComponentChangeEvent vce) => (Component)vce.Value;
+    [SerializeField] private string value;
+    public static implicit operator string(StringChangeEvent vce) => (string)vce.Value;
 }
 
 [Serializable] public class EnumChangeEvent : ValueChangeEvent
@@ -40,4 +40,11 @@ using Scarblab.VCE;
         else
             Debug.LogError(enumType.ToString() + " is not an enum type");
     }
+}
+
+[Serializable]
+public class ComponentChangeEvent : ValueChangeEvent
+{
+    [SerializeField] private Component value;
+    public static implicit operator Component(ComponentChangeEvent vce) => (Component)vce.Value;
 }

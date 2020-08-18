@@ -3,18 +3,20 @@ using UnityEngine;
 
 public class EmoteSystem : MonoBehaviour
 {
+    /*
     public enum EmoteType { None, Particles }
 
     [Serializable]
     public struct Emote
     {
+        public string name;
         public EmoteType type;
         public int spriteIndexMin;
         public int spriteIndexMax;
     }
 
     public Emote[] emotes;
-    public IntChangeEvent currentEmoteIndex;
+    public StringChangeEvent currentEmote;
 
     private ParticleSystem particles;
 
@@ -25,13 +27,12 @@ public class EmoteSystem : MonoBehaviour
 
     private void Start()
     {
-        if (currentEmoteIndex == null) currentEmoteIndex = new IntChangeEvent();
-        currentEmoteIndex.AddTriggerListener(OnChangeEmote, true);
+        currentEmote.AddTriggerListener(OnChangeEmote, true);
     }
 
     private void OnDestroy()
     {
-        currentEmoteIndex.RemoveTriggerListener(OnChangeEmote);
+        currentEmote.RemoveTriggerListener(OnChangeEmote);
     }
 
     private void OnChangeEmote()
@@ -72,4 +73,5 @@ public class EmoteSystem : MonoBehaviour
             }            
         }
     }
+    */
 }
