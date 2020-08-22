@@ -11,8 +11,7 @@ public class ShadowProjector : MonoBehaviour
     
     void Update()
     {
-        Vector2 localDown = transform.rotation * Vector2.down;
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, localDown, maxDistance, projectionLayers);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, -transform.up, maxDistance, projectionLayers);
 
         if (hit.collider == null)
         {

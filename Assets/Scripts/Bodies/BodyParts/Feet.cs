@@ -28,9 +28,6 @@ public class Feet : BodyPart
     
     private void Awake()
     {
-        //_IsOnGround = new ValueChangeEvent<bool>();
-        //_IsTumbling = new ValueChangeEvent<bool>();
-
         AttachedBody = GetComponent<Body>();
         groundProbe = GetComponentInChildren<FlatGroundProbe>();
         //groundJoint = GetComponent<Joint2D>();

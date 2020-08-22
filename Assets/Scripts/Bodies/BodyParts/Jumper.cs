@@ -6,6 +6,7 @@ public class Jumper : BodyPart
 {
     public AnimationCurve jumpCurve;
     public float startVelocityDamping;
+    public bool interruptIfDoubleJump;
     public bool showGizmo;
 
     public Trigger tryJump;
@@ -63,13 +64,19 @@ public class Jumper : BodyPart
 
     private void OnTryJump()
     {
-        if (CanJump) jump.Trigger();
+        if (CanJump)
+            jump.Trigger();
+        else if (currentJumpCoroutine != null && interruptIfDoubleJump)
+        {
+            StopCoroutine(currentJumpCoroutine);
+            currentJumpCoroutine = null;
+        }
     }
 
     private void OnJump()
     {
         if (currentJumpCoroutine == null)
-            currentJumpCoroutine = StartCoroutine(JumpCoroutine());        
+            currentJumpCoroutine = StartCoroutine(JumpCoroutine());
     }
 
     private IEnumerator JumpCoroutine()

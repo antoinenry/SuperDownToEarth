@@ -6,6 +6,7 @@ using UnityEngine;
 [ExecuteAlways]
 public class Lever : MonoBehaviour
 {
+    public SimpleCollider2D handle;
     [Min(2f)] public int numPositions = 2;
     [Min(0f)] public float angleRange = 45f;
     [Min(0f)] public float reactionDelay;
@@ -19,18 +20,31 @@ public class Lever : MonoBehaviour
 
     private void Awake()
     {
-        rb2D = GetComponent<Rigidbody2D>();
+        if (handle != null)
+            rb2D = handle.GetComponent<Rigidbody2D>();
     }
 
     private void OnEnable()
     {
         if (leverPosition == null) leverPosition = new IntChangeEvent();
         leverPosition.AddValueListener<int>(OnPositionChange);
+
+        if (handle != null)
+        {
+            handle.onCollisionEnter.AddTriggerListener(OnHandleCollisionStart);
+            handle.onCollisionExit.AddTriggerListener(OnHandleCollisionEnd);
+        }
     }
 
     private void OnDisable()
     {
         leverPosition.RemoveValueListener<int>(OnPositionChange);
+
+        if (handle != null)
+        {
+            handle.onCollisionEnter.RemoveTriggerListener(OnHandleCollisionStart);
+            handle.onCollisionExit.RemoveTriggerListener(OnHandleCollisionEnd);
+        }
     }
 
     private void FixedUpdate()
@@ -50,19 +64,20 @@ public class Lever : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnHandleCollisionStart()
     {
-        if (Vector2.Dot(transform.right, collision.GetContact(0).normal) < 0f)
+        if (Vector2.Dot(handle.transform.right, handle.CollisionInfos.GetContact(0).normal) < 0f)
             leverActionDirection.Value = 1;
         else
             leverActionDirection.Value = -1;
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnHandleCollisionEnd()
     {
         leverActionDirection.Value = 0;
         leverActionTimer = 0f;
     }
+
     private IEnumerator RotateLeverCoroutine(float wantedRotation)
     {
         if (rb2D.rotation < wantedRotation)
@@ -88,7 +103,7 @@ public class Lever : MonoBehaviour
 
     private float GetLeverRotation(int leverPosition)
     {
-        return ((float)leverPosition / (numPositions - 1) - .5f) * angleRange + transform.parent.rotation.eulerAngles.z;
+        return ((float)leverPosition / (numPositions - 1) - .5f) * angleRange + handle.transform.parent.rotation.eulerAngles.z;
     }
 
     private void OnPositionChange(int newPosition)
@@ -104,7 +119,7 @@ public class Lever : MonoBehaviour
             if (Application.isPlaying)
                 StartCoroutine(RotateLeverCoroutine(wantedRotation));
             else
-                transform.rotation = Quaternion.Euler(0f, 0f, wantedRotation);
+                handle.transform.rotation = Quaternion.Euler(0f, 0f, wantedRotation);
         }
     }
 }

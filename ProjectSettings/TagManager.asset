@@ -11,6 +11,7 @@ TagManager:
   - Damaging
   - Checkpoint
   - Atmosphere
+  - Water
   layers:
   - Default
   - TransparentFX

@@ -1,5 +1,5 @@
 ﻿using UnityEditor;
-
+/*
 [CustomEditor(typeof(Circuit))]
 public class CircuitEditor : Editor
 {
@@ -8,7 +8,8 @@ public class CircuitEditor : Editor
         EditorGUI.BeginChangeCheck();
         base.OnInspectorGUI();
         Circuit circuit = target as Circuit;
-        circuit.UpdateTrajectory();
+        circuit.UpdateTrajectoryAndRotations();
         EditorUtility.SetDirty(circuit);
     }
 }
+*/

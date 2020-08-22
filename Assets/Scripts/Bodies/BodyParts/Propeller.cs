@@ -7,33 +7,58 @@ public class Propeller : BodyPart
     public float propulsionAngle = 90f;
     public bool constantWorldDirection = false;
     public float propulsionDuration = -1f;
-    public bool automatic = false;
-    
+    public bool oneShot = false;
+    public bool cancelVelocity = false;
+    public bool feetEnabled = false;
+
+    public Trigger run;
+    public Trigger stop;
     public BoolChangeEvent running;
 
     private Coroutine propulsionCoroutine;
-    private bool colliding;
 
     private void Awake()
     {
         AttachedBody = GetComponent<Body>();
     }
 
+    private void Start()
+    {
+        if (feetEnabled)
+        {
+            Feet feet = GetComponent<Feet>();
+            feet.IsOnGround.AddValueListener<bool>(OnFeetTouchGround);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (feetEnabled)
+        {
+            Feet feet = GetComponent<Feet>();
+            feet.IsOnGround.AddValueListener<bool>(OnFeetTouchGround);
+        }
+    }
+
     private void OnEnable()
     {
+        run.AddTriggerListener(Run);
+        stop.AddTriggerListener(Stop);
         running.AddValueListener<bool>(OnSetRunning);
     }
 
     private void OnDisable()
     {
+        Stop();
+
+        run.RemoveTriggerListener(Run);
+        stop.RemoveTriggerListener(Stop);
         running.RemoveValueListener<bool>(OnSetRunning);
     }
 
-    private void FixedUpdate()
+    private void OnFeetTouchGround(bool isOnGround)
     {
-        if (automatic == true)
-            running.Value = !colliding;        
-        colliding = false;
+        enabled = !isOnGround;
     }
 
     public Vector2 PropulsionDirection
@@ -43,12 +68,14 @@ public class Propeller : BodyPart
 
     public void Run()
     {
-        running.Value = true;
+        if (enabled)
+            running.Value = true;
     }
 
     public void Stop()
     {
-        running.Value = false;
+        if (enabled)
+            running.Value = false;
     }
 
 
@@ -57,12 +84,16 @@ public class Propeller : BodyPart
         if (on)
         {
             if (propulsionCoroutine == null)
+            {
+                run.Trigger();
                 propulsionCoroutine = StartCoroutine(PropulsionCoroutine());
+            }
         }
         else
         {
             if (propulsionCoroutine != null)
             {
+                stop.Trigger();
                 StopCoroutine(propulsionCoroutine);
                 propulsionCoroutine = null;
             }
@@ -72,6 +103,12 @@ public class Propeller : BodyPart
     private IEnumerator PropulsionCoroutine()
     {
         float propulsionTimer = 0f;
+
+        if (cancelVelocity)
+        {
+            AttachedRigidbody.velocity = Vector2.zero;
+            AttachedRigidbody.angularVelocity = 0f;
+        }
 
         while (running)
         {
@@ -87,10 +124,6 @@ public class Propeller : BodyPart
         }
 
         propulsionCoroutine = null;
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        colliding = true;
+        if (oneShot) enabled = false;
     }
 }

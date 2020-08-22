@@ -32,11 +32,9 @@ public class Funnel : HidingPlace
 
     private IEnumerator TravelCoroutine()
     {
-        Debug.Log("travel...");
         if (travelStartDelay > 0f)
             yield return new WaitForSeconds(travelStartDelay);
 
-        Debug.Log("...start...");
         isHidingABody.Value = false;
 
         if (hiddenJumper != null)
@@ -48,8 +46,7 @@ public class Funnel : HidingPlace
         }
         
         yield return new WaitForSeconds(travelDuration);
-
-        Debug.Log("...end");
+        
         connectTo.Hide(hiddenBody);
         hiddenBody = null;
 
