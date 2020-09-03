@@ -4,20 +4,19 @@ using UnityEngine;
 
 public class Funnel : HidingPlace
 {
+    [Header("Travel")]
     public Funnel connectTo;
     [Min(0f)] public float travelStartDelay = .2f;
     [Min(0f)] public float travelDuration = .3f;
+    [Min(0f)] public float velocityThreshold = 25f;
+    
+    private Coroutine currentTravelCoroutine;       
 
-    private Coroutine currentTravelCoroutine;
-
-    protected override void OnTriggerEnter2D(Collider2D collision)
+    protected override void OnBodyEnter(PhysicalBody body, float velocity)
     {
-        if (triggerIsCoolingDown == false && collision.CompareTag(triggerTag) == true)
-        {
-            Hide(collision.attachedRigidbody.GetComponent<PhysicalBody>());
-            if (currentTravelCoroutine == null)
-                currentTravelCoroutine = StartCoroutine(TravelCoroutine());
-        }
+        Hide(body);        
+        if (currentTravelCoroutine == null && velocity >= velocityThreshold)
+            currentTravelCoroutine = StartCoroutine(TravelCoroutine());
     }
 
     protected override void OnPushOut()

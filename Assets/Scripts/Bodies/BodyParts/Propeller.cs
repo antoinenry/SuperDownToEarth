@@ -42,6 +42,8 @@ public class Propeller : BodyPart
 
     private void OnEnable()
     {
+        if (AttachedRigidbody.simulated == false) enabled = false;
+
         run.AddTriggerListener(Run);
         stop.AddTriggerListener(Stop);
         running.AddValueListener<bool>(OnSetRunning);

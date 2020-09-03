@@ -18,10 +18,21 @@ public class HidingPlace : MonoBehaviour
     protected Jumper hiddenJumper;
     protected bool triggerIsCoolingDown;
 
-    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (triggerIsCoolingDown == false && collision.collider.CompareTag(triggerTag) == true)
+            OnBodyEnter(collision.collider.attachedRigidbody.GetComponent<PhysicalBody>(), collision.relativeVelocity.magnitude);
+    }
+
+    private  void OnTriggerEnter2D(Collider2D collision)
     {
         if (triggerIsCoolingDown == false && collision.CompareTag(triggerTag) == true)
-            Hide(collision.attachedRigidbody.GetComponent<PhysicalBody>());            
+            OnBodyEnter(collision.attachedRigidbody.GetComponent<PhysicalBody>(), collision.attachedRigidbody.velocity.magnitude);
+    }
+
+    protected virtual void OnBodyEnter(PhysicalBody body, float velocity)
+    {
+        Hide(body);
     }
 
     public void Hide(Body body)

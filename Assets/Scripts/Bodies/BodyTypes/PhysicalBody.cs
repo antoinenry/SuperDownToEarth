@@ -5,6 +5,7 @@ public class PhysicalBody : Body
     public Rigidbody2D rb2d;
 
     [Header("Physical")]
+    [Header("//WEIRD PART")]
     public bool isFree;
     [Min(0f)] public float freeLinearVelocity = 1f;
     [Min(0f)] public float freeAngularVelocity = 5f;
@@ -51,7 +52,7 @@ public class PhysicalBody : Body
         get => render;
         protected set => render = value;
     }
-
+    /*
     private void FixedUpdate()
     {
         if(isFree)
@@ -73,7 +74,7 @@ public class PhysicalBody : Body
             }
         }
     }
-
+    */
     private void OnEnable()
     {
         SetAllFlags(true);

@@ -10,10 +10,12 @@ public class Lever : MonoBehaviour
     [Min(2f)] public int numPositions = 2;
     [Min(0f)] public float angleRange = 45f;
     [Min(0f)] public float reactionDelay;
+    [Min(0f)] public float velocityThreshold = 0f;
     [Min(0f)] public float rotationSpeed;
 
     private Rigidbody2D rb2D;
     private float leverActionTimer;
+    private bool enoughVelociy;
 
     public IntChangeEvent leverPosition;
     public IntChangeEvent leverActionDirection;
@@ -49,23 +51,31 @@ public class Lever : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if ((leverActionDirection > 0 && leverPosition < numPositions - 1) || (leverActionDirection < 0 && leverPosition > 0))
+        if (enoughVelociy)
         {
-            leverActionTimer += Time.fixedDeltaTime;
-            if (leverActionTimer > reactionDelay)
+            if ((leverActionDirection > 0 && leverPosition < numPositions - 1) || (leverActionDirection < 0 && leverPosition > 0))
             {
-                //StartCoroutine(RotateLeverCoroutine(leverActionDirection));
-                int newLeverPosition = leverPosition + leverActionDirection;
-                leverPosition.Value = newLeverPosition;
-                float wantedRotation = GetLeverRotation(newLeverPosition);
-                StartCoroutine(RotateLeverCoroutine(wantedRotation));
-                leverActionTimer = 0f;
+                leverActionTimer += Time.fixedDeltaTime;
+                if (leverActionTimer > reactionDelay)
+                {
+                    //StartCoroutine(RotateLeverCoroutine(leverActionDirection));
+                    int newLeverPosition = leverPosition + leverActionDirection;
+                    leverPosition.Value = newLeverPosition;
+                    float wantedRotation = GetLeverRotation(newLeverPosition);
+                    StartCoroutine(RotateLeverCoroutine(wantedRotation));
+                    leverActionTimer = 0f;
+                }
             }
         }
     }
 
     private void OnHandleCollisionStart()
     {
+        if (velocityThreshold > 0f)
+            enoughVelociy = handle.CollisionInfos.relativeVelocity.magnitude >= velocityThreshold;
+        else
+            enoughVelociy = true;
+
         if (Vector2.Dot(handle.transform.right, handle.CollisionInfos.GetContact(0).normal) < 0f)
             leverActionDirection.Value = 1;
         else
@@ -76,6 +86,7 @@ public class Lever : MonoBehaviour
     {
         leverActionDirection.Value = 0;
         leverActionTimer = 0f;
+        enoughVelociy = false;
     }
 
     private IEnumerator RotateLeverCoroutine(float wantedRotation)

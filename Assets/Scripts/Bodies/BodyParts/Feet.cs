@@ -23,7 +23,7 @@ public class Feet : BodyPart
     private int groundCount;
 
     public float groundAngle { get; private set; }
-    public Vector2 GroundVelocity { get => groundRigidbody == null ? Vector2.zero : groundRigidbody.GetPointVelocity(this.transform.position); }
+    public Vector2 GroundVelocity { get => groundRigidbody == null ? Vector2.zero : groundRigidbody.GetPointVelocity(AttachedRigidbody.position); }
     public float GroundAngularVelocity { get => groundRigidbody == null ? 0f : groundRigidbody.angularVelocity; }
     
     private void Awake()
