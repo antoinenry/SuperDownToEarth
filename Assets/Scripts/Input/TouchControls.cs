@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class TouchControls : MonoBehaviour
 {
     public int maxTouch = 2;
     public float tapDuration = .1f;
-
+    
     public Vector2[] Taps { get; private set; }
     public Vector2[] Holds { get; private set; }
 
@@ -44,7 +43,7 @@ public class TouchControls : MonoBehaviour
                         break;
 
                     case TouchPhase.Moved:
-                        //touchInputs[i].Move(touch.deltaTime, touch.position);
+                        touchInputs[i].Move(touch.deltaTime, touch.position);
                         break;
 
                     case TouchPhase.Ended:
@@ -57,12 +56,12 @@ public class TouchControls : MonoBehaviour
 
             TouchInput t = touchInputs[i];
 
-            if (t.positions.Count == 1)
+            if (t.positions.Count >= 1)
             {
                 if (t.hold == false && t.duration <= tapDuration)
                     taps.Add(t.positions[0]);
                 else if (t.hold == true && t.duration > tapDuration)
-                    holds.Add(t.positions[0]);
+                    holds.Add(t.positions[t.positions.Count - 1]);
             }            
         }
 
