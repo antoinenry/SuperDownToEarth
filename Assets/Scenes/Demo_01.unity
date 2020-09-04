@@ -1639,7 +1639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b85bf4ff019c74409e8b55e9d73bf0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invertDirection: 1
+  invertDirection: 0
   spinVelocity: 240
   spinInertia: 0
   tumbleRecuperation: 100
@@ -21176,7 +21176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b85bf4ff019c74409e8b55e9d73bf0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invertDirection: 1
+  invertDirection: 0
   spinVelocity: 200
   spinInertia: 0
   tumbleRecuperation: 100
@@ -21240,7 +21240,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &8251557782544366452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21354,7 +21354,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8251557782544366451}
   m_LocalRotation: {x: -0, y: -0, z: -0.000000059604645, w: 1}
-  m_LocalPosition: {x: 17.17, y: 17.65, z: 0}
+  m_LocalPosition: {x: -9.09, y: 17.67, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8251557783088937105}

@@ -26,7 +26,7 @@ public class Spinner : BodyPart
 
     public void Spin(int intDirection)
     {
-            spinDirection.Value = intDirection;
+        spinDirection.Value = intDirection;
     }
     
     private void SetBodyVelocity(float sv)

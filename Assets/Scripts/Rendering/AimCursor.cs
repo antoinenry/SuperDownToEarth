@@ -41,8 +41,8 @@ public class AimCursor : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, maxLength, collisionLayers);
         if (hit)
-            line.SetPosition(0, Quaternion.Inverse(transform.rotation) * (hit.point - (Vector2)transform.position));
+            line.SetPosition(0, Quaternion.Inverse(transform.rotation) * Vector2.Scale(hit.point - (Vector2)transform.position, transform.lossyScale));
         else
-            line.SetPosition(0, Quaternion.Inverse(transform.rotation) * direction);
+            line.SetPosition(0, Quaternion.Inverse(transform.rotation) * Vector2.Scale(direction, transform.lossyScale));
     }
 }

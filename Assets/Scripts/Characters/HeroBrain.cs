@@ -107,7 +107,7 @@ public class HeroBrain : MonoBehaviour
 
             Vector2 heroScreenPosition = currentCamera.WorldToScreenPoint(transform.position);
             float touchToHeroAngle = Vector2.SignedAngle((Vector2)touchHoldPosition - heroScreenPosition, transform.up);
-            currentControls.axisInput.Value = touchToHeroAngle < 0 ? 1 : -1;
+            currentControls.axisInput.Value = touchToHeroAngle > 0 ? 1 : -1;
         }
         else
         {
@@ -129,7 +129,7 @@ public class HeroBrain : MonoBehaviour
 
             Vector2 heroScreenPosition = currentCamera.WorldToScreenPoint(transform.position);
             float mouseToHeroAngle = Vector2.SignedAngle((Vector2)mousePos - heroScreenPosition, transform.up);
-            currentControls.axisInput.Value = mouseToHeroAngle < 0 ? 1 : -1;
+            currentControls.axisInput.Value = mouseToHeroAngle > 0 ? 1 : -1;
         }
         else
         {
