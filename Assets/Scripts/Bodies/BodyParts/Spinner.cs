@@ -24,9 +24,9 @@ public class Spinner : BodyPart
             SetBodyVelocity((invertDirection ? -1f : 1f) * spinVelocity * spinDirection);
     }
 
-    public void Spin(int intDirection)
+    public void Spin(int direction)
     {
-        spinDirection.Value = intDirection;
+        spinDirection.Value = direction;
     }
     
     private void SetBodyVelocity(float sv)

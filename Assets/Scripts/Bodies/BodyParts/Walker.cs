@@ -8,9 +8,9 @@ public class Walker : BodyPart
     private Coroutine walkCoroutine;
     private Vector2 currentWalkVelocity;
     private bool switchingGears;
-
-    public FloatChangeEvent walkSpeed;
+    
     public IntChangeEvent currentWalkDirection;
+    public FloatChangeEvent walkSpeed;
 
     private void Awake()
     {
@@ -35,7 +35,7 @@ public class Walker : BodyPart
         currentWalkDirection.RemoveValueListener<int>(OnWalkDirectionChange);
     }
 
-    public void Walk(int direction)
+    public void Walk(float direction)
     {
         currentWalkDirection.Value = direction;
     }
@@ -57,21 +57,19 @@ public class Walker : BodyPart
             while (Feet.IsOnGround == false || Feet.IsTumbling == true)
                 yield return new WaitForFixedUpdate();
 
-            switch (currentWalkDirection)
+            if (currentWalkDirection > 0)
             {
-                case 0:
-                    currentWalkVelocity = Vector2.zero;
-                    break;
-
-                case 1:
-                    AttachedRigidbody.transform.localScale = Vector3.one;
-                    currentWalkVelocity = Quaternion.Euler(0f, 0f, AttachedRigidbody.rotation) * Vector2.right * walkSpeed;
-                    break;
-
-                case -1:
-                    AttachedRigidbody.transform.localScale = new Vector3(-1f, 1f, 1f);
-                    currentWalkVelocity = Quaternion.Euler(0f, 0f, AttachedRigidbody.rotation) * Vector2.left * walkSpeed;
-                    break;
+                AttachedRigidbody.transform.localScale = Vector3.one;
+                currentWalkVelocity = Quaternion.Euler(0f, 0f, AttachedRigidbody.rotation) * Vector2.right * walkSpeed;
+            }
+            else if(currentWalkDirection < 0)
+            {
+                AttachedRigidbody.transform.localScale = new Vector3(-1f, 1f, 1f);
+                currentWalkVelocity = Quaternion.Euler(0f, 0f, AttachedRigidbody.rotation) * Vector2.left * walkSpeed;
+            }
+            else
+            {
+                currentWalkVelocity = Vector2.zero;
             }
 
             yield return new WaitForFixedUpdate();

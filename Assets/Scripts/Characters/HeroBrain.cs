@@ -6,6 +6,12 @@ public class HeroBrain : MonoBehaviour
 
     public InputType activeInput;
 
+    [Header("Touch & Mouse")]
+    public float aimDistanceMin = 1f;
+    public Hysteresis aimDistanceHysteresis;
+    public Hysteresis aimAngleHysteresis;
+    public Vector2ChangeEvent aimPosition;
+
     [Header("Buttons")]
     public string directionAxisName = "Horizontal";
     public string action1ButtonName = "Action1";
@@ -15,7 +21,6 @@ public class HeroBrain : MonoBehaviour
     private Pilot pilot;
     private PlayerControls currentControls;
 
-    public Vector2ChangeEvent aimPosition;
 
     private void Awake()
     {
@@ -99,45 +104,58 @@ public class HeroBrain : MonoBehaviour
         
     private void GetTouchControls()
     {
-        Camera currentCamera = Camera.main;
-        if (currentCamera != null && touchControls.Holds.Length >= 1)
-        {
-            Vector3 touchHoldPosition = touchControls.Holds[0];
-            aimPosition.Value = (Vector2)currentCamera.ScreenToWorldPoint(touchHoldPosition) - (Vector2)transform.position;
+        bool tap = touchControls.Taps.Length > 0;
+        Vector2 tapPosition = tap ? touchControls.Taps[0] : Vector2.zero;
+        bool hold = touchControls.Holds.Length > 0;
+        Vector2 holdPosition = hold ? touchControls.Holds[0] : Vector2.zero;
 
-            Vector2 heroScreenPosition = currentCamera.WorldToScreenPoint(transform.position);
-            float touchToHeroAngle = Vector2.SignedAngle((Vector2)touchHoldPosition - heroScreenPosition, transform.up);
-            currentControls.axisInput.Value = touchToHeroAngle > 0 ? 1 : -1;
-        }
-        else
-        {
-            currentControls.axisInput.Value = 0;
-            aimPosition.Value = Vector2.zero;
-        }
-
-        if (touchControls.Taps.Length > 0)
-            currentControls.action1Input.Trigger();
+        GetScreenRelativeControls(tap, tapPosition, hold, holdPosition);
     }    
 
     private void GetMouseControls()
     {
+        GetScreenRelativeControls(Input.GetMouseButtonDown(0), Input.mousePosition, Input.GetMouseButton(1), Input.mousePosition);
+    }
+
+    private void GetScreenRelativeControls(bool tapInput, Vector2 tapPosition, bool holdInput, Vector2 holdPosition)
+    {
+        int axisInput = 0;
+        Vector2 aimInput = Vector2.zero;
+
         Camera currentCamera = Camera.main;
-        if (currentCamera != null && Input.GetMouseButton(1))
-        {
-            Vector3 mousePos = Input.mousePosition;
-            aimPosition.Value = (Vector2)currentCamera.ScreenToWorldPoint(mousePos) - (Vector2)transform.position;
+        if (currentCamera != null)
+        {       
+            if (holdInput)
+            {
+                Vector2 worldholdPos = currentCamera.ScreenToWorldPoint(holdPosition);
+                float distanceToHero = Vector2.Distance(transform.position, worldholdPos);
 
-            Vector2 heroScreenPosition = currentCamera.WorldToScreenPoint(transform.position);
-            float mouseToHeroAngle = Vector2.SignedAngle((Vector2)mousePos - heroScreenPosition, transform.up);
-            currentControls.axisInput.Value = mouseToHeroAngle > 0 ? 1 : -1;
-        }
-        else
-        {
-            currentControls.axisInput.Value = 0;
-            aimPosition.Value = Vector2.zero;
+                aimDistanceHysteresis.Input = distanceToHero / aimDistanceMin;
+
+                if (aimDistanceHysteresis.Output > 0)
+                {
+                    Vector2 heroScreenPosition = currentCamera.WorldToScreenPoint(transform.position);
+                    float holdTooHeroAngle = Vector2.SignedAngle(holdPosition - heroScreenPosition, transform.up);
+                    aimAngleHysteresis.Input = 1f - Mathf.Abs(Mathf.Abs(holdTooHeroAngle) - 90f) / 90f;
+                    axisInput = (int)(aimAngleHysteresis.Output * Mathf.Sign(holdTooHeroAngle));
+
+                    if (axisInput != 0) aimInput = worldholdPos - (Vector2)transform.position;
+                }
+            }
+
+            if (tapInput)
+            {
+                Vector2 worldtapPos = currentCamera.ScreenToWorldPoint(tapPosition);
+                float distanceToHero = Vector2.Distance(transform.position, worldtapPos);
+
+                if (distanceToHero > aimDistanceMin)
+                    currentControls.action1Input.Trigger();
+                else
+                    currentControls.action2Input.Trigger();
+            }
         }
 
-        if (Input.GetMouseButtonUp(0))
-            currentControls.action1Input.Trigger();
+        currentControls.axisInput.Value = axisInput;
+        aimPosition.Value = aimInput;
     }
 }

@@ -573,13 +573,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeInput: 0
-  directionAxisName: Horizontal
-  action1ButtonName: Action1
-  action2ButtonName: Action2
+  aimDistanceMin: 1.5
+  aimDistanceHysteresis:
+    inferior: 0.5
+    superior: 0.8
+  aimAngleHysteresis:
+    inferior: 0.05
+    superior: 0.1
   aimPosition:
     inspectorUnfold: 0
     masters: []
     value: {x: 0, y: 0}
+  directionAxisName: Horizontal
+  action1ButtonName: Action1
+  action2ButtonName: Action2
 --- !u!58 &94323238
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1651,7 +1658,7 @@ MonoBehaviour:
       indexInComponent: 0
     value: 0
   spinDirection:
-    inspectorUnfold: 0
+    inspectorUnfold: 1
     masters:
     - name: axisInput
       component: {fileID: 94323239}
@@ -1767,7 +1774,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 414403193}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -24.74, y: 17.66, z: 0}
+  m_LocalPosition: {x: -24.73, y: 17.57, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 94323232}
@@ -2021,7 +2028,7 @@ MonoBehaviour:
   target: {fileID: 414403204}
   followX: 1
   followY: 1
-  damping: 10
+  damping: 40
   travelingRect:
     serializedVersion: 2
     x: -29.91
@@ -2030,10 +2037,10 @@ MonoBehaviour:
     height: 23.7
   neutralRect:
     serializedVersion: 2
-    x: -2
-    y: -2
-    width: 4
-    height: 4
+    x: -1
+    y: -1
+    width: 2
+    height: 2
 --- !u!1 &473614839
 GameObject:
   m_ObjectHideFlags: 0
@@ -19093,7 +19100,7 @@ Transform:
   m_GameObject: {fileID: 1913068497}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 94323232}
   m_RootOrder: 0
@@ -19143,7 +19150,7 @@ LineRenderer:
   - {x: 1, y: 1, z: 0}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.16973941
+    widthMultiplier: 0.33220634
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -19162,7 +19169,7 @@ LineRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 1, g: 1, b: 1, a: 0}
-      key1: {r: 1, g: 1, b: 1, a: 0.24313726}
+      key1: {r: 1, g: 1, b: 1, a: 0.8117647}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -21153,17 +21160,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57ad6a309812ed740aabf4647c1421fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed:
-    inspectorUnfold: 0
-    masters: []
-    value: 5
   currentWalkDirection:
-    inspectorUnfold: 0
+    inspectorUnfold: 1
     masters:
     - name: axisInput
       component: {fileID: 767037639282701053}
       indexInComponent: 0
     value: 0
+  walkSpeed:
+    inspectorUnfold: 0
+    masters: []
+    value: 5
 --- !u!114 &8251557782544366448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21354,7 +21361,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8251557782544366451}
   m_LocalRotation: {x: -0, y: -0, z: -0.000000059604645, w: 1}
-  m_LocalPosition: {x: -9.09, y: 17.67, z: 0}
+  m_LocalPosition: {x: 4.68, y: 17.73, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8251557783088937105}
@@ -21396,7 +21403,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   render: {fileID: 8251557783088937104}
   destroyBody:
-    inspectorUnfold: 1
+    inspectorUnfold: 0
     masters:
     - name: hit
       component: {fileID: 2080837955}
@@ -21455,7 +21462,7 @@ MonoBehaviour:
     inspectorUnfold: 0
     masters: []
   running:
-    inspectorUnfold: 1
+    inspectorUnfold: 0
     masters: []
     value: 0
 --- !u!70 &8251557782544366459
@@ -21646,7 +21653,7 @@ MonoBehaviour:
       masters:
       - name: currentWalkDirection
         component: {fileID: 8251557782544366442}
-        indexInComponent: 0
+        indexInComponent: 1
       value: 0
   animatorFloats: []
 --- !u!95 &8251557783088937110

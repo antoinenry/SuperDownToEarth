@@ -37,7 +37,7 @@ public class AimCursor : MonoBehaviour
 
     private void DrawRay(Vector2 direction, float maxLength)
     {
-        line.SetPosition(1, Quaternion.Inverse(transform.rotation) * direction.normalized * minDistance);
+        line.SetPosition(1, Quaternion.Inverse(transform.rotation) * Vector2.Scale(direction.normalized * minDistance, transform.lossyScale));
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, maxLength, collisionLayers);
         if (hit)
