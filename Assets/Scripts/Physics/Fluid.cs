@@ -20,7 +20,7 @@ public class Fluid : MonoBehaviour
 
     [Header("Fluid movements")]
     public float ondulationRadius = .5f;
-    public float ondulationSpeed = 20f;
+    public float frequency = 1;
     public float angularIncrement = 60f;
 
     private LowPolyShape[] shapes;
@@ -122,7 +122,7 @@ public class Fluid : MonoBehaviour
 
         foreach (FluidPoint fluidPoint in points)
         {
-            MovePoint(fluidPoint, fluidPoint.startPosition + fluidPoint.perturbation + Quaternion.Euler(0f, 0f, angleOffset + ondulationSpeed * time) * new Vector3(ondulationRadius, 0f, 0f));
+            MovePoint(fluidPoint, fluidPoint.startPosition + fluidPoint.perturbation + Quaternion.Euler(0f, 0f, angleOffset + frequency * time * 360f) * new Vector3(ondulationRadius, 0f, 0f));
             angleOffset += angularIncrement;
         }
 

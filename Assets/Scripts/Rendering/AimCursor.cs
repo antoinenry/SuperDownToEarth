@@ -3,6 +3,7 @@
 public class AimCursor : MonoBehaviour
 {
     public float minDistance = 1f;
+    public float maxDistance = 5f;
     public Vector2ChangeEvent aimPosition;
     public LayerMask collisionLayers;
 
@@ -25,7 +26,7 @@ public class AimCursor : MonoBehaviour
 
     private void OnPositionChange(Vector2 newPos)
     {
-        float distance = newPos.magnitude;
+        float distance = Mathf.Min(newPos.magnitude, maxDistance);
         if (distance >= minDistance)
         {
             line.enabled = true;
@@ -37,12 +38,15 @@ public class AimCursor : MonoBehaviour
 
     private void DrawRay(Vector2 direction, float maxLength)
     {
-        line.SetPosition(1, Quaternion.Inverse(transform.rotation) * Vector2.Scale(direction.normalized * minDistance, transform.lossyScale));
+        direction.Normalize();
+        line.SetPosition(1, Quaternion.Inverse(transform.rotation) * Vector2.Scale(direction * minDistance, transform.lossyScale));
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, maxLength, collisionLayers);
         if (hit)
+        {
             line.SetPosition(0, Quaternion.Inverse(transform.rotation) * Vector2.Scale(hit.point - (Vector2)transform.position, transform.lossyScale));
+        }
         else
-            line.SetPosition(0, Quaternion.Inverse(transform.rotation) * Vector2.Scale(direction, transform.lossyScale));
+            line.SetPosition(0, Quaternion.Inverse(transform.rotation) * Vector2.Scale(direction * maxDistance, transform.lossyScale));
     }
 }

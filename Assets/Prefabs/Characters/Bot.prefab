@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a04811e978ef4e4fa9058bbd25818c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stickForce: 6
+  stickForce: 12
   useTrigger: 0
   ignoreLayers:
     serializedVersion: 2
@@ -175,10 +175,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57ad6a309812ed740aabf4647c1421fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed:
-    inspectorUnfold: 0
-    masters: []
-    value: 5
   currentWalkDirection:
     inspectorUnfold: 0
     masters:
@@ -186,6 +182,10 @@ MonoBehaviour:
       component: {fileID: 6879273611366782314}
       indexInComponent: 0
     value: 0
+  walkSpeed:
+    inspectorUnfold: 0
+    masters: []
+    value: 4
 --- !u!114 &2836821742097947874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,6 +232,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   startVelocityDamping: 4
+  interruptIfDoubleJump: 0
   showGizmo: 0
   tryJump:
     inspectorUnfold: 0
@@ -254,7 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b85bf4ff019c74409e8b55e9d73bf0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invertDirection: 1
+  invertDirection: 0
   spinVelocity: 200
   spinInertia: 0
   tumbleRecuperation: 100
@@ -284,6 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf3420fbd6936cf49af882f50c5e1cf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  render: {fileID: 2836821742625808135}
   destroyBody:
     inspectorUnfold: 1
     masters:
@@ -294,7 +296,6 @@ MonoBehaviour:
     inspectorUnfold: 0
     masters: []
   rb2d: {fileID: 2836821742097947878}
-  render: {fileID: 2836821742625808135}
   isFree: 0
   freeLinearVelocity: 0.1
   freeAngularVelocity: 5

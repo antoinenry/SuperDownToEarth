@@ -73,8 +73,8 @@ public class Door : MonoBehaviour
 
     private IEnumerator MoveBodyCoroutine(Vector2 toLocalPosition, float toLocalRotation, float duration)
     {
-        Vector2 toPosition = movingPart.parent == null ? toLocalPosition : toLocalPosition + (Vector2)movingPart.parent.position;
-        float toRotation = movingPart.parent == null ? toLocalRotation : toLocalRotation + movingPart.parent.rotation.eulerAngles.z;
+        Vector2 toPosition = movingPart.parent == null ? toLocalPosition : (Vector2)(movingPart.parent.rotation * toLocalPosition) + (Vector2)movingPart.parent.position;
+        float toRotation = movingPart.parent == null ? toLocalRotation : movingPart.parent.rotation.eulerAngles.z + toLocalRotation;
         float routineTimer = 0f;
 
         if (duration > 0f)

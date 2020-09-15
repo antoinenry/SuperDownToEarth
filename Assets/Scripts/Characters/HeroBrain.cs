@@ -7,6 +7,7 @@ public class HeroBrain : MonoBehaviour
     public InputType activeInput;
 
     [Header("Touch & Mouse")]
+    public bool rotateRelativeToPlayer = false;
     public float aimDistanceMin = 1f;
     public Hysteresis aimDistanceHysteresis;
     public Hysteresis aimAngleHysteresis;
@@ -127,19 +128,29 @@ public class HeroBrain : MonoBehaviour
         {       
             if (holdInput)
             {
-                Vector2 worldholdPos = currentCamera.ScreenToWorldPoint(holdPosition);
-                float distanceToHero = Vector2.Distance(transform.position, worldholdPos);
-
-                aimDistanceHysteresis.Input = distanceToHero / aimDistanceMin;
-
-                if (aimDistanceHysteresis.Output > 0)
+                if (rotateRelativeToPlayer)
                 {
-                    Vector2 heroScreenPosition = currentCamera.WorldToScreenPoint(transform.position);
-                    float holdTooHeroAngle = Vector2.SignedAngle(holdPosition - heroScreenPosition, transform.up);
-                    aimAngleHysteresis.Input = 1f - Mathf.Abs(Mathf.Abs(holdTooHeroAngle) - 90f) / 90f;
-                    axisInput = (int)(aimAngleHysteresis.Output * Mathf.Sign(holdTooHeroAngle));
+                    Vector2 worldholdPos = currentCamera.ScreenToWorldPoint(holdPosition);
+                    float distanceToHero = Vector2.Distance(transform.position, worldholdPos);
 
-                    if (axisInput != 0) aimInput = worldholdPos - (Vector2)transform.position;
+                    aimDistanceHysteresis.Input = distanceToHero / aimDistanceMin;
+
+                    if (aimDistanceHysteresis.Output > 0)
+                    {
+                        Vector2 heroScreenPosition = currentCamera.WorldToScreenPoint(transform.position);
+                        float holdTooHeroAngle = Vector2.SignedAngle(holdPosition - heroScreenPosition, transform.up);
+                        aimAngleHysteresis.Input = 1f - Mathf.Abs(Mathf.Abs(holdTooHeroAngle) - 90f) / 90f;
+                        axisInput = (int)(aimAngleHysteresis.Output * Mathf.Sign(holdTooHeroAngle));
+
+                        if (axisInput != 0) aimInput = worldholdPos - (Vector2)transform.position;
+                    }
+                }
+                else
+                {
+                    if (touchControls.touchRight)
+                        axisInput = 1;
+                    else if(touchControls.touchLeft)
+                        axisInput = -1;
                 }
             }
 

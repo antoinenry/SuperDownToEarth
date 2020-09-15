@@ -4,6 +4,7 @@
 public class LightAnimator : MonoBehaviour
 {
     public float frequency;
+    public float phase;
     public float intensityAmplitude;
     public float rangeAmplitude;
 
@@ -21,7 +22,7 @@ public class LightAnimator : MonoBehaviour
     void Update()
     {
         float t = Time.time;
-        thisLight.intensity = startIntensity + intensityAmplitude * Mathf.Cos(t * frequency);
-        thisLight.range = startRange + rangeAmplitude * Mathf.Cos(t * frequency);
+        thisLight.intensity = startIntensity + intensityAmplitude * Mathf.Cos((phase + t * frequency) * 2f * Mathf.PI);
+        thisLight.range = startRange + rangeAmplitude * Mathf.Cos((phase + t * frequency) * 2f * Mathf.PI);
     }
 }

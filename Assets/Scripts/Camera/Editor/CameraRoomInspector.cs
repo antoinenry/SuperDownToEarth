@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+/*
 [CustomEditor(typeof(CameraRoom))]
 public class CameraRoomInspector : Editor
 {
@@ -37,3 +38,4 @@ public class CameraRoomInspector : Editor
         EditorGUILayout.EndHorizontal();
     }
 }
+*/

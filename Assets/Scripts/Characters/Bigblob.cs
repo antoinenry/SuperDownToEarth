@@ -16,7 +16,7 @@ public class Bigblob : MonoBehaviour
         if (body != null)
         {
             body.render.color = GetComponentInChildren<SpriteRenderer>().color;
-            Light bodyLight = body.GetComponent<Light>();
+            Light bodyLight = body.GetComponentInChildren<Light>();
             if (bodyLight != null)
                 bodyLight.color = GetComponentInChildren<Light>().color;
         }

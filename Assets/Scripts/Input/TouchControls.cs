@@ -4,10 +4,14 @@ using UnityEngine;
 public class TouchControls : MonoBehaviour
 {
     public int maxTouch = 2;
-    public float tapDuration = .1f;
+    public float minHoldDuration = .1f;
+    public float maxTapDuration = .3f;
     
     public Vector2[] Taps { get; private set; }
     public Vector2[] Holds { get; private set; }
+
+    public BoolChangeEvent touchRight;
+    public BoolChangeEvent touchLeft;
 
     private List<TouchInput> touchInputs;
 
@@ -22,8 +26,15 @@ public class TouchControls : MonoBehaviour
 
     private void Update()
     {
+        FetchTouchInputs();
+    }
+
+    private void FetchTouchInputs()
+    {
         List<Vector2> taps = new List<Vector2>();
         List<Vector2> holds = new List<Vector2>();
+        bool holdingRight = false;
+        bool holdingLeft = false;
 
         int touchCount = Input.touchCount;
 
@@ -55,17 +66,28 @@ public class TouchControls : MonoBehaviour
                 touchInputs[i].Clear();
 
             TouchInput t = touchInputs[i];
-
             if (t.positions.Count >= 1)
             {
-                if (t.hold == false && t.duration <= tapDuration)
+                if (t.hold == true && t.duration >= minHoldDuration)
+                {
+                    Vector2 holdPosition = t.positions[t.positions.Count - 1];
+                    holds.Add(holdPosition);
+                    if (holdPosition.x > Screen.width / 2f)
+                        holdingRight = true;
+                    else
+                        holdingLeft = true;
+                }
+
+                if (t.hold == false && t.duration <= maxTapDuration)
+                {
                     taps.Add(t.positions[0]);
-                else if (t.hold == true && t.duration > tapDuration)
-                    holds.Add(t.positions[t.positions.Count - 1]);
-            }            
+                }
+            }
         }
 
         Taps = taps.ToArray();
         Holds = holds.ToArray();
+        touchRight.Value = holdingRight;
+        touchLeft.Value = holdingLeft;
     }
 }

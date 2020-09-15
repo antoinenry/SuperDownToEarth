@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Poscillator : MonoBehaviour
 {
@@ -9,11 +7,13 @@ public class Poscillator : MonoBehaviour
 
     private Vector3 startPosition;
     private float startTime;
+    private Rigidbody2D rb2D;
 
     private void Start()
     {
         startPosition = transform.localPosition;
         startTime = Time.fixedTime;
+        rb2D = GetComponent<Rigidbody2D>();
     }
 
     private void FixedUpdate()
@@ -25,6 +25,13 @@ public class Poscillator : MonoBehaviour
             amplitude.y * Mathf.Sin(time * frequency.y * (2 * Mathf.PI)),
             0f);
 
-        transform.localPosition  = startPosition + offPos;
+        Vector2 moveToPosition = startPosition + offPos;
+
+        if (rb2D == null)
+            transform.localPosition = moveToPosition;
+        else
+        {
+            rb2D.velocity = (moveToPosition - rb2D.position) / Time.fixedDeltaTime;
+        }
     }
 }

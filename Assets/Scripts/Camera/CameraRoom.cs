@@ -1,35 +1,71 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEngine;
 
-using UnityEngine;
-
+[ExecuteAlways]
 public class CameraRoom : MonoBehaviour
 {
-    public CameraSettings enterSettings;
+    public bool targetIncoming = true;
+    public FollowCamera.FollowSettings enterSettings;
+    public Trigger enterRoom;
 
-    public static bool showAllRoomsGizmos;
-
-    private void OnDrawGizmosSelected()
-    {
-        DrawGizmos();
-    }
+    private FollowCamera followCam;
 
     private void OnDrawGizmos()
     {
-        if (showAllRoomsGizmos) DrawGizmos();
+        FollowCamera.FollowSettings settings = GetWorldSettings();
+
+        Color drawingColor = Color.white;
+        drawingColor.a = .05f;
+        Gizmos.color = drawingColor;
+        Gizmos.DrawCube(settings.travelingRect.center, settings.travelingRect.size);
+        
+        Gizmos.color = Color.white;
+        Vector2 halfCamSize = new Vector2(settings.orthographicSize * Camera.main.aspect, settings.orthographicSize);
+        Rect cameraFrame = new Rect((Vector2)transform.position - halfCamSize, halfCamSize * 2f);
+        Gizmos.DrawWireCube(cameraFrame.center, cameraFrame.size);
+
+        Gizmos.color = Color.gray;
+        Gizmos.DrawWireCube((Vector2)transform.position, settings.neutralZoneSize);
     }
 
-    private void DrawGizmos()
+    private void Awake()
     {
-        Vector3 enterPos = transform.position;
-        if (enterSettings.positionOffset.action == CameraSettings.ActionType.UseValue)
-            enterPos += (Vector3)enterSettings.positionOffset.value;
+        followCam = Camera.main.GetComponent<FollowCamera>();
+        enterSettings.target = transform;
+    }
 
-        Gizmos.color = Color.blue;
-        Gizmos.DrawIcon(enterPos, "CameraRoom/eye", true);
+    private void OnEnable()
+    {
+        enterRoom.AddTriggerListener(OnEnterRoom);
+    }
 
-        float enterSize = enterSettings.orthographicSize.value;
-        Gizmos.color = new Color(0f, 0f, 1f, .1f);
-        Gizmos.DrawCube(enterPos, new Vector3(2 * enterSize * Camera.main.aspect, 2 * enterSize, 1f));
+    private void OnDisable()
+    {
+        enterRoom.RemoveTriggerListener(OnEnterRoom);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (targetIncoming) enterSettings.target = collision.transform;
+        enterRoom.Trigger();
+    }
+
+    private void OnEnterRoom()
+    {
+        followCam.currentSettings = GetWorldSettings();
+
+        if (Application.isPlaying == false)
+        {
+            followCam.Snap();
+        }
+    }
+
+    public FollowCamera.FollowSettings GetWorldSettings()
+    {
+        FollowCamera.FollowSettings settings = enterSettings;
+        settings.travelingRect.position += (Vector2)transform.position;
+        settings.targetPosition.x = settings.followX ? settings.target.position.x : settings.targetPosition.x + transform.position.x;
+        settings.targetPosition.y = settings.followY ? settings.target.position.y : settings.targetPosition.y + transform.position.y;
+
+        return settings;
     }
 }
