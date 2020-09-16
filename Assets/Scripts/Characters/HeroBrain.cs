@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class HeroBrain : MonoBehaviour
+public class HeroBrain : MonoBehaviour, IPausable
 {
     public enum InputType { Touch, Buttons, Mouse }
 
@@ -168,5 +168,10 @@ public class HeroBrain : MonoBehaviour
 
         currentControls.axisInput.Value = axisInput;
         aimPosition.Value = aimInput;
+    }
+
+    public void Pause(bool pause)
+    {
+        enabled = !pause;
     }
 }

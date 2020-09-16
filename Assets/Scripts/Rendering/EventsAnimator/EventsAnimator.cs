@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(Animator))]
-public class EventsAnimator : MonoBehaviour
+public class EventsAnimator : MonoBehaviour, IPausable
 {
     [SerializeField] private AnimatorTriggerEvent[] animatorTriggers;
     [SerializeField] private AnimatorBoolEvent[] animatorBools;
@@ -177,5 +177,11 @@ public class EventsAnimator : MonoBehaviour
         if (setFloat != null)
             for (int i = 0; i < FloatCount; i++)
                 animatorFloats[i].VCE.RemoveValueListener(setFloat[i]);
+    }
+
+    public void Pause(bool pause)
+    {
+        Animator animator = GetComponent<Animator>();
+        animator.enabled = !pause;
     }
 }

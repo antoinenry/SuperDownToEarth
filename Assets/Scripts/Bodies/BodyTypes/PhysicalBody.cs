@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PhysicalBody : Body
+public class PhysicalBody : Body, IPausable
 {
     public Rigidbody2D rb2d;
 
@@ -11,7 +11,9 @@ public class PhysicalBody : Body
     [Min(0f)] public float freeAngularVelocity = 5f;
 
     private bool simulate;
-    private bool move;    
+    private bool move;
+    private Vector2 pausedVelocity;
+    private float pausedAngularVelocity;
 
     public bool Simulate
     {
@@ -102,5 +104,21 @@ public class PhysicalBody : Body
         Visible = flagValue;
         Simulate = flagValue;
         Move = flagValue;
+    }
+
+    public void Pause(bool pause)
+    {
+        if (pause)
+        {
+            pausedVelocity = AttachedRigidBody.velocity;
+            pausedAngularVelocity = AttachedRigidBody.angularVelocity;
+            Simulate = false;
+        }
+        else
+        {
+            AttachedRigidBody.velocity = pausedVelocity;
+            AttachedRigidBody.angularVelocity = pausedAngularVelocity;
+            Simulate = true;
+        }
     }
 }

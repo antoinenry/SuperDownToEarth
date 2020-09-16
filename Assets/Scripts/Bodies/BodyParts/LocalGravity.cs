@@ -25,5 +25,5 @@ public class LocalGravity : BodyPart
 
         FallSpeed = Vector2.Dot(AttachedRigidbody.velocity, localDown);
         isFalling.Value = (FallSpeed > 0f);
-    }
+    }    
 }
