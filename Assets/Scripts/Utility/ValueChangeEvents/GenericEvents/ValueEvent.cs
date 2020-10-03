@@ -28,8 +28,9 @@ public class ValueEvent<T> : UnityEvent<T>, IEventGeneric
 
     public void Invoke(object value)
     {
-        if (value is T) base.Invoke((T)value);
-        else Debug.LogError("Event/Listener type mismatch: " + typeof(T) + "/" + value.GetType());
+        base.Invoke((T)value);
+        //if (value is T) base.Invoke((T)value);
+        //else Debug.LogError("Event/Listener type mismatch: " + typeof(T) + "/" + value.GetType());
     }
 
     public new void RemoveAllListeners()

@@ -41,9 +41,21 @@ public class EnumChangeEvent : ValueChangeEvent
     public EnumChangeEvent(Type enumType)
     {
         if (enumType.IsEnum)
+        {
+            SetValueType(enumType);
             enumNames = enumType.GetEnumNames();
+        }
         else
             Debug.LogError(enumType.ToString() + " is not an enum type");
+    }
+
+    protected override void SetValue(object valueObject, bool andTriggerEvent)
+    {
+        if ((int)valueObject != value)
+        {
+            value = (int)valueObject;
+            if (andTriggerEvent) Trigger();
+        }
     }
 }
 
@@ -52,6 +64,13 @@ public class Vector2ChangeEvent : ValueChangeEvent
 {
     [SerializeField] private Vector2 value;
     public static implicit operator Vector2(Vector2ChangeEvent vce) => (Vector2)vce.Value;
+}
+
+[Serializable]
+public class ColorChangeEvent : ValueChangeEvent
+{
+    [SerializeField] private Color value;
+    public static implicit operator Color(ColorChangeEvent vce) => (Color)vce.Value;
 }
 
 [Serializable]

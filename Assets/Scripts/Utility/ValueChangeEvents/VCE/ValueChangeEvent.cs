@@ -13,7 +13,7 @@ namespace Scarblab.VCE
         [NonSerialized] public bool inspectorHighlight;
         public bool inspectorUnfold;
 
-        public readonly Type ValueType;
+        public Type ValueType { get; private set; }
 
         private FieldInfo valueField;
         private IEventGeneric changeEvent;
@@ -29,17 +29,9 @@ namespace Scarblab.VCE
             valueField = GetType().GetField("value", BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (valueField == null)
-            {
-                ValueType = null;
-                changeEvent = new TriggerEvent();
-                setValue = null;
-            }
+                SetValueType(null);
             else
-            {
-                ValueType = valueField.FieldType;
-                typeof(ValueChangeEvent).GetMethod("CreateValueEvent", BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(ValueType).Invoke(this, null);
-                typeof(ValueChangeEvent).GetMethod("CreateSetValueAction", BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(ValueType).Invoke(this, null);
-            }
+                SetValueType(valueField.FieldType);
 
             trigger = new UnityAction(Trigger);
             
@@ -49,6 +41,22 @@ namespace Scarblab.VCE
         ~ValueChangeEvent()
         {
             RemoveAllListeners();
+        }
+
+        protected void SetValueType(Type valueType)
+        {
+            if (valueType != null)
+            {
+                ValueType = valueType;
+                typeof(ValueChangeEvent).GetMethod("CreateValueEvent", BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(ValueType).Invoke(this, null);
+                typeof(ValueChangeEvent).GetMethod("CreateSetValueAction", BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(ValueType).Invoke(this, null);
+            }
+            else
+            {
+                ValueType = null;
+                changeEvent = new TriggerEvent();
+                setValue = null;
+            }
         }
 
         private void CreateValueEvent<T>()
@@ -79,7 +87,7 @@ namespace Scarblab.VCE
             set => SetValue(value, true);
         }
 
-        private void SetValue(object value, bool andTriggerEvent)
+        protected virtual void SetValue(object value, bool andTriggerEvent)
         {
             if (ValueType == null)
             {
