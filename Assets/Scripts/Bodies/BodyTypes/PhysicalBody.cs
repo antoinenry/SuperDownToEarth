@@ -112,13 +112,13 @@ public class PhysicalBody : Body, IPausable
         {
             pausedVelocity = AttachedRigidBody.velocity;
             pausedAngularVelocity = AttachedRigidBody.angularVelocity;
-            Simulate = false;
+            Move = false;
         }
         else
         {
             AttachedRigidBody.velocity = pausedVelocity;
             AttachedRigidBody.angularVelocity = pausedAngularVelocity;
-            Simulate = true;
+            Move = true;
         }
     }
 }

@@ -3,9 +3,10 @@
 public class LocalGravity : BodyPart
 {
     public float gravityForce;
-    public BoolChangeEvent isFalling;
+    [Min(0f)] public float fallVelocityThreshold;
 
-    public float FallSpeed { get; private set; }
+    public BoolChangeEvent isFalling;
+    public FloatChangeEvent fallSpeed;
 
     private void Awake()
     {
@@ -23,7 +24,7 @@ public class LocalGravity : BodyPart
 
         AttachedRigidbody.AddForce(localDown * gravityForce);
 
-        FallSpeed = Vector2.Dot(AttachedRigidbody.velocity, localDown);
-        isFalling.Value = (FallSpeed > 0f);
+        fallSpeed.Value = Mathf.Max(Vector2.Dot(AttachedRigidbody.velocity, localDown), 0f);
+        isFalling.Value = (fallSpeed > fallVelocityThreshold);
     }    
 }

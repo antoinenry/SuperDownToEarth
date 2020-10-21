@@ -15,24 +15,21 @@ public class Bigblob : MonoBehaviour
             return 0;
         }
     }
-
+    
     public int blobOrder;
     public BoolChangeEvent isAwake;
+
+    private RendererColorModifier colorModifier;
+
+    private void Awake()
+    {
+        colorModifier = GetComponentInChildren<RendererColorModifier>(true);
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         isAwake.Value = true;
-        TransferBodyColor(collision.attachedRigidbody.GetComponent<Body>());
-    }
-
-    private void TransferBodyColor(Body body)
-    {
-        if (body != null)
-        {
-            body.render.color = GetComponentInChildren<SpriteRenderer>().color;
-            Light bodyLight = body.GetComponentInChildren<Light>();
-            if (bodyLight != null)
-                bodyLight.color = GetComponentInChildren<Light>().color;
-        }
+        RendererColorModifier blobColor = collision.attachedRigidbody.GetComponentInChildren<RendererColorModifier>();
+        if (blobColor != null && colorModifier != null) blobColor.SetColor(colorModifier.currentColor);
     }
 }

@@ -23,9 +23,9 @@ public class Circuit : MonoBehaviour
         if (loop) Gizmos.DrawLine(circuitPosition + controlPoints[Length - 1], circuitPosition + controlPoints[0]);
     }
 
-    public Vector2 GetPosition(int index)
+    public Vector2? GetPosition(int index)
     {
-        if (controlPoints == null || index < 0 || index >= Length) return transform.position;
+        if (controlPoints == null || index < 0 || index >= Length) return null;
         else return (Vector2)transform.position + controlPoints[index];
     }    
 }

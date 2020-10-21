@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Funnel : HidingPlace
@@ -8,15 +7,16 @@ public class Funnel : HidingPlace
     public Funnel connectTo;
     [Min(0f)] public float travelStartDelay = .2f;
     [Min(0f)] public float travelDuration = .3f;
-    [Min(0f)] public float velocityThreshold = 25f;
     
-    private Coroutine currentTravelCoroutine;       
+    private Coroutine currentTravelCoroutine;
 
-    protected override void OnBodyEnter(PhysicalBody body, float velocity)
+    public override void Hide(Hider target)
     {
-        Hide(body);        
-        if (currentTravelCoroutine == null && velocity >= velocityThreshold)
-            currentTravelCoroutine = StartCoroutine(TravelCoroutine());
+        if (target != null)
+        {
+            base.Hide(target);
+            target.tryFunnel.AddTriggerListener(OnHiderTravel);
+        }
     }
 
     protected override void OnPushOut()
@@ -26,28 +26,39 @@ public class Funnel : HidingPlace
             StopCoroutine(currentTravelCoroutine);
             currentTravelCoroutine = null;
         }
-        base.OnPushOut();
+
+        if(hider != null)
+        {
+            hider.tryFunnel.RemoveTriggerListener(OnHiderTravel);
+            base.OnPushOut();
+        }
+    }
+
+    private void OnHiderTravel()
+    {
+        StartCoroutine(TravelCoroutine());
     }
 
     private IEnumerator TravelCoroutine()
     {
+        if (hider != null)
+            hider.tryFunnel.RemoveTriggerListener(OnHiderTravel);
+
+
         if (travelStartDelay > 0f)
-            yield return new WaitForSeconds(travelStartDelay);
+        yield return new WaitForSeconds(travelStartDelay);
 
-        isHidingABody.Value = false;
-
-        if (hiddenJumper != null)
+        Hider traveler = hider;
+        if (hider != null)
         {
-            if (jumpTriggersExit)
-                hiddenJumper.tryJump.RemoveTriggerListener(OnPushOut);           
-
-            hiddenJumper = null;
+            hider.stopHiding.RemoveTriggerListener(PushOut);
+            hider = null;
         }
+        isHidingABody.Value = false;
         
         yield return new WaitForSeconds(travelDuration);
         
-        connectTo.Hide(hiddenBody);
-        hiddenBody = null;
+        connectTo.Hide(traveler);
 
         currentTravelCoroutine = null;
     }

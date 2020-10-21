@@ -11,14 +11,25 @@ public class CameraRoom : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        DrawGizmo(false);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        DrawGizmo(true);
+    }
+
+    private void DrawGizmo(bool selected)
+    {
         FollowCamera.FollowSettings settings = GetWorldSettings();
 
-        Color drawingColor = Color.white;
-        drawingColor.a = .05f;
+        Color drawingColor = selected ? Color.green : Color.white;
+        drawingColor.a = .15f;
         Gizmos.color = drawingColor;
         Gizmos.DrawCube(settings.travelingRect.center, settings.travelingRect.size);
-        
-        Gizmos.color = Color.white;
+
+        drawingColor.a = 1f;
+        Gizmos.color = drawingColor;
         Vector2 halfCamSize = new Vector2(settings.orthographicSize * Camera.main.aspect, settings.orthographicSize);
         Rect cameraFrame = new Rect((Vector2)transform.position - halfCamSize, halfCamSize * 2f);
         Gizmos.DrawWireCube(cameraFrame.center, cameraFrame.size);
@@ -35,6 +46,7 @@ public class CameraRoom : MonoBehaviour
 
     private void OnEnable()
     {
+        if (enterRoom == null) enterRoom = new Trigger();
         enterRoom.AddTriggerListener(OnEnterRoom);
     }
 
@@ -63,8 +75,9 @@ public class CameraRoom : MonoBehaviour
     {
         FollowCamera.FollowSettings settings = enterSettings;
         settings.travelingRect.position += (Vector2)transform.position;
-        settings.targetPosition.x = settings.followX ? settings.target.position.x : settings.targetPosition.x + transform.position.x;
-        settings.targetPosition.y = settings.followY ? settings.target.position.y : settings.targetPosition.y + transform.position.y;
+        
+        settings.targetPosition.x = settings.followX && settings.target != null ? settings.target.position.x : settings.targetPosition.x + transform.position.x;
+        settings.targetPosition.y = settings.followY && settings.target != null ? settings.target.position.y : settings.targetPosition.y + transform.position.y;
 
         return settings;
     }

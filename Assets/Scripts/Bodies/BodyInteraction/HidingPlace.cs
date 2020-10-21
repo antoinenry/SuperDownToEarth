@@ -3,68 +3,72 @@ using System.Collections;
 
 public class HidingPlace : MonoBehaviour
 {
-    public Transform pushOutPoint;
-    public float pushOutForce = 0f;
-    public float pushOutAngle = 0f;
-    public bool jumpTriggersExit = true;
-    public bool exitTriggersJump = true;
+    public Vector2 pushOutPoint;
+    public Vector2 pushOutVelocity;
     public string triggerTag = "Player";
     public float triggerCoolDown = .5f;
 
     public Trigger pushOut;
     public BoolChangeEvent isHidingABody;
 
-    protected Body hiddenBody;
-    protected Jumper hiddenJumper;
+    protected Hider hider;
     protected bool triggerIsCoolingDown;
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position + transform.rotation * pushOutPoint, transform.position + transform.rotation * (pushOutPoint + pushOutVelocity.normalized));
+    }
+
+    private void OnEnable()
+    {
+        isHidingABody.AddValueListener<bool>(OnHiding);
+        pushOut.AddTriggerListener(OnPushOut);
+    }
+
+    private void OnDisable()
+    {
+        isHidingABody.RemoveValueListener<bool>(OnHiding);
+        pushOut.RemoveTriggerListener(OnPushOut);
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (triggerIsCoolingDown == false && collision.collider.CompareTag(triggerTag) == true)
-            OnBodyEnter(collision.collider.attachedRigidbody.GetComponent<PhysicalBody>(), collision.relativeVelocity.magnitude);
+            Hide(collision.collider.attachedRigidbody.GetComponent<Hider>());
     }
 
-    private  void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (triggerIsCoolingDown == false && collision.CompareTag(triggerTag) == true)
-            OnBodyEnter(collision.attachedRigidbody.GetComponent<PhysicalBody>(), collision.attachedRigidbody.velocity.magnitude);
+            Hide(collision.attachedRigidbody.GetComponent<Hider>());
     }
 
-    protected virtual void OnBodyEnter(PhysicalBody body, float velocity)
+    public virtual void Hide(Hider target)
     {
-        Hide(body);
-    }
+        if (target == null) return;
 
-    public void Hide(Body body)
-    {
-        if (isHidingABody == false && body != null)
+        if (isHidingABody == false)
         {
-            body.Visible = false;
-            body.transform.position = transform.position;
-
-            if (body is PhysicalBody)
-            {
-                PhysicalBody physical = body as PhysicalBody;
-                physical.Simulate = false;
-                physical.Move = false;
-
-                if (jumpTriggersExit || exitTriggersJump)
-                {
-                    hiddenJumper = body.GetComponent<Jumper>();
-                    if (hiddenJumper != null && jumpTriggersExit)
-                        hiddenJumper.tryJump.AddTriggerListener(OnPushOut);
-                }
-            }            
+            hider = target;
+            hider.Hide();
+            hider.transform.position = new Vector3(transform.position.x, transform.position.y, target.transform.position.z);
+            hider.transform.rotation = transform.rotation;
+            hider.stopHiding.AddTriggerListener(PushOut);
 
             isHidingABody.Value = true;
         }
-
-        hiddenBody = body;
     }
 
     public void PushOut()
     {
         pushOut.Trigger();
+    }
+
+    protected virtual void OnHiding(bool isHiding)
+    {
+        if (isHiding == false)
+            PushOut();
     }
 
     protected virtual void OnPushOut()
@@ -74,41 +78,17 @@ public class HidingPlace : MonoBehaviour
 
     private IEnumerator PushOutCoroutine()
     {
+        if (hider != null)
+        {
+            hider.stopHiding.RemoveTriggerListener(PushOut);
+            hider.transform.position = new Vector3(transform.position.x, transform.position.y, hider.transform.position.z) + transform.rotation * Vector2.Scale(pushOutPoint, transform.lossyScale);
+            hider.transform.rotation = transform.rotation;
+            hider.StopHiding(transform.rotation * Vector2.Scale(pushOutVelocity, transform.lossyScale));
+            hider = null;
+        }
+
         triggerIsCoolingDown = true;
         isHidingABody.Value = false;
-
-        if (hiddenBody != null)
-        {
-            hiddenBody.Visible = true;
-
-            Transform pushOutTransform = pushOutPoint == null ? transform : pushOutPoint;            
-            hiddenBody.transform.rotation = pushOutTransform.rotation;
-            hiddenBody.transform.position = pushOutTransform.position;
-            if (hiddenBody is PhysicalBody)
-            {
-                PhysicalBody physical = hiddenBody as PhysicalBody;
-                physical.Simulate = true;
-                physical.Move = true;
-                if (pushOutForce != 0f)
-                    physical.AttachedRigidBody.AddForce(Quaternion.Euler(0f, 0f, pushOutAngle) * pushOutTransform.up * pushOutForce);
-            }
-
-            hiddenBody = null;
-        }
-
-        if (hiddenJumper != null)
-        {
-            if (jumpTriggersExit)
-                hiddenJumper.tryJump.RemoveTriggerListener(OnPushOut);
-
-            if (exitTriggersJump)
-            {
-                yield return new WaitForFixedUpdate();
-                hiddenJumper.Jump(true);
-            }
-
-            hiddenJumper = null;
-        }
 
         yield return new WaitForSeconds(triggerCoolDown);
         triggerIsCoolingDown = false;

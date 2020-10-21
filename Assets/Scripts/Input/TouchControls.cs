@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class TouchControls : MonoBehaviour
 {
+    public Rect touchZone = new Rect(Vector2.zero, Vector2.one);
     public int maxTouch = 2;
     public float minHoldDuration = .1f;
     public float maxTapDuration = .3f;
@@ -43,6 +44,9 @@ public class TouchControls : MonoBehaviour
             if (i < touchCount)
             {
                 Touch touch = Input.GetTouch(i);
+                if (touchZone.Contains(Vector2.Scale(touch.position, new Vector2(1f/Screen.width, 1f/Screen.height))) == false)
+                        touch.phase = TouchPhase.Ended;
+
                 switch (touch.phase)
                 {
                     case TouchPhase.Began:

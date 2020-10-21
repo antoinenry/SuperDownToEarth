@@ -10,6 +10,7 @@ public class FollowCamera : MonoBehaviour
         public bool followX;
         public bool followY;
         public Vector2 targetPosition;
+        public Vector2 positionOffset;
         public float travelDamping;
         public Rect travelingRect;
         public Vector2 neutralZoneSize;
@@ -33,8 +34,9 @@ public class FollowCamera : MonoBehaviour
             if (currentSettings.followX) currentSettings.targetPosition.x = currentSettings.target.position.x;
             if (currentSettings.followY) currentSettings.targetPosition.y = currentSettings.target.position.y;
 
-            bool neutralX = currentSettings.targetPosition.x >= neutralBounds.xMin && currentSettings.targetPosition.x <= neutralBounds.xMax;
-            bool neutralY = currentSettings.targetPosition.y >= neutralBounds.yMin && currentSettings.targetPosition.y <= neutralBounds.yMax;
+            Vector2 targetPositionWithOffset = currentSettings.targetPosition + currentSettings.positionOffset;
+            bool neutralX = targetPositionWithOffset.x >= neutralBounds.xMin && targetPositionWithOffset.x <= neutralBounds.xMax;
+            bool neutralY = targetPositionWithOffset.y >= neutralBounds.yMin && targetPositionWithOffset.y <= neutralBounds.yMax;
             Follow(currentSettings.targetPosition, neutralX, neutralY);
         }        
     }
@@ -74,8 +76,8 @@ public class FollowCamera : MonoBehaviour
     {
         Rect travelingBounds = GetTravelingBounds();
         Vector3 moveTo = new Vector2();
-        moveTo.x = !ignoreX ? Mathf.Clamp(targetPosition.x, travelingBounds.xMin, travelingBounds.xMax) : transform.position.x;
-        moveTo.y = !ignoreY ? Mathf.Clamp(targetPosition.y, travelingBounds.yMin, travelingBounds.yMax) : transform.position.y;
+        moveTo.x = !ignoreX ? Mathf.Clamp(targetPosition.x + currentSettings.positionOffset.x, travelingBounds.xMin, travelingBounds.xMax) : transform.position.x;
+        moveTo.y = !ignoreY ? Mathf.Clamp(targetPosition.y + currentSettings.positionOffset.y, travelingBounds.yMin, travelingBounds.yMax) : transform.position.y;
         moveTo.z = transform.position.z;
 
         if (currentSettings.travelDamping > 0f)
